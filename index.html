@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="th" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SciCode Nexus - ศูนย์รวมสูตรฟิสิกส์ เคมี ชีวะ คณิตศาสตร์ & สตูดิโอฝึกเขียนโค้ด</title>
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: ['selector', '[data-theme="dark"]'],
+      theme: {
+        extend: {
+          colors: {
+            cyber: {
+              dark: '#090d16',
+              card: '#0f172a',
+              accent: '#6366f1',
+              neon: '#06b6d4',
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- KaTeX for high-performance LaTeX math rendering -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+
+  <!-- Custom Styles -->
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="selection:bg-indigo-500 selection:text-white">
+
+  <!-- Ambient Glow & Grid -->
+  <div class="ambient-mesh"></div>
+  <div class="grid-overlay"></div>
+
+  <!-- Main Container -->
+  <div class="relative z-10 flex flex-col min-h-screen">
+
+    <!-- ==================== TOP NAVIGATION BAR ==================== -->
+    <header class="sticky top-0 z-40 backdrop-blur-xl bg-slate-950/70 border-b border-slate-800/80 px-4 lg:px-8 py-3.5">
+      <div class="max-w-7xl mx-auto flex items-center justify-between gap-4">
+        
+        <!-- Logo & Branding -->
+        <div class="flex items-center gap-3 cursor-pointer select-none">
+          <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-600 via-cyan-500 to-emerald-400 p-0.5 shadow-lg shadow-indigo-500/20">
+            <div class="w-full h-full bg-slate-950 rounded-[10px] flex items-center justify-center">
+              <span class="font-mono font-black text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-indigo-400 text-lg">ΣN</span>
+            </div>
+          </div>
+          <div>
+            <div class="flex items-center gap-2">
+              <h1 class="font-bold text-base lg:text-lg tracking-tight text-white flex items-center gap-1.5">
+                <span>SciCode</span>
+                <span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-indigo-400">Nexus</span>
+              </h1>
+              <span class="text-[10px] font-mono font-semibold px-2 py-0.5 rounded-full bg-indigo-500/20 text-indigo-300 border border-indigo-500/30">v1.0</span>
+            </div>
+            <p class="text-[11px] text-slate-400 hidden sm:block">Physics, Chemistry, Biology & Code Learning Lab</p>
+          </div>
+        </div>
+
+        <!-- Navigation Tabs (Center) -->
+        <nav class="hidden md:flex items-center p-1 bg-slate-900/90 rounded-2xl border border-slate-800">
+          <button data-tab="formulas" class="nav-tab-btn flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold transition-all bg-indigo-600 text-white shadow-lg shadow-indigo-500/30">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
+            <span>สูตร & ตัวคำนวณ</span>
+          </button>
+          <button data-tab="simulations" class="nav-tab-btn flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold transition-all text-slate-400 hover:text-slate-200">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            <span>การจำลองฟิสิกส์ (Live)</span>
+          </button>
+          <button data-tab="lab" class="nav-tab-btn flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold transition-all text-slate-400 hover:text-slate-200">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg>
+            <span>ห้องแล็บโค้ด (Math-to-Code)</span>
+          </button>
+          <button data-tab="vault" class="nav-tab-btn flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold transition-all text-slate-400 hover:text-slate-200">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+            <span>คลังความรู้ & Roadmap</span>
+          </button>
+          <button data-tab="curriculum" class="nav-tab-btn flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold transition-all text-slate-400 hover:text-slate-200">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"/></svg>
+            <span>หลักสูตร ม.1-ม.6</span>
+          </button>
+        </nav>
+
+        <!-- Search (Ctrl+K) & Theme Toggle -->
+        <div class="flex items-center gap-2.5">
+          <button id="cmd-palette-trigger-btn" class="flex items-center gap-2.5 px-3 py-1.5 rounded-xl bg-slate-900 border border-slate-800 text-slate-400 hover:text-slate-200 hover:border-slate-700 text-xs transition-all">
+            <svg class="w-3.5 h-3.5 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+            <span class="hidden sm:inline">ค้นหาสูตร...</span>
+            <kbd class="font-mono text-[10px] bg-slate-800 text-slate-400 px-1.5 py-0.5 rounded border border-slate-700">Ctrl K</kbd>
+          </button>
+
+          <button id="theme-toggle-btn" class="p-2 rounded-xl bg-slate-900 border border-slate-800 text-slate-400 hover:text-amber-400 transition-colors" title="สลับ Dark/Light Theme">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg>
+          </button>
+        </div>
+
+      </div>
+
+      <!-- Mobile Navigation Bar -->
+      <div class="flex md:hidden items-center justify-around pt-3 mt-2 border-t border-slate-800/60">
+        <button data-tab="formulas" class="nav-tab-btn flex flex-col items-center gap-1 text-xs text-indigo-400 font-medium">
+          <span>สูตร</span>
+        </button>
+        <button data-tab="simulations" class="nav-tab-btn flex flex-col items-center gap-1 text-xs text-slate-400 font-medium">
+          <span>จำลอง</span>
+        </button>
+        <button data-tab="lab" class="nav-tab-btn flex flex-col items-center gap-1 text-xs text-slate-400 font-medium">
+          <span>แล็บโค้ด</span>
+        </button>
+        <button data-tab="vault" class="nav-tab-btn flex flex-col items-center gap-1 text-xs text-slate-400 font-medium">
+          <span>ความรู้</span>
+        </button>
+        <button data-tab="curriculum" class="nav-tab-btn flex flex-col items-center gap-1 text-xs text-slate-400 font-medium">
+          <span>ม.1-ม.6</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- ==================== MAIN CONTENT BODY ==================== -->
+    <main class="flex-1 max-w-7xl w-full mx-auto p-4 lg:p-8">
+
+      <!-- ===================================================================
+           TAB 1: FORMULAS & DYNAMIC STEP-BY-STEP SOLVER
+           =================================================================== -->
+      <section id="tab-panel-formulas" class="tab-panel">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+          
+          <!-- Left Column: Search & Formula Directory (4 cols) -->
+          <div class="lg:col-span-4 flex flex-col gap-4">
+            
+            <!-- Search & Filters -->
+            <div class="glass-panel p-4 rounded-2xl border border-slate-800">
+              <div class="relative mb-3">
+                <input id="formula-search-input" type="text" placeholder="ค้นหาชื่อสูตร หรือคำอธิบาย..."
+                  class="w-full bg-slate-900 border border-slate-700/80 rounded-xl pl-9 pr-4 py-2 text-xs text-slate-100 placeholder-slate-500 focus:outline-none focus:border-indigo-500 transition-colors" />
+                <svg class="w-4 h-4 text-slate-400 absolute left-3 top-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+              </div>
+
+              <!-- Categories scrollable chips -->
+              <div id="formula-categories" class="flex items-center gap-1.5 overflow-x-auto pb-1 no-scrollbar">
+                <!-- Injected via JavaScript -->
+              </div>
+            </div>
+
+            <!-- Formula list -->
+            <div id="formula-items-list" class="space-y-2.5 max-h-[640px] overflow-y-auto pr-1">
+              <!-- Injected via JavaScript -->
+            </div>
+
+          </div>
+
+          <!-- Right Column: Interactive Workspace & Step-by-Step Derivation (8 cols) -->
+          <div class="lg:col-span-8 flex flex-col gap-6">
+            
+            <!-- Formula Header Card -->
+            <div class="glass-panel p-6 rounded-3xl border border-slate-800 relative overflow-hidden">
+              <div class="flex flex-wrap items-center justify-between gap-3 mb-3">
+                <div class="flex items-center gap-2">
+                  <span id="detail-formula-category" class="text-xs font-semibold px-2.5 py-1 rounded-full bg-cyan-500/20 text-cyan-300 border border-cyan-500/30">
+                    ฟิสิกส์
+                  </span>
+                  <span id="detail-formula-subtitle" class="text-xs text-slate-400 font-mono">
+                    Linear Motion
+                  </span>
+                </div>
+                <button id="copy-latex-btn" class="btn-interactive flex items-center gap-1.5 text-xs text-slate-400 hover:text-cyan-400 px-3 py-1.5 rounded-lg bg-slate-800/80 border border-slate-700/80">
+                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                  <span>Copy LaTeX</span>
+                </button>
+              </div>
+
+              <h2 id="detail-formula-title" class="text-xl lg:text-2xl font-black text-slate-100 mb-2">
+                ชื่อสูตร
+              </h2>
+              <p id="detail-formula-desc" class="text-xs lg:text-sm text-slate-400 leading-relaxed mb-5">
+                คำอธิบายทฤษฎีและแนวคิดเบื้องหลังของสูตรนี้
+              </p>
+
+              <!-- Main KaTeX Formula Display Card -->
+              <div class="p-6 rounded-2xl bg-gradient-to-b from-slate-900 to-slate-950 border border-slate-800/90 shadow-inner flex flex-col items-center justify-center min-h-[110px]">
+                <div id="detail-formula-katex" class="text-xl sm:text-2xl lg:text-3xl text-cyan-300 font-mono"></div>
+              </div>
+            </div>
+
+            <!-- Dynamic Variables Input & Target Chooser -->
+            <div class="glass-panel p-6 rounded-3xl border border-slate-800">
+              
+              <!-- Choose Target Variable -->
+              <div class="mb-5">
+                <div class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2.5">
+                  เลือกตัวแปรที่ต้องการคำนวณ (Solve for Variable):
+                </div>
+                <div id="detail-target-select" class="flex flex-wrap gap-2">
+                  <!-- Injected via JavaScript -->
+                </div>
+              </div>
+
+              <!-- Input sliders & numbers -->
+              <div class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2.5">
+                กำหนดค่าตัวแปร (Adjust Parameters):
+              </div>
+              <div id="detail-variables-inputs" class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-6">
+                <!-- Injected via JavaScript -->
+              </div>
+
+              <!-- Result Banner -->
+              <div class="p-5 rounded-2xl bg-gradient-to-r from-indigo-950/40 via-cyan-950/30 to-slate-900 border border-cyan-500/30 flex flex-wrap items-center justify-between gap-4">
+                <div>
+                  <div class="text-xs text-cyan-400 font-semibold uppercase tracking-wider mb-1">ผลลัพธ์การคำนวณสุทธิ (Computed Result):</div>
+                  <div id="formula-result-display">
+                    <!-- Calculated Result -->
+                  </div>
+                </div>
+                <button id="formula-solve-btn" class="btn-interactive px-5 py-2.5 rounded-xl bg-gradient-to-r from-indigo-600 to-cyan-600 text-white text-xs font-bold shadow-lg shadow-indigo-500/30 hover:shadow-cyan-500/40">
+                  คำนวณและแสดงขั้นตอน
+                </button>
+              </div>
+
+            </div>
+
+            <!-- Step-by-Step Derivation Breakdown -->
+            <div class="glass-panel p-6 rounded-3xl border border-slate-800">
+              <div class="flex items-center gap-2 mb-4">
+                <div class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></div>
+                <h3 class="text-sm font-bold text-slate-100 uppercase tracking-wider">
+                  ขั้นตอนการแทนค่าและแก้สมการอย่างละเอียด (Step-by-Step Derivation)
+                </h3>
+              </div>
+              <div id="formula-steps-container" class="space-y-3">
+                <!-- Injected via JavaScript -->
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ===================================================================
+           TAB 2: INTERACTIVE 60FPS PHYSICS SIMULATIONS
+           =================================================================== -->
+      <section id="tab-panel-simulations" class="tab-panel hidden">
+        <div class="flex flex-col gap-6">
+          
+          <!-- Simulation Category Tabs -->
+          <div class="flex items-center justify-between flex-wrap gap-3">
+            <div>
+              <h2 class="text-xl font-black text-slate-100">ห้องทดลองฟิสิกส์จำลองแบบเรียลไทม์ (Live Physics Lab)</h2>
+              <p class="text-xs text-slate-400">สัมผัสกฎฟิสิกส์ผ่านภาพจำลอง 60FPS ปรับค่าตัวแปรแล้วดูผลการเคลื่อนที่ได้ทันที</p>
+            </div>
+            <div class="flex items-center p-1 bg-slate-900 rounded-xl border border-slate-800">
+              <button data-sim="projectile" class="sim-subtab-btn px-4 py-1.5 rounded-lg text-xs font-semibold bg-slate-700 text-white transition-all">
+                การเคลื่อนที่แบบโพรเจกไทล์
+              </button>
+              <button data-sim="pendulum" class="sim-subtab-btn px-4 py-1.5 rounded-lg text-xs font-semibold text-slate-400 hover:text-slate-200 transition-all">
+                การแกว่งลูกตุ้มนาฬิกา
+              </button>
+            </div>
+          </div>
+
+          <!-- 1. Projectile Motion Simulation View -->
+          <div id="sim-view-projectile" class="sim-view-card grid grid-cols-1 lg:grid-cols-12 gap-6">
+            
+            <!-- Canvas Simulation Display (8 cols) -->
+            <div class="lg:col-span-8 glass-panel p-4 rounded-3xl border border-slate-800 flex flex-col">
+              <div class="flex items-center justify-between mb-3 px-2">
+                <div class="flex items-center gap-2">
+                  <span class="w-2.5 h-2.5 rounded-full bg-cyan-400 animate-pulse"></span>
+                  <span class="text-xs font-bold text-slate-300 uppercase tracking-wider">Projectile Motion Viewport</span>
+                </div>
+                <span class="text-[11px] font-mono text-slate-500">60 FPS • Physics Engine</span>
+              </div>
+
+              <!-- The Canvas -->
+              <div class="relative w-full bg-slate-950 rounded-2xl border border-slate-800/80 overflow-hidden shadow-2xl">
+                <canvas id="projectile-canvas" class="w-full block h-[360px]"></canvas>
+
+                <!-- Telemetry HUD Overlay -->
+                <div class="absolute top-3 left-3 bg-slate-900/80 backdrop-blur-md border border-slate-800 rounded-xl p-2.5 flex flex-wrap gap-4 text-xs font-mono">
+                  <div>
+                    <span class="text-slate-400 text-[10px] block">เวลา (Time):</span>
+                    <span id="proj-hud-time" class="text-cyan-300 font-bold">0.00 s</span>
+                  </div>
+                  <div>
+                    <span class="text-slate-400 text-[10px] block">ระยะทางราบ (Range):</span>
+                    <span id="proj-hud-range" class="text-emerald-300 font-bold">0.00 m</span>
+                  </div>
+                  <div>
+                    <span class="text-slate-400 text-[10px] block">ความสูง (Height):</span>
+                    <span id="proj-hud-height" class="text-amber-300 font-bold">0.00 m</span>
+                  </div>
+                  <div>
+                    <span class="text-slate-400 text-[10px] block">ความเร็ว (Speed):</span>
+                    <span id="proj-hud-velocity" class="text-rose-300 font-bold">0.00 m/s</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Control Action Buttons -->
+              <div class="flex items-center gap-3 mt-4">
+                <button id="proj-launch-btn" class="btn-interactive flex-1 py-2.5 rounded-xl bg-gradient-to-r from-cyan-500 to-indigo-600 text-white text-xs font-bold flex items-center justify-center gap-2 shadow-lg shadow-cyan-500/20">
+                  <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z"/></svg>
+                  <span>ยิงลูกกระสุน (Launch)</span>
+                </button>
+                <button id="proj-pause-btn" class="btn-interactive px-4 py-2.5 rounded-xl bg-slate-800 text-slate-300 text-xs font-bold border border-slate-700">
+                  หยุดชั่วคราว
+                </button>
+                <button id="proj-reset-btn" class="btn-interactive px-4 py-2.5 rounded-xl bg-slate-800 text-slate-300 text-xs font-bold border border-slate-700">
+                  รีเซ็ต
+                </button>
+              </div>
+            </div>
+
+            <!-- Simulation Parameters Controls (4 cols) -->
+            <div class="lg:col-span-4 glass-panel p-6 rounded-3xl border border-slate-800 flex flex-col gap-4">
+              <h3 class="text-sm font-bold text-slate-100 uppercase tracking-wider mb-1">
+                การตั้งค่าตัวแปรจำลอง
+              </h3>
+
+              <!-- Velocity v0 -->
+              <div class="p-3.5 rounded-2xl bg-slate-900/60 border border-slate-800">
+                <div class="flex items-center justify-between text-xs mb-1.5">
+                  <span class="text-slate-300 font-semibold">ความเร็วต้น (v₀)</span>
+                  <span id="proj-v0-val" class="font-mono text-cyan-400 font-bold">35 m/s</span>
+                </div>
+                <input id="proj-v0-slider" type="range" min="5" max="80" value="35" class="w-full h-1.5 bg-slate-700 rounded-lg appearance-none cursor-pointer" />
+              </div>
+
+              <!-- Angle -->
+              <div class="p-3.5 rounded-2xl bg-slate-900/60 border border-slate-800">
+                <div class="flex items-center justify-between text-xs mb-1.5">
+                  <span class="text-slate-300 font-semibold">มุมยิง (Angle θ)</span>
+                  <span id="proj-angle-val" class="font-mono text-cyan-400 font-bold">45°</span>
+                </div>
+                <input id="proj-angle-slider" type="range" min="5" max="85" value="45" class="w-full h-1.5 bg-slate-700 rounded-lg appearance-none cursor-pointer" />
+              </div>
+
+              <!-- Gravity (Planets) -->
+              <div class="p-3.5 rounded-2xl bg-slate-900/60 border border-slate-800">
+                <label class="text-xs text-slate-300 font-semibold block mb-2">สนามโน้มถ่วง (Gravity)</label>
+                <select id="proj-gravity-select" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-slate-100 focus:outline-none">
+                  <option value="9.8">โลก (Earth) - 9.80 m/s²</option>
+                  <option value="1.62">ดวงจันทร์ (Moon) - 1.62 m/s²</option>
+                  <option value="3.72">ดาวอังคาร (Mars) - 3.72 m/s²</option>
+                  <option value="24.79">ดาวพฤหัสบดี (Jupiter) - 24.79 m/s²</option>
+                </select>
+              </div>
+
+              <!-- Air Resistance Toggle -->
+              <div class="p-3.5 rounded-2xl bg-slate-900/60 border border-slate-800 flex items-center justify-between">
+                <div>
+                  <div class="text-xs font-semibold text-slate-200">แรงต้านของอากาศ</div>
+                  <div class="text-[10px] text-slate-400">Air Drag Simulation (k = 0.005)</div>
+                </div>
+                <input id="proj-drag-toggle" type="checkbox" class="w-4 h-4 rounded text-indigo-600 focus:ring-0 bg-slate-800 border-slate-700 cursor-pointer" />
+              </div>
+
+              <!-- Formula reminder card -->
+              <div class="p-3.5 rounded-2xl bg-indigo-950/20 border border-indigo-500/30 text-xs text-slate-300 leading-relaxed">
+                <span class="font-semibold text-cyan-300">💡 เคล็ดลับฟิสิกส์:</span>
+                มุม 45 องศาจะให้ระยะตกไกลที่สุดในสภาวะสุญญากาศ แต่เมื่อมีแรงต้านอากาศ มุมที่ไกลที่สุดจะลดลงเหลือประมาณ 38-42 องศา
+              </div>
+
+            </div>
+
+          </div>
+
+          <!-- 2. Pendulum Simulation View -->
+          <div id="sim-view-pendulum" class="sim-view-card hidden grid grid-cols-1 lg:grid-cols-12 gap-6">
+            
+            <div class="lg:col-span-8 glass-panel p-4 rounded-3xl border border-slate-800 flex flex-col">
+              <div class="flex items-center justify-between mb-3 px-2">
+                <div class="flex items-center gap-2">
+                  <span class="w-2.5 h-2.5 rounded-full bg-purple-400 animate-pulse"></span>
+                  <span class="text-xs font-bold text-slate-300 uppercase tracking-wider">Simple Harmonic Pendulum</span>
+                </div>
+                <span class="text-[11px] font-mono text-slate-500">T = 2π√(L/g)</span>
+              </div>
+
+              <div class="relative w-full bg-slate-950 rounded-2xl border border-slate-800/80 overflow-hidden shadow-2xl">
+                <canvas id="pendulum-canvas" class="w-full block h-[360px]"></canvas>
+
+                <div class="absolute top-3 left-3 bg-slate-900/80 backdrop-blur-md border border-slate-800 rounded-xl p-2.5 flex flex-wrap gap-4 text-xs font-mono">
+                  <div>
+                    <span class="text-slate-400 text-[10px] block">คาบการแกว่ง (Period T):</span>
+                    <span id="pend-hud-period" class="text-purple-300 font-bold">2.84 s</span>
+                  </div>
+                  <div>
+                    <span class="text-slate-400 text-[10px] block">มุมแกว่งปัจจุบัน (Angle):</span>
+                    <span id="pend-hud-angle" class="text-cyan-300 font-bold">35.0°</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="flex items-center gap-3 mt-4">
+                <button id="pend-reset-btn" class="btn-interactive flex-1 py-2.5 rounded-xl bg-gradient-to-r from-purple-600 to-indigo-600 text-white text-xs font-bold shadow-lg shadow-purple-500/20">
+                  ปล่อยลูกตุ้มใหม่ที่ 40° (Reset Pendulum)
+                </button>
+              </div>
+            </div>
+
+            <div class="lg:col-span-4 glass-panel p-6 rounded-3xl border border-slate-800 flex flex-col gap-4">
+              <h3 class="text-sm font-bold text-slate-100 uppercase tracking-wider mb-1">
+                การตั้งค่าลูกตุ้ม
+              </h3>
+
+              <div class="p-3.5 rounded-2xl bg-slate-900/60 border border-slate-800">
+                <div class="flex items-center justify-between text-xs mb-1.5">
+                  <span class="text-slate-300 font-semibold">ความยาวเชือก (L)</span>
+                  <span id="pend-len-val" class="font-mono text-purple-400 font-bold">2.0 m</span>
+                </div>
+                <input id="pend-len-slider" type="range" min="0.5" max="3.0" step="0.1" value="2.0" class="w-full h-1.5 bg-slate-700 rounded-lg appearance-none cursor-pointer" />
+              </div>
+
+              <div class="p-3.5 rounded-2xl bg-slate-900/60 border border-slate-800">
+                <label class="text-xs text-slate-300 font-semibold block mb-2">สนามโน้มถ่วง (g)</label>
+                <select id="pend-gravity-select" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-slate-100 focus:outline-none">
+                  <option value="9.8">โลก (9.80 m/s²)</option>
+                  <option value="1.62">ดวงจันทร์ (1.62 m/s²)</option>
+                  <option value="24.79">ดาวพฤหัสบดี (24.79 m/s²)</option>
+                </select>
+              </div>
+
+              <div class="p-3.5 rounded-2xl bg-slate-900/60 border border-slate-800">
+                <div class="flex items-center justify-between text-xs mb-1.5">
+                  <span class="text-slate-300 font-semibold">แรงหน่วงการแกว่ง (Damping)</span>
+                </div>
+                <input id="pend-damping-slider" type="range" min="0" max="0.01" step="0.001" value="0.002" class="w-full h-1.5 bg-slate-700 rounded-lg appearance-none cursor-pointer" />
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ===================================================================
+           TAB 3: INTERACTIVE IN-BROWSER CODE LAB (MATH-TO-CODE)
+           =================================================================== -->
+      <section id="tab-panel-lab" class="tab-panel hidden">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+          
+          <!-- Left Column: Lesson Directory & Instructions (4 cols) -->
+          <div class="lg:col-span-4 flex flex-col gap-4">
+            
+            <!-- Lessons List -->
+            <div class="glass-panel p-4 rounded-2xl border border-slate-800">
+              <div class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2.5">
+                เลือกบทเรียน (Interactive Lessons):
+              </div>
+              <div id="lessons-list-container" class="space-y-2">
+                <!-- Injected via JavaScript -->
+              </div>
+            </div>
+
+            <!-- Current Lesson Description & Instructions -->
+            <div class="glass-panel p-5 rounded-2xl border border-slate-800">
+              <h3 id="lesson-title-display" class="text-sm font-bold text-slate-100 mb-2"></h3>
+              <p id="lesson-desc-display" class="text-xs text-slate-400 mb-3 leading-relaxed"></p>
+
+              <!-- Formula in Lesson -->
+              <div class="p-3 rounded-xl bg-slate-900 border border-slate-800 flex items-center justify-center mb-4">
+                <div id="lesson-formula-display" class="text-sm text-cyan-300 font-mono"></div>
+              </div>
+
+              <!-- Instructions -->
+              <div class="text-xs font-semibold text-slate-300 mb-2">คำแนะนำในการเขียนโค้ด:</div>
+              <ul id="lesson-instructions-list" class="space-y-2 mb-4">
+                <!-- Injected via JavaScript -->
+              </ul>
+            </div>
+
+          </div>
+
+          <!-- Right Column: Code Editor & Terminal (8 cols) -->
+          <div class="lg:col-span-8 flex flex-col gap-4">
+            
+            <!-- Code Editor Box -->
+            <div class="glass-panel rounded-3xl border border-slate-800 overflow-hidden flex flex-col">
+              
+              <!-- Editor Header / Toolbar -->
+              <div class="px-5 py-3 bg-slate-900/90 border-b border-slate-800 flex items-center justify-between flex-wrap gap-2">
+                <div class="flex items-center gap-2">
+                  <div class="flex gap-1.5">
+                    <span class="w-3 h-3 rounded-full bg-rose-500/80 inline-block"></span>
+                    <span class="w-3 h-3 rounded-full bg-amber-500/80 inline-block"></span>
+                    <span class="w-3 h-3 rounded-full bg-emerald-500/80 inline-block"></span>
+                  </div>
+                  <span class="text-xs font-mono text-slate-400 ml-2">solution.js</span>
+                </div>
+
+                <div class="flex items-center gap-2">
+                  <button id="code-solution-btn" class="text-xs px-2.5 py-1 rounded-lg bg-slate-800 text-amber-300 hover:bg-slate-700 border border-amber-500/30 transition-colors">
+                    ดูเฉลย
+                  </button>
+                  <button id="code-reset-btn" class="text-xs px-2.5 py-1 rounded-lg bg-slate-800 text-slate-400 hover:text-slate-200 border border-slate-700 transition-colors">
+                    รีเซ็ตโค้ด
+                  </button>
+                  <button id="code-run-btn" class="btn-interactive text-xs px-3 py-1 rounded-lg bg-slate-700 text-white hover:bg-slate-600 font-semibold transition-all">
+                    ▶ รันโค้ด
+                  </button>
+                  <button id="code-test-btn" class="btn-interactive text-xs px-4 py-1.5 rounded-lg bg-gradient-to-r from-emerald-500 to-teal-600 text-white font-bold shadow-md shadow-emerald-500/20 transition-all">
+                    ✓ ตรวจคำตอบ (Run Tests)
+                  </button>
+                </div>
+              </div>
+
+              <!-- Code Input Textarea -->
+              <div class="p-4 bg-[#0a0f1d]">
+                <textarea id="code-editor" spellcheck="false"
+                  class="code-editor-area w-full h-[280px] bg-transparent text-slate-200 focus:outline-none border-0 leading-relaxed selection:bg-indigo-600 selection:text-white"
+                  placeholder="// เขียนโค้ดของคุณตรงนี้..."></textarea>
+              </div>
+
+              <!-- Simulated Terminal Console -->
+              <div class="bg-slate-950 border-t border-slate-800 p-4">
+                <div class="flex items-center justify-between mb-2">
+                  <span class="text-[11px] font-mono text-slate-400 uppercase tracking-wider flex items-center gap-1.5">
+                    <span class="w-2 h-2 rounded-full bg-cyan-400"></span>
+                    <span>Virtual Terminal Console</span>
+                  </span>
+                  <span class="text-[10px] text-slate-500 font-mono">Client-side Sandboxed</span>
+                </div>
+                <div id="code-terminal-output" class="h-32 overflow-y-auto bg-black/40 rounded-xl p-3 border border-slate-900">
+                  <span class="text-slate-500 font-mono text-xs">// Terminal Output Ready...</span>
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ===================================================================
+           TAB 4: KNOWLEDGE VAULT & ROADMAPS
+           =================================================================== -->
+      <section id="tab-panel-vault" class="tab-panel hidden">
+        <div class="flex flex-col gap-8">
+          
+          <!-- Roadmaps Section -->
+          <div>
+            <div class="mb-4">
+              <h2 class="text-xl font-black text-slate-100">เส้นทางการเรียนรู้ (Interactive Learning Roadmaps)</h2>
+              <p class="text-xs text-slate-400">แผนผังการศึกษาคณิตศาสตร์และฟิสิกส์เพื่อนำไปต่อยอดในงานปัญญาประดิษฐ์ (AI) และการพัฒนาเกม</p>
+            </div>
+            <div id="vault-roadmaps-container" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <!-- Injected via JavaScript -->
+            </div>
+          </div>
+
+          <!-- Formula Cheatsheets Section -->
+          <div>
+            <div class="mb-4">
+              <h2 class="text-xl font-black text-slate-100">สรุปสูตรฟิสิกส์ เคมี ชีวะ-คณิตศาสตร์ยอดฮิต (Formula Cheatsheets)</h2>
+              <p class="text-xs text-slate-400">คลังสรุปสูตรสำคัญที่ใช้บ่อยสำหรับการสอบและการเขียนโปรแกรม แยกตามหมวดวิชา</p>
+            </div>
+            <div id="vault-cheatsheet-container" class="space-y-4">
+              <!-- Injected via JavaScript -->
+            </div>
+          </div>
+
+          <!-- Curated Resources Section -->
+          <div>
+            <div class="mb-4">
+              <h2 class="text-xl font-black text-slate-100">แหล่งเรียนรู้ชั้นนำระดับโลก (Curated External Hub)</h2>
+              <p class="text-xs text-slate-400">คัดสรรคอร์สเรียน วิดีโอ และหนังสือคุณภาพสูงที่เปิดให้เรียนรู้ฟรี</p>
+            </div>
+            <div id="vault-resources-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              <!-- Injected via JavaScript -->
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ===================================================================
+           TAB 5: CURRICULUM HUB (ม.1 - ม.6)
+           =================================================================== -->
+      <section id="tab-panel-curriculum" class="tab-panel hidden">
+        <div class="flex flex-col gap-6">
+          
+          <!-- Header Banner -->
+          <div class="glass-panel p-6 rounded-3xl border border-slate-800 bg-gradient-to-r from-indigo-950/40 via-purple-950/20 to-slate-900">
+            <div class="flex flex-wrap items-center justify-between gap-4 mb-2">
+              <div class="flex items-center gap-2">
+                <span class="text-xs font-bold px-3 py-1 rounded-full bg-cyan-500/20 text-cyan-300 border border-cyan-500/30">
+                  หลักสูตรการศึกษาขั้นพื้นฐาน (ม.1 - ม.6)
+                </span>
+                <span class="text-xs text-slate-400 font-mono">6 กลุ่มสาระวิชาหลัก</span>
+              </div>
+              <span class="text-xs text-slate-400">ครอบคลุม O-NET, TPAT3, TGAT & A-Level</span>
+            </div>
+            <h2 class="text-xl lg:text-2xl font-black text-slate-100 mb-2">
+              ศูนย์รวมหลักสูตรและเทคนิคพิชิตข้อสอบ ม.1 - ม.6
+            </h2>
+            <p class="text-xs lg:text-sm text-slate-400 max-w-3xl leading-relaxed">
+              สรุปเนื้อหาเข้มข้น • สูตรคำนวณและทฤษฎี • ตัวอย่างโจทย์พร้อมวิธีแก้แบบ Step-by-Step • เทคนิคคิดลัดและจุดควรระวังในห้องสอบ
+            </p>
+          </div>
+
+          <!-- Controls: Grade Filter + Subject Filter + Search -->
+          <div class="glass-panel p-4 rounded-2xl border border-slate-800 flex flex-col gap-3">
+            
+            <!-- Grade Filter row -->
+            <div class="flex items-center gap-2 overflow-x-auto pb-1 no-scrollbar">
+              <span class="text-xs font-bold text-slate-400 uppercase tracking-wider whitespace-nowrap mr-1">ชั้นปี:</span>
+              <div id="curriculum-grade-filter" class="flex items-center gap-1.5">
+                <!-- Injected via JavaScript -->
+              </div>
+            </div>
+
+            <!-- Subject Filter row & Search -->
+            <div class="flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-3 pt-2 border-t border-slate-800/80">
+              <div id="curriculum-subject-filter" class="flex items-center gap-1.5 overflow-x-auto pb-1 no-scrollbar flex-1">
+                <!-- Injected via JavaScript -->
+              </div>
+
+              <!-- Search -->
+              <div class="relative min-w-[260px]">
+                <input id="curriculum-search-input" type="text" placeholder="ค้นหาบทเรียน สูตร หรือเนื้อหา..."
+                  class="w-full bg-slate-900 border border-slate-700/80 rounded-xl pl-9 pr-4 py-2 text-xs text-slate-100 placeholder-slate-500 focus:outline-none focus:border-indigo-500 transition-colors" />
+                <svg class="w-4 h-4 text-slate-400 absolute left-3 top-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Main Layout: Left = Topic List (4 cols), Right = Deep Dive Inspector (8 cols) -->
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+            
+            <!-- Left: Topic Cards (4 cols) -->
+            <div class="lg:col-span-4 flex flex-col gap-3">
+              <div class="flex items-center justify-between px-1">
+                <div class="text-xs font-bold text-slate-400 uppercase tracking-wider">
+                  รายการบทเรียนในหลักสูตร:
+                </div>
+                <span id="curriculum-result-count" class="text-[11px] text-slate-500 font-mono"></span>
+              </div>
+              <div id="curriculum-topic-list" class="space-y-3 max-h-[620px] overflow-y-auto pr-1">
+                <!-- Injected via JavaScript -->
+              </div>
+              <div id="curriculum-pagination" class="flex items-center justify-center gap-1.5 flex-wrap">
+                <!-- Injected via JavaScript -->
+              </div>
+            </div>
+
+            <!-- Right: Topic Inspector Detail (8 cols) -->
+            <div id="curriculum-detail-panel" class="lg:col-span-8 flex flex-col gap-6">
+              
+              <!-- Topic Header Card -->
+              <div class="glass-panel p-6 rounded-3xl border border-slate-800">
+                <div class="flex flex-wrap items-center justify-between gap-3 mb-2">
+                  <div class="flex items-center gap-2">
+                    <span id="curriculum-detail-grade" class="text-xs font-bold px-2.5 py-1 rounded-md bg-slate-800 text-cyan-300 border border-slate-700 font-mono">
+                      ม.1
+                    </span>
+                    <span id="curriculum-detail-subject" class="text-xs font-semibold px-2.5 py-1 rounded-full bg-indigo-500/20 text-indigo-300 border border-indigo-500/30">
+                      คณิตศาสตร์
+                    </span>
+                  </div>
+                  <span id="curriculum-detail-chapter" class="text-xs text-slate-400 font-mono">
+                    บทที่ 1
+                  </span>
+                </div>
+
+                <h3 id="curriculum-detail-title" class="text-xl lg:text-2xl font-black text-slate-100 mb-2">
+                  ชื่อบทเรียน
+                </h3>
+                <p id="curriculum-detail-summary" class="text-xs lg:text-sm text-slate-400 leading-relaxed">
+                  สรุปเนื้อหาสำคัญ
+                </p>
+              </div>
+
+              <!-- 1. Key Concepts Card -->
+              <div class="glass-panel p-6 rounded-3xl border border-slate-800">
+                <div class="flex items-center gap-2 mb-3">
+                  <div class="w-2 h-2 rounded-full bg-cyan-400"></div>
+                  <h4 class="text-xs font-bold text-slate-200 uppercase tracking-wider">
+                    1. สาระสำคัญและแนวคิดหลัก (Key Concepts)
+                  </h4>
+                </div>
+                <ul id="curriculum-detail-concepts" class="space-y-2.5">
+                  <!-- Injected via JavaScript -->
+                </ul>
+              </div>
+
+              <!-- 2. Formulas Card -->
+              <div class="glass-panel p-6 rounded-3xl border border-slate-800">
+                <div class="flex items-center gap-2 mb-3">
+                  <div class="w-2 h-2 rounded-full bg-indigo-400"></div>
+                  <h4 class="text-xs font-bold text-slate-200 uppercase tracking-wider">
+                    2. สูตรและหลักการคำนวณ (Formulas & Equations)
+                  </h4>
+                </div>
+                <div id="curriculum-detail-formulas" class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <!-- Injected via JavaScript -->
+                </div>
+              </div>
+
+              <!-- 3. Worked Example & Step-by-Step Solution Card -->
+              <div class="glass-panel p-6 rounded-3xl border border-slate-800">
+                <div class="flex items-center gap-2 mb-4">
+                  <div class="w-2 h-2 rounded-full bg-emerald-400"></div>
+                  <h4 class="text-xs font-bold text-slate-200 uppercase tracking-wider">
+                    3. ตัวอย่างโจทย์และวิธีทำทีละสเต็ป (Worked Examples & Solutions)
+                  </h4>
+                </div>
+                <div id="curriculum-detail-example">
+                  <!-- Injected via JavaScript -->
+                </div>
+              </div>
+
+              <!-- 4. Exam Hacks Card -->
+              <div class="glass-panel p-6 rounded-3xl border border-slate-800">
+                <div class="flex items-center gap-2 mb-3">
+                  <div class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></div>
+                  <h4 class="text-xs font-bold text-amber-300 uppercase tracking-wider">
+                    4. เทคนิคคิดลัด & จุดระวังข้อสอบ (Exam Hacks & Pitfalls)
+                  </h4>
+                </div>
+                <div id="curriculum-detail-hacks" class="space-y-2.5">
+                  <!-- Injected via JavaScript -->
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+      </section>
+
+    </main>
+
+    <!-- ==================== FOOTER ==================== -->
+    <footer class="border-t border-slate-800/80 bg-slate-950/60 py-6 px-4 text-center text-xs text-slate-500">
+      <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3">
+        <div class="flex items-center gap-2">
+          <span class="font-bold text-slate-400">SciCode Nexus</span>
+          <span>•</span>
+          <span>Interactive Science, Math & Programming Platform</span>
+        </div>
+        <div>
+          <span>Crafted with modern Web Standards (HTML5, Tailwind, KaTeX)</span>
+        </div>
+      </div>
+    </footer>
+
+  </div>
+
+  <!-- ==================== COMMAND PALETTE MODAL (Ctrl+K) ==================== -->
+  <div id="command-palette-modal" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-md hidden items-start justify-center pt-20 px-4">
+    <div class="glass-panel w-full max-w-xl rounded-2xl border border-slate-700 shadow-2xl overflow-hidden animate-float">
+      <div class="p-3.5 border-b border-slate-800 flex items-center gap-3">
+        <svg class="w-4 h-4 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+        <input id="command-palette-input" type="text" placeholder="พิมพ์เพื่อค้นหาสูตร, การจำลอง หรือบทเรียนโค้ด..."
+          class="w-full bg-transparent text-sm text-slate-100 placeholder-slate-500 focus:outline-none" />
+        <span class="text-[10px] text-slate-500 font-mono px-1.5 py-0.5 rounded bg-slate-800 border border-slate-700">ESC</span>
+      </div>
+      <div id="command-palette-results" class="max-h-80 overflow-y-auto p-2 space-y-1">
+        <!-- Injected via JavaScript -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Application Script (ES Module) -->
+  <script type="module" src="js/app.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,7 @@
+# OS/Editor junk
+Thumbs.db
+.DS_Store
+*.log
+
+# Local test artifacts
+server-logs/
