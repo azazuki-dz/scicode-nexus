@@ -593,27 +593,11 @@ textarea:focus-visible {
    ========================================================================== */
 .astra-page {
   position: relative;
-  isolation: isolate;
-  background: var(--astra-bg, var(--bg-primary));
+  background: transparent;
 }
 
-[data-theme="light"] .astra-page {
-  --astra-bg: var(--bg-primary);
-}
-
-/* ----- Film grain ----- */
-.astra-grain {
-  position: absolute;
-  inset: -1px;
-  pointer-events: none;
-  z-index: 3;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.55'/%3E%3C/svg%3E");
-  opacity: 0.05;
-  mix-blend-mode: overlay;
-}
-[data-theme="light"] .astra-grain {
-  opacity: 0.035;
-}
+/* ----- Film grain (no longer used — was causing a visible rectangular edge) ----- */
+.astra-grain { display: none; }
 
 /* ----- Hero ----- */
 .astra-hero {
