@@ -4,6 +4,22 @@
  * with multi-variable dynamic solver logic and step-by-step derivations.
  */
 
+import { ALGEBRA_FORMULAS } from './formulas/algebraFormulas.js';
+import { GEOMETRY_FORMULAS } from './formulas/geometryFormulas.js';
+import { TRIGONOMETRY_FORMULAS } from './formulas/trigonometryFormulas.js';
+import { SEQUENCES_FORMULAS } from './formulas/sequencesFormulas.js';
+import { STATISTICS_FORMULAS } from './formulas/statisticsFormulas.js';
+import { CALCULUS_FORMULAS, ADVANCED_MATH_FORMULAS } from './formulas/advancedMathFormulas.js';
+import { FINANCE_FORMULAS } from './formulas/financeFormulas.js';
+import { MECHANICS_FORMULAS } from './formulas/mechanicsFormulas.js';
+import { GENERAL_PHYSICS_FORMULAS } from './formulas/generalPhysicsFormulas.js';
+import { THERMODYNAMICS_FORMULAS } from './formulas/thermodynamicsFormulas.js';
+import { WAVES_LIGHT_FORMULAS } from './formulas/wavesLightFormulas.js';
+import { ELECTRICITY_FORMULAS } from './formulas/electricityFormulas.js';
+import { CHEMISTRY_FORMULAS } from './formulas/chemistryFormulas.js';
+import { BIOLOGY_FORMULAS, EARTH_SCIENCE_FORMULAS } from './formulas/biologyEarthFormulas.js';
+import { ECONOMICS_FORMULAS, HEALTH_FORMULAS, TECHNOLOGY_FORMULAS } from './formulas/appliedFormulas.js';
+
 export const FORMULA_CATEGORIES = [
   { id: 'all', name: 'All Formulas', nameTh: 'สูตรทั้งหมด', icon: 'layers' },
   { id: 'physics', name: 'Physics', nameTh: 'ฟิสิกส์', icon: 'atom' },
@@ -17,10 +33,18 @@ export const FORMULA_CATEGORIES = [
   { id: 'algebra', name: 'Algebra', nameTh: 'พีชคณิต', icon: 'grid' },
   { id: 'calculus', name: 'Calculus', nameTh: 'แคลคูลัส', icon: 'trending-up' },
   { id: 'geometry', name: 'Geometry', nameTh: 'เรขาคณิต', icon: 'box' },
+  { id: 'trigonometry', name: 'Trigonometry', nameTh: 'ตรีโกณมิติ', icon: 'triangle' },
+  { id: 'sequences', name: 'Sequences & Series', nameTh: 'ลำดับและอนุกรม', icon: 'list' },
+  { id: 'statistics', name: 'Statistics & Probability', nameTh: 'สถิติและความน่าจะเป็น', icon: 'bar-chart' },
+  { id: 'advanced', name: 'Advanced Math', nameTh: 'เวกเตอร์และเมทริกซ์', icon: 'grid' },
+  { id: 'earth', name: 'Earth & Space', nameTh: 'โลกและดาราศาสตร์', icon: 'globe' },
+  { id: 'economics', name: 'Economics', nameTh: 'เศรษฐศาสตร์', icon: 'trending-up' },
+  { id: 'health', name: 'Health', nameTh: 'สุขภาพ', icon: 'heart' },
+  { id: 'tech', name: 'Technology', nameTh: 'เทคโนโลยีดิจิทัล', icon: 'cpu' },
   { id: 'finance', name: 'Financial Math', nameTh: 'คณิตศาสตร์การเงิน', icon: 'dollar-sign' }
 ];
 
-export const FORMULAS_DATA = [
+const BASE_FORMULAS = [
   // ==================== 1. MECHANICS: NEWTON'S SECOND LAW ====================
   {
     id: 'newton_second_law',
@@ -990,6 +1014,10 @@ export const FORMULAS_DATA = [
       let result = 0;
       let unit = '';
 
+      // When solving for one allele, derive it from the other via p + q = 1
+      if (p == null) p = 1 - q;
+      if (q == null) q = 1 - p;
+
       // Ensure p + q = 1
       if (Math.abs((p + q) - 1) > 0.001) {
         throw new Error(`p + q ต้องเท่ากับ 1 เสมอ (ตอนนี้ p+q = ${(p + q).toFixed(4)}) จัดการให้ p + q = 1 ก่อน`);
@@ -1075,4 +1103,30 @@ export const FORMULAS_DATA = [
       return { result, unit, steps };
     }
   }
+];
+
+// ==================== COMBINED REGISTRY ====================
+// BASE_FORMULAS contains the original formulas; merge with the new
+// per-subject module arrays so the full curriculum (ม.1–ม.6) is available.
+export const FORMULAS_DATA = [
+  ...BASE_FORMULAS,
+  ...ALGEBRA_FORMULAS,
+  ...GEOMETRY_FORMULAS,
+  ...TRIGONOMETRY_FORMULAS,
+  ...SEQUENCES_FORMULAS,
+  ...STATISTICS_FORMULAS,
+  ...CALCULUS_FORMULAS,
+  ...ADVANCED_MATH_FORMULAS,
+  ...FINANCE_FORMULAS,
+  ...MECHANICS_FORMULAS,
+  ...GENERAL_PHYSICS_FORMULAS,
+  ...THERMODYNAMICS_FORMULAS,
+  ...WAVES_LIGHT_FORMULAS,
+  ...ELECTRICITY_FORMULAS,
+  ...CHEMISTRY_FORMULAS,
+  ...BIOLOGY_FORMULAS,
+  ...EARTH_SCIENCE_FORMULAS,
+  ...ECONOMICS_FORMULAS,
+  ...HEALTH_FORMULAS,
+  ...TECHNOLOGY_FORMULAS
 ];

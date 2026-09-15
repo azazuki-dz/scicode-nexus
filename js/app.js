@@ -146,6 +146,14 @@ class SciCodeNexusApp {
       algebra: 'bg-indigo-500/20 text-indigo-300 border-indigo-500/30',
       calculus: 'bg-pink-500/20 text-pink-300 border-pink-500/30',
       geometry: 'bg-teal-500/20 text-teal-300 border-teal-500/30',
+      trigonometry: 'bg-violet-500/20 text-violet-300 border-violet-500/30',
+      sequences: 'bg-fuchsia-500/20 text-fuchsia-300 border-fuchsia-500/30',
+      statistics: 'bg-emerald-500/20 text-emerald-300 border-emerald-500/30',
+      advanced: 'bg-pink-600/20 text-pink-300 border-pink-600/30',
+      earth: 'bg-lime-500/20 text-lime-300 border-lime-500/30',
+      economics: 'bg-yellow-500/20 text-yellow-300 border-yellow-500/30',
+      health: 'bg-red-500/20 text-red-300 border-red-500/30',
+      tech: 'bg-cyan-600/20 text-cyan-300 border-cyan-600/30',
       finance: 'bg-lime-500/20 text-lime-300 border-lime-500/30'
     };
     return map[catId] || 'bg-slate-800 text-slate-300 border-slate-700';
@@ -262,6 +270,7 @@ class SciCodeNexusApp {
         </div>
         <div class="flex items-center gap-2">
           <span class="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-slate-800 text-slate-400 border border-slate-700/70 whitespace-nowrap">${formula.categoryTh}</span>
+          ${formula.grade ? `<span class="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-indigo-900/60 text-indigo-300 border border-indigo-500/30 whitespace-nowrap">${formula.grade}</span>` : ''}
           <div class="formula-katex-preview text-xs text-cyan-300/90 font-mono overflow-hidden flex-1" data-latex="${formula.latex}"></div>
         </div>
       </div>
@@ -280,6 +289,15 @@ class SciCodeNexusApp {
     if (catBadge) {
       catBadge.textContent = f.categoryTh;
       catBadge.className = `text-xs font-semibold px-2.5 py-1 rounded-full border ${this.getCategoryColor(f.category)}`;
+    }
+    const gradeBadge = document.getElementById('detail-formula-grade');
+    if (gradeBadge) {
+      if (f.grade) {
+        gradeBadge.textContent = `ระดับชั้น ${f.grade}`;
+        gradeBadge.classList.remove('hidden');
+      } else {
+        gradeBadge.classList.add('hidden');
+      }
     }
 
     // Main LaTeX display
