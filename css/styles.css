@@ -594,11 +594,11 @@ textarea:focus-visible {
 .astra-page {
   position: relative;
   isolation: isolate;
-  background: var(--astra-bg, #06070b);
+  background: var(--astra-bg, var(--bg-primary));
 }
 
 [data-theme="light"] .astra-page {
-  --astra-bg: #fbfbfa;
+  --astra-bg: var(--bg-primary);
 }
 
 /* ----- Film grain ----- */
@@ -1003,35 +1003,4 @@ textarea:focus-visible {
   }
 }
 
-/* ==========================================================================
-   ASTRA LAUNCHER OVERRIDE: keep OpenAI-black look in EVERY theme
-   (The launcher is a launch-screen; it stays black like the OpenAI site.)
-   ========================================================================== */
-
-[data-theme="light"] #tab-panel-launcher.astra-page,
-html[data-theme="light"] .astra-page {
-  background: #06070b !important;
-}
-[data-theme="light"] .astra-title {
-  color: #f8fafc !important;
-}
-[data-theme="light"] .astra-kicker,
-[data-theme="light"] .astra-sub {
-  color: #cbd5e1 !important;
-}
-[data-theme="light"] .astra-marquee {
-  border-color: rgba(255, 255, 255, 0.09) !important;
-}
-[data-theme="light"] .astra-stats .launcher-stat {
-  border-top-color: rgba(255, 255, 255, 0.14) !important;
-}
-[data-theme="light"] .astra-stats .launcher-stat:hover {
-  border-color: rgba(255, 255, 255, 0.14) !important;
-}
-[data-theme="light"] .astra-grain {
-  opacity: 0.05;
-}
-[data-theme="light"] #tab-panel-launcher .launch-card {
-  border-color: rgba(51, 65, 85, 0.9) !important;
-}
-}
+/* (ASTRA launcher follows the site theme background; prefers-reduced-motion handled above.) */
