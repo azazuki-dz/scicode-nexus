@@ -226,5 +226,123 @@ console.log("Dot product [1, 2, 3] . [4, 5, 6] =", dotProduct([1, 2, 3], [4, 5, 
         { name: 'เวกเตอร์ตั้งฉากกัน [1,0,0] • [0,1,0] = 0', passed: res2 === 0, output: res2, expected: 0 }
       ];
     }
+  },
+
+  {
+    id: 'lesson-heron-area',
+    title: 'บทเรียนที่ 5: พื้นที่สามเหลี่ยมจากความยาวด้าน 3 ด้าน (Heron\'s Formula)',
+    category: 'Geometry to Code',
+    difficulty: 'Beginner',
+    badgeColor: 'teal',
+    description: 'คำนวณพื้นที่สามเหลี่ยมเมื่อทราบความยาวทั้ง 3 ด้าน โดยไม่ต้องรู้ความสูง — ใช้สูตรเฮรอนที่ใช้กึ่งรอบรูป s = (a+b+c)/2',
+    mathFormula: 'A = \\sqrt{s(s-a)(s-b)(s-c)}',
+    instructions: [
+      'รับความยาวด้านทั้ง 3 ด้าน: `a`, `b`, `c`',
+      'คำนวณกึ่งรอบรูป: `s = (a + b + c) / 2`',
+      'ตรวจสอบว่าด้านทั้ง 3 สามารถเป็นสามเหลี่ยมได้ (s-a, s-b, s-c ต้องมากกว่า 0 ทั้งหมด)',
+      'คำนวณ `A = Math.sqrt(s * (s-a) * (s-b) * (s-c))` แล้วปัดทศนิยม 2 ตำแหน่ง'
+    ],
+    starterCode: `/**
+ * คำนวณพื้นที่สามเหลี่ยมจากสูตรเฮรอน
+ * @param {number} a - ด้านที่ 1
+ * @param {number} b - ด้านที่ 2
+ * @param {number} c - ด้านที่ 3
+ * @returns {number} พื้นที่ (ปัดทศนิยม 2 ตำแหน่ง)
+ */
+function heronsArea(a, b, c) {
+  // 1. คำนวณกึ่งรอบรูป s
+  // 2. ตรวจสอบว่าเป็นสามเหลี่ยมได้หรือไม่
+  // 3. คำนวณ A ตามสูตรเฮรอน
+  
+}
+
+console.log("พื้นที่ 3-4-5:", heronsArea(3, 4, 5));       // ต้องได้ 6
+console.log("พื้นที่ 7-8-9:", heronsArea(7, 8, 9));       // ต้องได้ ~26.83
+console.log("พื้นที่ 1-2-10:", heronsArea(1, 2, 10));     // ต้องได้ 0 (เป็นไปไม่ได้)
+`,
+    solutionCode: `function heronsArea(a, b, c) {
+  const s = (a + b + c) / 2;
+  const val = s * (s - a) * (s - b) * (s - c);
+  if (val <= 0) return 0;
+  return Number(Math.sqrt(val).toFixed(2));
+}`,
+    validate: (userFn) => {
+      const r1 = userFn(3, 4, 5);
+      const r2 = userFn(7, 8, 9);
+      const r3 = userFn(1, 2, 10);
+
+      return [
+        { name: '3-4-5 (Pythagorean) → 6', passed: Math.abs(r1 - 6) < 0.05, output: r1, expected: 6 },
+        { name: '7-8-9 → ~26.83', passed: Math.abs(r2 - 26.83) < 0.1, output: r2, expected: 26.83 },
+        { name: '1-2-10 (ไม่ใช่สามเหลี่ยม) → 0', passed: r3 === 0, output: r3, expected: 0 }
+      ];
+    }
+  },
+
+  {
+    id: 'lesson-molar-mass',
+    title: 'บทเรียนที่ 6: คำนวณน้ำหนักโมเลกุลจากสูตรเคมี (Molar Mass Calculator)',
+    category: 'Chemistry to Code',
+    difficulty: 'Intermediate',
+    badgeColor: 'rose',
+    description: 'แยกสูตรเคมี เช่น H2O หรือ C6H12O6 ออกเป็นธาตุและจำนวนอะตอม แล้วคำนวณน้ำหนักโมเลกุลรวมโดยใช้ตารางมวลอะตอม',
+    mathFormula: 'M = \\sum (n_i \\times M_i)',
+    instructions: [
+      'รับสตริงสูตรเคมี เช่น `"H2O"` หรือ `"C6H12O6"`',
+      'แยกชื่อธาตุและจำนวนอะตอม (ถ้าไม่มีตัวเลขหลังธาตุ ให้ถือว่าเป็น 1)',
+      'ใช้ตารางมวลอะตอม: `{ H: 1.008, C: 12.011, N: 14.007, O: 15.999, S: 32.06, Na: 22.99, Cl: 35.45, Fe: 55.845, Ca: 40.078, P: 30.974 }`',
+      'คำนวณผลรวมและปัดทศนิยม 3 ตำแหน่ง'
+    ],
+    starterCode: `const ATOMIC_MASS = {
+  H: 1.008, C: 12.011, N: 14.007, O: 15.999,
+  S: 32.06, Na: 22.99, Cl: 35.45, Fe: 55.845,
+  Ca: 40.078, P: 30.974
+};
+
+/**
+ * คำนวณมวลโมเลกุลจากสูตรเคมี
+ * @param {string} formula - สูตรเคมี เช่น "H2O", "C6H12O6", "NaCl"
+ * @returns {number} มวลโมเลกุล (g/mol) ปัดทศนิยม 3 ตำแหน่ง
+ */
+function molarMass(formula) {
+  // แยกสูตรเคมีออกเป็นธาตุและจำนวน
+  // คำนวณมวลรวม
+  
+}
+
+console.log("H2O:", molarMass("H2O"));           // ~18.015
+console.log("C6H12O6:", molarMass("C6H12O6"));   // ~180.156
+console.log("NaCl:", molarMass("NaCl"));           // ~58.44
+`,
+    solutionCode: `const ATOMIC_MASS = {
+  H: 1.008, C: 12.011, N: 14.007, O: 15.999,
+  S: 32.06, Na: 22.99, Cl: 35.45, Fe: 55.845,
+  Ca: 40.078, P: 30.974
+};
+
+function molarMass(formula) {
+  const matches = formula.match(/[A-Z][a-z]?\d*/g);
+  if (!matches) return 0;
+  let total = 0;
+  for (const part of matches) {
+    const el = part.match(/[A-Z][a-z]?/)[0];
+    const count = parseInt(part.match(/\\d+/)?.[0] || '1');
+    total += (ATOMIC_MASS[el] || 0) * count;
+  }
+  return Number(total.toFixed(3));
+}`,
+    validate: (userFn) => {
+      const r1 = userFn('H2O');
+      const r2 = userFn('C6H12O6');
+      const r3 = userFn('NaCl');
+      const r4 = userFn('H2SO4');
+
+      return [
+        { name: 'H2O → ~18.015 g/mol', passed: Math.abs(r1 - 18.015) < 0.02, output: r1, expected: 18.015 },
+        { name: 'C6H12O6 → ~180.156 g/mol', passed: Math.abs(r2 - 180.156) < 0.02, output: r2, expected: 180.156 },
+        { name: 'NaCl → ~58.44 g/mol', passed: Math.abs(r3 - 58.44) < 0.02, output: r3, expected: 58.44 },
+        { name: 'H2SO4 → ~98.079 g/mol', passed: Math.abs(r4 - 98.079) < 0.02, output: r4, expected: 98.079 }
+      ];
+    }
   }
 ];

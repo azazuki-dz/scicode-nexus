@@ -179,6 +179,8 @@ class SciCodeNexusApp {
     const container = document.getElementById('formula-categories');
     if (!container) return;
 
+    const catEmoji = { all:'📚', mechanics:'⚙', physics:'⚛', waves:'〰', electricity:'⚡', chemistry:'🧪', biology:'🧬', earth:'🌍', algebra:'📐', calculus:'∫', geometry:'△', trigonometry:'📐', sequences:'⋯', statistics:'📊', advanced:'⊗', economics:'📈', health:'❤', tech:'💻', finance:'💰', energy:'🔋', thermodynamics:'🌡' };
+
     const countFor = (catId) => catId === 'all'
       ? FORMULAS_DATA.length
       : FORMULAS_DATA.filter(f => f.category === catId).length;
@@ -192,6 +194,7 @@ class SciCodeNexusApp {
             ? 'bg-indigo-600 text-white border-indigo-500 shadow-md shadow-indigo-500/20'
             : 'bg-slate-800/60 text-slate-400 border-slate-700/60 hover:text-slate-200 hover:border-slate-600'
         }">
+          <span class="text-sm leading-none">${catEmoji[cat.id] || '📘'}</span>
           <span>${cat.nameTh}</span>
           <span class="text-[10px] font-mono px-1.5 py-0.5 rounded-md ${
             isActive ? 'bg-white/20 text-indigo-100' : 'bg-slate-900/70 text-slate-500'
@@ -275,6 +278,7 @@ class SciCodeNexusApp {
   renderFormulaCard(formula, idx = 0) {
     const isSelected = this.solver.currentFormula.id === formula.id;
     const stagger = Math.min(idx * 18, 240);
+    const catEmoji = { mechanics:'⚙', physics:'⚛', waves:'〰', electricity:'⚡', chemistry:'🧪', biology:'🧬', earth:'🌍', algebra:'📐', calculus:'∫', geometry:'△', trigonometry:'📐', sequences:'⋯', statistics:'📊', advanced:'⊗', economics:'📈', health:'❤', tech:'💻', finance:'💰', energy:'🔋', thermodynamics:'🌡' }[formula.category] || '📘';
     return `
       <div data-id="${formula.id}" style="animation-delay:${stagger}ms" class="formula-item-card group p-3 rounded-xl border transition-all cursor-pointer ${
         isSelected
@@ -282,8 +286,11 @@ class SciCodeNexusApp {
           : 'bg-slate-900/60 border-slate-800 hover:border-slate-600/70 hover:bg-slate-800/40'
       }">
         <div class="flex items-start justify-between gap-2 mb-1.5">
-          <div class="text-sm font-bold text-slate-100 leading-snug">${formula.nameTh}</div>
-          <span class="text-xs text-slate-400 font-mono whitespace-nowrap mt-0.5 group-hover:text-cyan-400 transition-colors">${formula.name}</span>
+          <div class="flex items-center gap-1.5 min-w-0">
+            <span class="text-sm shrink-0 leading-none mt-px" aria-hidden="true">${catEmoji}</span>
+            <div class="text-sm font-bold text-slate-100 leading-snug truncate">${formula.nameTh}</div>
+          </div>
+          <span class="text-[11px] text-slate-500 font-mono whitespace-nowrap mt-0.5 group-hover:text-cyan-400 transition-colors">${formula.name}</span>
         </div>
         <div class="flex items-center gap-2">
           <span class="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-slate-800 text-slate-400 border border-slate-700/70 whitespace-nowrap">${formula.categoryTh}</span>
@@ -439,10 +446,10 @@ class SciCodeNexusApp {
     if (stepsContainer && steps) {
       stepsContainer.innerHTML = steps.map((step, idx) => `
         <div class="step-card p-3.5 rounded-xl bg-slate-900/70 border border-slate-800 flex gap-3.5">
-          <div class="w-6 h-6 rounded-full bg-indigo-500/20 text-indigo-400 border border-indigo-500/30 flex items-center justify-center text-xs font-bold shrink-0 mt-0.5">
+          <div class="w-7 h-7 rounded-lg bg-gradient-to-br from-indigo-500/30 to-cyan-500/20 text-indigo-300 border border-indigo-500/30 flex items-center justify-center text-xs font-bold shrink-0 mt-0.5 shadow-sm shadow-indigo-500/10">
             ${idx + 1}
           </div>
-          <div class="flex-1">
+          <div class="flex-1 min-w-0">
             <div class="text-xs font-semibold text-slate-300 mb-1">${step.title}</div>
             <div class="step-katex text-sm text-cyan-200 py-1" data-latex="${step.latex}"></div>
             <div class="text-xs text-slate-400 mt-1">${step.explanation}</div>

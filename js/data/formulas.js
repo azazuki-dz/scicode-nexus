@@ -19,6 +19,7 @@ import { ELECTRICITY_FORMULAS } from './formulas/electricityFormulas.js';
 import { CHEMISTRY_FORMULAS } from './formulas/chemistryFormulas.js';
 import { BIOLOGY_FORMULAS, EARTH_SCIENCE_FORMULAS } from './formulas/biologyEarthFormulas.js';
 import { ECONOMICS_FORMULAS, HEALTH_FORMULAS, TECHNOLOGY_FORMULAS } from './formulas/appliedFormulas.js';
+import { EXTRA_FORMULAS } from './formulas/extraFormulas.js';
 
 export const FORMULA_CATEGORIES = [
   { id: 'all', name: 'All Formulas', nameTh: 'สูตรทั้งหมด', icon: 'layers' },
@@ -1128,5 +1129,6 @@ export const FORMULAS_DATA = [
   ...EARTH_SCIENCE_FORMULAS,
   ...ECONOMICS_FORMULAS,
   ...HEALTH_FORMULAS,
-  ...TECHNOLOGY_FORMULAS
+  ...TECHNOLOGY_FORMULAS,
+  ...EXTRA_FORMULAS
 ];

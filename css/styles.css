@@ -1001,3 +1001,426 @@ textarea:focus-visible {
 }
 
 /* (ASTRA launcher follows the site theme background; prefers-reduced-motion handled above.) */
+
+/* ==========================================================================
+   VISUAL UPGRADE — V2 POLISH
+   Shine sweeps, gradient glows, animated accents, hover enhancements
+   ========================================================================== */
+
+/* ----- Launch Card: Shine Sweep on Hover ----- */
+.launch-card {
+  position: relative;
+  overflow: hidden;
+}
+.launch-card::after {
+  content: '';
+  position: absolute;
+  top: -60%;
+  left: -70%;
+  width: 50%;
+  height: 220%;
+  background: linear-gradient(
+    115deg,
+    transparent 20%,
+    rgba(255, 255, 255, 0.08) 45%,
+    rgba(255, 255, 255, 0.16) 50%,
+    rgba(255, 255, 255, 0.08) 55%,
+    transparent 80%
+  );
+  transform: rotate(20deg);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.35s ease;
+  z-index: 3;
+}
+.launch-card:hover::after {
+  opacity: 1;
+  animation: shineSweep 0.7s ease-out forwards;
+}
+@keyframes shineSweep {
+  0%   { left: -70%; }
+  100% { left: 120%; }
+}
+
+/* ----- Launch Card: Gradient Border Glow ----- */
+.launch-card[data-launch]::before {
+  border-radius: 1.5rem;
+  z-index: 1;
+}
+.launch-card:hover {
+  border-color: transparent;
+}
+.launch-card[data-launch]:hover {
+  box-shadow:
+    0 0 0 1px rgba(99, 102, 241, 0.4),
+    0 8px 32px rgba(99, 102, 241, 0.18),
+    0 2px 60px rgba(6, 182, 212, 0.12);
+}
+
+/* ----- Launch Card Icon: Pulsing Glow ----- */
+.launch-card-icon {
+  position: relative;
+}
+.launch-card-icon::after {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  border-radius: inherit;
+  background: inherit;
+  opacity: 0;
+  filter: blur(14px);
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+.launch-card:hover .launch-card-icon::after {
+  opacity: 0.55;
+  animation: iconPulse 1.6s ease-in-out infinite alternate;
+}
+@keyframes iconPulse {
+  from { opacity: 0.4; transform: scale(1); }
+  to   { opacity: 0.6; transform: scale(1.12); }
+}
+
+/* ----- Nav Tab: Active Pill Glow ----- */
+.nav-tab-btn.bg-indigo-600 {
+  position: relative;
+}
+.nav-tab-btn.bg-indigo-600::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: inherit;
+  background: linear-gradient(135deg, rgba(99,102,241,0.35), rgba(6,182,212,0.25));
+  opacity: 0.55;
+  filter: blur(8px);
+  z-index: -1;
+  animation: tabGlow 2.4s ease-in-out infinite alternate;
+}
+@keyframes tabGlow {
+  from { opacity: 0.45; }
+  to   { opacity: 0.7; }
+}
+
+/* ----- Formula Item Card: Left Accent Bar + Shine ----- */
+.formula-item-card {
+  position: relative;
+  overflow: hidden;
+  border-left: 3px solid transparent;
+}
+.formula-item-card:hover {
+  border-left-color: rgba(99, 102, 241, 0.5);
+  transform: translateX(3px);
+  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.formula-item-card.bg-indigo-950\/40 {
+  border-left-color: #818cf8;
+}
+.formula-item-card::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.04) 50%, transparent);
+  pointer-events: none;
+  transition: none;
+}
+.formula-item-card:hover::after {
+  animation: cardShine 0.5s ease forwards;
+}
+@keyframes cardShine {
+  0%   { left: -100%; }
+  100% { left: 100%; }
+}
+
+/* ----- Category Chip: Hover Lift + Active Gradient ----- */
+.category-chip {
+  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.category-chip:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+}
+.category-chip.bg-indigo-600 {
+  background: linear-gradient(135deg, #6366f1, #818cf8) !important;
+  box-shadow: 0 4px 20px rgba(99,102,241,0.35);
+}
+
+/* ----- Target Buttons: Hover Lift + Glow ----- */
+.target-btn {
+  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.target-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 14px rgba(6,182,212,0.2);
+}
+.target-btn.bg-cyan-500 {
+  box-shadow: 0 4px 24px rgba(6,182,212,0.35);
+}
+
+/* ----- Step Card: Gradient Number Badge + Slide In ----- */
+.step-card {
+  position: relative;
+  animation: stepSlideIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+}
+.step-card:nth-child(1) { animation-delay: 0ms; }
+.step-card:nth-child(2) { animation-delay: 50ms; }
+.step-card:nth-child(3) { animation-delay: 100ms; }
+.step-card:nth-child(4) { animation-delay: 150ms; }
+.step-card:nth-child(5) { animation-delay: 200ms; }
+.step-card:nth-child(6) { animation-delay: 250ms; }
+.step-card:nth-child(7) { animation-delay: 300ms; }
+.step-card:nth-child(8) { animation-delay: 350ms; }
+@keyframes stepSlideIn {
+  from { opacity: 0; transform: translateX(-10px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+.step-card .bg-indigo-500\/20 {
+  background: linear-gradient(135deg, rgba(99,102,241,0.25), rgba(6,182,212,0.2)) !important;
+  box-shadow: 0 0 10px rgba(99,102,241,0.15);
+}
+
+/* ----- Step Cards: Connector Line ----- */
+.step-card + .step-card {
+  margin-top: 0.5rem;
+}
+.step-card + .step-card::before {
+  content: '';
+  position: absolute;
+  left: 1.05rem;
+  top: -0.5rem;
+  width: 1px;
+  height: 0.5rem;
+  background: linear-gradient(to bottom, rgba(99,102,241,0.3), rgba(6,182,212,0.15));
+}
+
+/* ----- Stats: Gradient Border + Animated Shimmer ----- */
+.astra-stats .launcher-stat {
+  position: relative;
+  overflow: hidden;
+}
+.astra-stats .launcher-stat::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(99,102,241,0.05), transparent);
+  transform: translateX(-100%);
+  pointer-events: none;
+  animation: statShimmer 4s ease-in-out infinite;
+}
+@keyframes statShimmer {
+  0%, 70%, 100% { transform: translateX(-100%); }
+  85%           { transform: translateX(100%); }
+}
+.astra-stats .launcher-stat:hover {
+  border-top-color: rgba(99,102,241,0.35);
+}
+
+/* ----- KaTeX Detail Glow ----- */
+#detail-formula-katex {
+  border-radius: 1rem;
+  padding: 1rem 1.25rem;
+  border: 1px solid rgba(6,182,212,0.15);
+  background: rgba(6,182,212,0.03);
+  box-shadow: 0 0 30px rgba(6,182,212,0.06);
+  transition: box-shadow 0.3s ease, border-color 0.3s ease;
+}
+#detail-formula-katex:hover {
+  border-color: rgba(6,182,241,0.3);
+  box-shadow: 0 0 40px rgba(6,182,212,0.12);
+}
+[data-theme="light"] #detail-formula-katex {
+  background: rgba(6,182,212,0.04);
+  border-color: rgba(6,182,212,0.12);
+}
+
+/* ----- Title Accent: Animated Gradient Shift ----- */
+.astra-accent {
+  background-size: 200% 100%;
+  animation: gradientShift 6s ease-in-out infinite alternate;
+}
+@keyframes gradientShift {
+  0%   { background-position: 0% 50%; }
+  100% { background-position: 100% 50%; }
+}
+
+/* ----- Marquee: Gradient Sheen ----- */
+.astra-marquee-track span {
+  background: linear-gradient(90deg, var(--text-secondary), rgba(165,180,252,0.8));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  transition: all 0.3s;
+}
+.astra-marquee-track:hover span {
+  background: linear-gradient(90deg, var(--text-primary), #818cf8, #22d3ee);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* ----- Primary Button: Animated Gradient ----- */
+.astra-btn.primary {
+  background-size: 200% 200%;
+  animation: btnGradient 5s ease infinite alternate;
+}
+@keyframes btnGradient {
+  0%   { background-position: 0% 50%; }
+  100% { background-position: 100% 50%; }
+}
+.astra-btn.primary:hover {
+  animation-duration: 1.8s;
+}
+
+/* ----- Glass Panel: Gradient Top Line on Hover ----- */
+.glass-panel::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 10%;
+  right: 10%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(99,102,241,0.4), rgba(6,182,212,0.3), transparent);
+  opacity: 0;
+  transition: opacity 0.3s;
+  border-radius: 1px;
+  z-index: 10;
+  pointer-events: none;
+}
+.glass-panel:hover::after {
+  opacity: 1;
+}
+
+/* ----- Orb: Enhanced Halo Pulse ----- */
+.orb-halo {
+  animation: astraHaloEnhanced 5s ease-in-out infinite alternate;
+}
+@keyframes astraHaloEnhanced {
+  0%   { opacity: 0.45; transform: scale(0.88); filter: blur(2px) hue-rotate(0deg); }
+  50%  { opacity: 0.7; }
+  100% { opacity: 0.95; transform: scale(1.08); filter: blur(3px) hue-rotate(12deg); }
+}
+
+/* ----- Orb Core Text Glow ----- */
+.orb-core {
+  animation: orbCorePulse 3s ease-in-out infinite alternate;
+}
+@keyframes orbCorePulse {
+  0%   { text-shadow: 0 0 16px rgba(165,180,252,0.9), 0 0 42px rgba(6,182,212,0.55); }
+  100% { text-shadow: 0 0 24px rgba(165,180,252,1), 0 0 60px rgba(6,182,212,0.7), 0 0 90px rgba(99,102,241,0.3); }
+}
+
+/* ----- Scrollbar: Thicker Gradient Thumb ----- */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: rgba(15, 23, 42, 0.6);
+}
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, rgba(99,102,241,0.4), rgba(6,182,212,0.3));
+  border-radius: 6px;
+  border: 2px solid rgba(15, 23, 42, 0.6);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, rgba(99,102,241,0.6), rgba(6,182,212,0.5));
+}
+
+/* ----- Theme Toggle Button: Animated Ring ----- */
+#theme-toggle-btn {
+  transition: all 0.3s ease;
+}
+#theme-toggle-btn:hover {
+  box-shadow: 0 0 20px rgba(99,102,241,0.25);
+}
+
+/* ----- Formula Detail: Result Glow ----- */
+.formula-result-display {
+  animation: resultGlow 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+@keyframes resultGlow {
+  0%   { box-shadow: 0 0 0 0 rgba(6,182,212,0.3); }
+  50%  { box-shadow: 0 0 30px 4px rgba(6,182,212,0.15); }
+  100% { box-shadow: 0 0 0 0 rgba(6,182,212,0); }
+}
+
+/* ----- Launch Card Text Colors ----- */
+.launch-card .launch-title {
+  transition: color 0.2s;
+}
+.launch-card:hover .launch-title {
+  color: #e2e8f0 !important;
+}
+[data-theme="light"] .launch-card:hover .launch-title {
+  color: #0f172a !important;
+}
+
+/* ----- Capability Marquee: Fade Mask Enhancement ----- */
+.astra-marquee {
+  background: linear-gradient(90deg, var(--bg-primary), rgba(99,102,241,0.03), var(--bg-primary));
+}
+
+/* ----- Code Editor Area: Subtle Glow on Focus ----- */
+.code-editor-area:focus {
+  box-shadow: 0 0 0 2px rgba(99,102,241,0.25), 0 0 20px rgba(99,102,241,0.08);
+  border-color: rgba(99,102,241,0.4);
+}
+
+/* ----- Tooltip Pop ----- */
+[title] {
+  position: relative;
+}
+
+/* ----- Simulation Planet Hover ----- */
+.sim-planet {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.sim-planet:hover {
+  transform: scale(1.08);
+  box-shadow: 0 0 20px rgba(99,102,241,0.3);
+}
+
+/* ----- Responsive Adjustments ----- */
+@media (max-width: 640px) {
+  .astra-orb-stage {
+    width: 140px;
+    height: 140px;
+  }
+  .astra-orb {
+    width: 82px;
+    height: 82px;
+  }
+  .orb-core {
+    font-size: 18px;
+  }
+  .orb-ring.r1 { width: 112px; height: 112px; }
+  .orb-ring.r2 { width: 140px; height: 140px; }
+  .orb-ring.r3 { width: 160px; height: 160px; }
+  .orb-halo { width: 180px; height: 180px; }
+  .astra-title {
+    font-size: clamp(1.8rem, 7vw, 3rem) !important;
+  }
+}
+
+/* ----- Reduced Motion for New Animations ----- */
+@media (prefers-reduced-motion: reduce) {
+  .launch-card::after,
+  .formula-item-card::after,
+  .step-card,
+  .category-chip,
+  .target-btn,
+  .astra-btn.primary,
+  .astra-accent,
+  .astra-marquee-track span,
+  .astra-stats .launcher-stat::after,
+  .astra-orb,
+  .orb-core,
+  .orb-halo,
+  .nav-tab-btn.bg-indigo-600::before,
+  #detail-formula-katex {
+    animation: none !important;
+    transition: none !important;
+  }
+}

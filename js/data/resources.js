@@ -65,6 +65,34 @@ export const ROADMAPS_DATA = [
         timeEst: '3 สัปดาห์'
       }
     ]
+  },
+  {
+    id: 'roadmap-data-science',
+    title: 'Data Science & Statistics for Beginners',
+    titleTh: 'วิทยาศาสตร์ข้อมูลและสถิติสำหรับผู้เริ่มต้น',
+    badge: 'Data & Stats',
+    badgeColor: 'emerald',
+    description: 'เริ่มต้นเรียนรู้การวิเคราะห์ข้อมูล สถิติพื้นฐาน และการสร้างกราฟเพื่อเข้าใจข้อมูลเชิงปริมาณ',
+    steps: [
+      {
+        stage: 'ระดับ 1',
+        title: 'สถิติพื้นฐาน (Descriptive Statistics)',
+        topics: ['ค่าเฉลี่ย มัธยฐาน ฐานนิยม (Mean, Median, Mode)', 'ส่วนเบี่ยงเบนมาตรฐานและค่า CV', 'Histograms, Boxplots, Scatter Plots'],
+        timeEst: '2 สัปดาห์'
+      },
+      {
+        stage: 'ระดับ 2',
+        title: 'ความน่าจะเป็น (Probability Basics)',
+        topics: ['Probability Rules & Conditional Probability', 'Binomial & Normal Distribution', 'Expected Value & Variance'],
+        timeEst: '3 สัปดาห์'
+      },
+      {
+        stage: 'ระดับ 3',
+        title: 'การทดสอบสมมติฐาน (Hypothesis Testing)',
+        topics: ['P-value & Confidence Intervals', 'Chi-Square Test', 'Correlation vs Causation'],
+        timeEst: '3 สัปดาห์'
+      }
+    ]
   }
 ];
 
@@ -124,7 +152,19 @@ export const CHEATSHEETS_DATA = [
       { name: 'อนุพันธ์ผลคูณ', formula: '\\frac{d}{dx}[u \\cdot v] = u v\' + v u\'', note: 'หน้าดิฟหลัง + หลังดิฟหน้า' },
       { name: 'อนุพันธ์ผลหาร', formula: '\\frac{d}{dx}\\left[\\frac{u}{v}\\right] = \\frac{v u\' - u v\'}{v^2}', note: '(ล่างดิฟบน - บนดิฟล่าง) / ล่าง²' },
       { name: 'กฎลูกโซ่ (Chain Rule)', formula: '\\frac{dy}{dx} = \\frac{dy}{du} \\cdot \\frac{du}{dx}', note: 'อนุพันธ์ฟังก์ชันประกอบ' },
-      { name: 'ทฤษฎีบทพีทาโกรัส', formula: 'a^2 + b^2 = c^2', note: 'สามเหลี่ยมมุมฉาก' }
+      { name: 'ทฤษฎีบทพีทาโกรัส', formula: 'a^2 + b^2 = c^2', note: 'สามเหลี่ยมมุมฉาก' },
+      { name: 'พื้นที่สูตรเฮรอน', formula: 'A = \\sqrt{s(s-a)(s-b)(s-c)}', note: 's = (a+b+c)/2, หาพื้นที่จากด้าน 3 ด้าน' },
+      { name: 'กฎบอยล์', formula: 'P_1 V_1 = P_2 V_2', note: 'ความดัน x ปริมาตร คงที่ ณ อุณหภูมิคงที่' },
+      { name: 'กฎชาร์ล', formula: '\\frac{V_1}{T_1} = \\frac{V_2}{T_2}', note: 'ปริมาตรแปรตรงกับอุณหภูมิเคลวิน' }
+    ]
+  },
+  {
+    category: 'ไฟฟ้าและอิเล็กทรอนิกส์ (Electricity & Electronics)',
+    items: [
+      { name: 'กฎโอห์ม', formula: 'V = IR', note: 'ความต่างศักย์ = กระแส x ความต้านทาน' },
+      { name: 'ตัวแบ่งแรงดัน', formula: 'V_{out} = V_{in} \\cdot \\frac{R_2}{R_1 + R_2}', note: 'แรงดันขาออกจาก R1, R2' },
+      { name: 'พลังงานไฟฟ้า', formula: 'P = I^2 R = \\frac{V^2}{R}', note: 'ความสัมพันธ์_power, 电流, 电压, 电阻' },
+      { name: 'กฎเคอร์ชอฟฟ์ (KCL)', formula: '\\sum I_{in} = \\sum I_{out}', note: 'กระแสขาเข้า = กระแสขาออก ที่จุดโหนด' }
     ]
   }
 ];
