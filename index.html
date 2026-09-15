@@ -156,24 +156,62 @@
       <!-- ===================================================================
            HOME LAUNCHER: เลือกโหมดใช้งานก่อน แล้วกลับมาเปลี่ยนได้ทุกเมื่อ
            =================================================================== -->
-      <section id="tab-panel-launcher" class="tab-panel">
-        <div class="launcher-hero glass-panel p-8 lg:p-12 rounded-[2rem] border border-slate-800 relative overflow-hidden reveal">
-          <div class="launcher-hero-glow"></div>
-          <div class="relative flex flex-col items-center text-center">
-            <span class="text-[11px] font-mono font-bold px-3 py-1 rounded-full bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 mb-5 tracking-widest">
-              NEXUS HOME HUB
-            </span>
-            <h2 class="text-2xl lg:text-4xl font-black text-slate-50 mb-3 leading-tight">อยากเริ่มต้นจากอะไรดี?</h2>
-            <p class="text-xs lg:text-sm text-slate-400 max-w-2xl leading-relaxed">
-              เลือกห้องที่อยากใช้ได้เลย แล้วกลับมาที่หน้าแรกนี้ได้ตลอดเวลาเพื่อสลับไปใช้โหมดอื่น
-              &mdash; ทั้งสูตรคำนวณ การจำลองฟิสิกส์ แล็บโค้ด คลังความรู้ และหลักสูตร ม.1&ndash;ม.6
-            </p>
-            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 w-full max-w-2xl mt-7">
-              <div class="launcher-stat"><div class="num" id="lstat-formulas">0</div><div class="text-[11px] text-slate-500 mt-0.5">สูตรคำนวณ</div></div>
-              <div class="launcher-stat"><div class="num" id="lstat-sims">0</div><div class="text-[11px] text-slate-500 mt-0.5">ห้องจำลอง</div></div>
-              <div class="launcher-stat"><div class="num" id="lstat-lessons">0</div><div class="text-[11px] text-slate-500 mt-0.5">บทเรียนโค้ด</div></div>
-              <div class="launcher-stat"><div class="num" id="lstat-topics">0</div><div class="text-[11px] text-slate-500 mt-0.5">หัวข้อหลักสูตร</div></div>
+      <section id="tab-panel-launcher" class="tab-panel astra-page">
+        <div class="astra-grain" aria-hidden="true"></div>
+
+        <!-- ===== ASTRA HERO ===== -->
+        <div class="astra-hero reveal-words">
+          <div class="astra-hero-glow" data-depth="0.22"></div>
+
+          <!-- Nexus Orb -->
+          <div class="astra-orb-stage" data-depth="-0.14">
+            <div class="astra-orb">
+              <span class="orb-sheen"></span>
+              <span class="orb-core">ΣN</span>
             </div>
+            <span class="orb-ring r1"></span>
+            <span class="orb-ring r2"></span>
+            <span class="orb-ring r3"></span>
+            <span class="orb-halo"></span>
+            <span class="sonar s1"></span>
+            <span class="sonar s2"></span>
+          </div>
+
+          <div class="astra-copy">
+            <span class="astra-kicker">SCICODE · NEXUS</span>
+            <h1 class="astra-title">
+              <span class="astroword">เชื่อม</span>
+              <span class="astroword">ทุกศาสตร์</span>
+              <span class="astroword astra-accent">ถึงกัน</span>
+              <span class="astroword">ในที่เดียว</span>
+            </h1>
+            <p class="astra-sub">
+              ฟิสิกส์ · เคมี · ชีวะ · คณิตศาสตร์ · ข้อมูล · โค้ดดิ้ง — คำนวณสูตรทีละขั้น
+              จำลองฟิสิกส์ตอบสนองจริง และเรียนรู้หลักสูตร ม.1–ม.6 ได้ทุกที่ทุกเวลา
+            </p>
+            <div class="astra-cta">
+              <button data-launch="formulas" class="astra-btn primary">
+                เริ่มใช้สูตรคำนวณ
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7-7 7M21 12H3"/></svg>
+              </button>
+              <button data-launch="simulations" class="astra-btn ghost">ดูการจำลองฟิสิกส์</button>
+            </div>
+          </div>
+
+          <!-- Stats -->
+          <div class="astra-stats" id="astra-stats">
+            <div class="launcher-stat"><div class="num" id="lstat-formulas">0</div><div class="lab">สูตรคำนวณ</div></div>
+            <div class="launcher-stat"><div class="num" id="lstat-sims">0</div><div class="lab">ห้องจำลอง</div></div>
+            <div class="launcher-stat"><div class="num" id="lstat-lessons">0</div><div class="lab">บทเรียนโค้ด</div></div>
+            <div class="launcher-stat"><div class="num" id="lstat-topics">0</div><div class="lab">หัวข้อหลักสูตร</div></div>
+          </div>
+        </div>
+
+        <!-- ===== CAPABILITY MARQUEE ===== -->
+        <div class="astra-marquee" aria-hidden="true">
+          <div class="astra-marquee-track">
+            <span>ฟิสิกส์</span><i>·</i><span>เคมี</span><i>·</i><span>ชีววิทยา</span><i>·</i><span>คณิตศาสตร์</span><i>·</i><span>แคลคูลัส</span><i>·</i><span>สถิติ</span><i>·</i><span>เศรษฐศาสตร์</span><i>·</i><span>การเงิน</span><i>·</i><span>เทคโนโลยี</span><i>·</i><span>อวกาศ</span><i>·</i><span>สุขภาพ</span><i>·</i><span>โค้ดดิ้ง</span><i>·</i>
+            <span>ฟิสิกส์</span><i>·</i><span>เคมี</span><i>·</i><span>ชีววิทยา</span><i>·</i><span>คณิตศาสตร์</span><i>·</i><span>แคลคูลัส</span><i>·</i><span>สถิติ</span><i>·</i><span>เศรษฐศาสตร์</span><i>·</i><span>การเงิน</span><i>·</i><span>เทคโนโลยี</span><i>·</i><span>อวกาศ</span><i>·</i><span>สุขภาพ</span><i>·</i><span>โค้ดดิ้ง</span><i>·</i>
           </div>
         </div>
 

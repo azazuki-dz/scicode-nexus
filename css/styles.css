@@ -572,4 +572,427 @@ textarea:focus-visible {
   #nexus-splash {
     display: none !important;
   }
+  .astro-word,
+  .astroword,
+  .astra-title .astroword {
+    opacity: 1 !important;
+    transform: none !important;
+    animation: none !important;
+  }
+  .astra-orb, .orb-ring, .sonar, .orb-halo, .orb-sheen {
+    animation: none !important;
+  }
+  .astra-marquee-track {
+    animation: none !important;
+  }
+}
+
+/* ==========================================================================
+   ASTRA LAUNCHER (GPT-6 Astra / OpenAI vibe)
+   ========================================================================== */
+.astra-page {
+  position: relative;
+  isolation: isolate;
+  background: var(--astra-bg, #06070b);
+}
+
+[data-theme="light"] .astra-page {
+  --astra-bg: #fbfbfa;
+}
+
+/* ----- Film grain ----- */
+.astra-grain {
+  position: absolute;
+  inset: -1px;
+  pointer-events: none;
+  z-index: 3;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.55'/%3E%3C/svg%3E");
+  opacity: 0.05;
+  mix-blend-mode: overlay;
+}
+[data-theme="light"] .astra-grain {
+  opacity: 0.035;
+}
+
+/* ----- Hero ----- */
+.astra-hero {
+  position: relative;
+  padding: clamp(3rem, 7vw, 5.5rem) 1.25rem 3rem;
+  text-align: center;
+  z-index: 1;
+}
+
+.astra-hero-glow {
+  position: absolute;
+  inset: -20% -10% -10% -10%;
+  background:
+    radial-gradient(560px 380px at 24% 6%, rgba(99, 102, 241, 0.16) 0%, transparent 70%),
+    radial-gradient(560px 380px at 76% 8%, rgba(6, 182, 212, 0.13) 0%, transparent 70%),
+    radial-gradient(720px 480px at 50% 110%, rgba(168, 85, 247, 0.10) 0%, transparent 65%);
+  pointer-events: none;
+  animation: astraGlowBreath 9s ease-in-out infinite alternate;
+  will-change: transform;
+}
+@keyframes astraGlowBreath {
+  from { opacity: 0.75; }
+  to { opacity: 1; }
+}
+
+/* ----- Nexus Orb ----- */
+.astra-orb-stage {
+  position: relative;
+  width: 190px;
+  height: 190px;
+  margin: 0 auto 2.6rem;
+  perspective: 900px;
+}
+.astra-orb {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: 108px;
+  height: 108px;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 32% 26%, rgba(157, 168, 255, 0.95), rgba(74, 82, 186, 0.85) 42%, rgba(10, 12, 32, 0.97) 74%);
+  box-shadow:
+    inset -14px -18px 44px rgba(0, 0, 0, 0.55),
+    inset 10px 12px 26px rgba(170, 180, 255, 0.22),
+    0 0 60px rgba(99, 102, 241, 0.34),
+    0 0 140px rgba(6, 182, 212, 0.16);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: astraOrbFloat 7s ease-in-out infinite alternate;
+  z-index: 2;
+}
+.orb-core {
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: 26px;
+  letter-spacing: 0.08em;
+  color: rgba(255, 255, 255, 0.94);
+  text-shadow: 0 0 16px rgba(165, 180, 252, 0.9), 0 0 42px rgba(6, 182, 212, 0.55);
+}
+.orb-sheen {
+  position: absolute;
+  top: 10%;
+  left: 12%;
+  width: 46%;
+  height: 40%;
+  border-radius: 50%;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.32), transparent 58%);
+  filter: blur(5px);
+  transform: rotate(-18deg);
+  pointer-events: none;
+}
+@keyframes astraOrbFloat {
+  from { transform: translateY(-9px); }
+  to { transform: translateY(9px); }
+}
+
+.orb-ring {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  border-radius: 50%;
+  border: 1px solid rgba(139, 148, 255, 0.30);
+  transform-style: preserve-3d;
+}
+.orb-ring.r1 {
+  width: 150px;
+  height: 150px;
+  animation: astraRing 16s linear infinite;
+}
+.orb-ring.r2 {
+  width: 188px;
+  height: 188px;
+  border-style: dashed;
+  border-color: rgba(103, 232, 249, 0.22);
+  animation: astraRingRev 22s linear infinite;
+}
+.orb-ring.r3 {
+  width: 216px;
+  height: 216px;
+  border-color: rgba(255, 255, 255, 0.10);
+  animation: astraRing 28s linear infinite reverse;
+}
+@keyframes astraRing {
+  from { transform: scale(1, 0.55) rotate(0deg); }
+  to { transform: scale(1, 0.55) rotate(360deg); }
+}
+@keyframes astraRingRev {
+  from { transform: scale(1, 0.55) rotate(360deg); }
+  to { transform: scale(1, 0.55) rotate(0deg); }
+}
+
+.orb-halo {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: 250px;
+  height: 250px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(99, 102, 241, 0.16), transparent 66%);
+  filter: blur(2px);
+  animation: astraHalo 6s ease-in-out infinite alternate;
+  pointer-events: none;
+}
+@keyframes astraHalo {
+  from { opacity: 0.55; transform: scale(0.92); }
+  to { opacity: 1; transform: scale(1.06); }
+}
+
+.sonar {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: 108px;
+  height: 108px;
+  border-radius: 50%;
+  border: 1px solid rgba(165, 180, 252, 0.5);
+  opacity: 0;
+  animation: astraSonar 3.4s cubic-bezier(0.22, 1, 0.36, 1) infinite;
+  pointer-events: none;
+}
+.sonar.s2 {
+  animation-delay: 1.7s;
+}
+@keyframes astraSonar {
+  0% { transform: scale(0.38); opacity: 0.55; }
+  85% { opacity: 0; }
+  100% { transform: scale(3.6); opacity: 0; }
+}
+
+/* ----- Copy ----- */
+.astra-copy {
+  max-width: 840px;
+  margin: 0 auto;
+}
+.astra-kicker {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.42em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  margin-bottom: 1.4rem;
+}
+.astra-title {
+  font-family: var(--font-sans);
+  font-weight: 900;
+  font-size: clamp(2.5rem, 8vw, 5.2rem);
+  line-height: 1.04;
+  letter-spacing: -0.025em;
+  color: #f8fafc;
+}
+[data-theme="light"] .astra-title {
+  color: #0f172a;
+}
+.astra-accent {
+  background: linear-gradient(110deg, #818cf8 5%, #22d3ee 55%, #a5f3fc 95%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.astroword {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(0.65em) rotate(2.5deg);
+  filter: blur(6px);
+  transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.9s cubic-bezier(0.16, 1, 0.3, 1),
+              filter 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.astra-title .astroword:nth-child(1) { transition-delay: 40ms; }
+.astra-title .astroword:nth-child(2) { transition-delay: 140ms; }
+.astra-title .astroword:nth-child(3) { transition-delay: 240ms; }
+.astra-title .astroword:nth-child(4) { transition-delay: 340ms; }
+.astra-title .astroword:nth-child(5) { transition-delay: 440ms; }
+.reveal-words.in-view .astroword {
+  opacity: 1;
+  transform: translateY(0) rotate(0deg);
+  filter: blur(0);
+}
+
+.astra-sub {
+  max-width: 580px;
+  margin: 1.6rem auto 0;
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  line-height: 1.95;
+  letter-spacing: 0.01em;
+}
+
+.astra-cta {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+.astra-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.9rem 1.8rem;
+  border-radius: 999px;
+  font-family: var(--font-sans);
+  font-size: 0.92rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.3s ease,
+              border-color 0.3s ease,
+              background-color 0.3s ease;
+  will-change: transform;
+}
+.astra-btn.primary {
+  background: linear-gradient(135deg, #6366f1, #06b6d4);
+  color: #fff;
+  box-shadow: 0 12px 34px rgba(99, 102, 241, 0.34);
+}
+.astra-btn.primary:hover {
+  box-shadow: 0 16px 44px rgba(99, 102, 241, 0.5), 0 0 30px rgba(6, 182, 212, 0.28);
+}
+.astra-btn.ghost {
+  border-color: rgba(255, 255, 255, 0.18);
+  color: var(--text-primary);
+  background: rgba(255, 255, 255, 0.02);
+}
+.astra-btn.ghost:hover {
+  border-color: rgba(138, 148, 255, 0.5);
+  background: rgba(255, 255, 255, 0.06);
+}
+[data-theme="light"] .astra-btn.ghost {
+  border-color: rgba(0, 0, 0, 0.16);
+  background: rgba(0, 0, 0, 0.02);
+}
+[data-theme="light"] .astra-btn.ghost:hover {
+  border-color: rgba(99, 102, 241, 0.5);
+  background: rgba(99, 102, 241, 0.06);
+}
+.astra-btn:hover {
+  transform: translate(calc(var(--mx, 0) * 1px), calc(-2px + var(--my, 0) * 1px));
+}
+.astra-btn:active {
+  transform: translate(calc(var(--mx, 0) * 1px), calc(-1px + var(--my, 0) * 1px)) scale(0.97);
+}
+
+/* ----- Stats ----- */
+.astra-stats {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.4rem 1.5rem;
+  max-width: 720px;
+  margin: 3.4rem auto 0;
+}
+@media (min-width: 640px) {
+  .astra-stats { grid-template-columns: repeat(4, 1fr); }
+}
+.astra-stats .launcher-stat {
+  background: transparent;
+  border: none;
+  border-top: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 0;
+  padding: 1.1rem 0.4rem 0.2rem;
+}
+[data-theme="light"] .astra-stats .launcher-stat {
+  border-top-color: rgba(0, 0, 0, 0.14);
+}
+.astra-stats .launcher-stat:hover {
+  transform: none;
+  border-color: rgba(255, 255, 255, 0.14);
+}
+[data-theme="light"] .astra-stats .launcher-stat:hover {
+  border-color: rgba(0, 0, 0, 0.14);
+}
+.astra-stats .num {
+  font-size: 2.1rem;
+  background: linear-gradient(110deg, #67e8f9, #a5b4fc, #c4b5fd);
+}
+.astra-stats .lab {
+  margin-top: 0.35rem;
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+/* ----- Capability marquee ----- */
+.astra-marquee {
+  position: relative;
+  z-index: 1;
+  overflow: hidden;
+  padding: 1.05rem 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.09);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.09);
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+}
+[data-theme="light"] .astra-marquee {
+  border-color: rgba(0, 0, 0, 0.10);
+}
+.astra-marquee-track {
+  display: inline-flex;
+  align-items: center;
+  gap: 2.4rem;
+  white-space: nowrap;
+  animation: astraMarquee 34s linear infinite;
+  will-change: transform;
+}
+.astra-marquee-track span {
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+.astra-marquee-track i {
+  font-style: normal;
+  color: rgba(138, 148, 255, 0.55);
+}
+@keyframes astraMarquee {
+  to { transform: translateX(-50%); }
+}
+
+/* ----- Parallax depth layers ----- */
+.astra-hero [data-depth],
+.astra-hero-glow {
+  transition: transform 0.16s linear;
+}
+
+/* ----- Stagger cards a touch like the original reveal system ----- */
+.astra-page .launch-card.reveal {
+  transition-delay: 0s;
+}
+
+/* ----- Hero block reveal (triggered after the Nexus splash finishes) ----- */
+.astra-hero .astra-sub,
+.astra-hero .astra-cta,
+.astra-hero .astra-stats {
+  opacity: 0;
+  transform: translateY(26px);
+  transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.astra-hero.in-view .astra-sub    { opacity: 1; transform: none; transition-delay: 0.55s; }
+.astra-hero.in-view .astra-cta    { opacity: 1; transform: none; transition-delay: 0.72s; }
+.astra-hero.in-view .astra-stats  { opacity: 1; transform: none; transition-delay: 0.9s; }
+
+@media (prefers-reduced-motion: reduce) {
+  .astra-hero .astra-sub,
+  .astra-hero .astra-cta,
+  .astra-hero .astra-stats {
+    opacity: 1 !important;
+    transform: none !important;
+    transition-delay: 0s !important;
+  }
+}
 }

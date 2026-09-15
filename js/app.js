@@ -27,6 +27,7 @@ class SciCodeNexusApp {
     this.curriculumViewer = null;
     this.revealObserver = null;
     this.splashAnimId = null;
+    this.statValues = {};
 
     this.init();
   }
@@ -804,7 +805,10 @@ class SciCodeNexusApp {
   initLauncher() {
     const setStat = (id, val) => {
       const el = document.getElementById(id);
-      if (el) el.textContent = String(val);
+      if (el) {
+        this.statValues[id] = val;
+        el.textContent = String(val);
+      }
     };
     setStat('lstat-formulas', FORMULAS_DATA.length);
     setStat('lstat-sims', 2);
@@ -829,6 +833,76 @@ class SciCodeNexusApp {
         card.style.setProperty('--my', `${((e.clientY - r.top) / r.height) * 100}%`);
       });
     });
+
+    this.initAstraFeatures();
+  }
+
+  // Astra-style hero: count-up stats after splash, parallax depth, magnetic CTAs
+  initAstraFeatures() {
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    // Count-up the stat numbers once the Nexus splash is gone
+    const runCountUp = () => {
+      const duration = 1000;
+      Object.entries(this.statValues).forEach(([id, target]) => {
+        const el = document.getElementById(id);
+        if (!el) return;
+        const start = performance.now();
+        const step = (now) => {
+          const t = Math.min((now - start) / duration, 1);
+          const eased = 1 - Math.pow(1 - t, 3);
+          el.textContent = String(Math.round(target * eased));
+          if (t < 1) requestAnimationFrame(step);
+        };
+        requestAnimationFrame(step);
+      });
+    };
+    if (reduced) {
+      runCountUp();
+    } else {
+      window.addEventListener('nexus:ready', () => runCountUp(), { once: true });
+    }
+
+    // Parallax multi-layer depth on hero elements with [data-depth]
+    const layers = document.querySelectorAll('.astra-hero [data-depth]');
+    if (layers.length && !reduced) {
+      let ticking = false;
+      const sync = () => {
+        ticking = false;
+        const vh = window.innerHeight;
+        layers.forEach(layer => {
+          const depth = parseFloat(layer.getAttribute('data-depth') || '0');
+          const r = layer.getBoundingClientRect();
+          const center = r.top + r.height / 2 - vh / 2;
+          layer.style.transform = `translate3d(0, ${(center * depth).toFixed(1)}px, 0)`;
+        });
+      };
+      sync();
+      window.addEventListener('scroll', () => {
+        if (!ticking) {
+          ticking = true;
+          requestAnimationFrame(sync);
+        }
+      }, { passive: true });
+    }
+
+    // Magnetic pull on the hero CTA buttons (fine pointers only)
+    if (!reduced && window.matchMedia('(pointer: fine)').matches) {
+      document.querySelectorAll('.astra-btn').forEach(btn => {
+        btn.addEventListener('mousemove', (e) => {
+          const r = btn.getBoundingClientRect();
+          const dx = e.clientX - (r.left + r.width / 2);
+          const dy = e.clientY - (r.top + r.height / 2);
+          const mag = Math.min(1, Math.hypot(dx, dy) / (r.width * 0.5));
+          btn.style.setProperty('--mx', String((dx * 0.12 * mag).toFixed(1)));
+          btn.style.setProperty('--my', String((dy * 0.12 * mag).toFixed(1)));
+        });
+        btn.addEventListener('mouseleave', () => {
+          btn.style.setProperty('--mx', '0');
+          btn.style.setProperty('--my', '0');
+        });
+      });
+    }
   }
 
   // Particle-network entrance animation shown once on load
@@ -918,6 +992,8 @@ class SciCodeNexusApp {
       if (drawRaf) cancelAnimationFrame(drawRaf);
       if (this.splashAnimId) cancelAnimationFrame(this.splashAnimId);
       splash.classList.add('done');
+      document.querySelectorAll('.reveal-words:not(.in-view)').forEach(el => el.classList.add('in-view'));
+      window.dispatchEvent(new CustomEvent('nexus:ready'));
       document.body.style.overflow = '';
       setTimeout(() => splash.remove(), 750);
     };
