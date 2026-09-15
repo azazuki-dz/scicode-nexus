@@ -27,6 +27,7 @@ class SciCodeNexusApp {
     this.curriculumViewer = null;
     this.revealObserver = null;
     this.splashAnimId = null;
+    this.splashFallbackId = null;
     this.statValues = {};
 
     this.init();
@@ -933,57 +934,105 @@ class SciCodeNexusApp {
       if (ctx) ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     };
 
+    let swirling = true;
+    let burstPhase = 0;
+
     const spawn = () => {
-      const count = reduced ? 0 : Math.max(40, Math.min(110, Math.round((width * height) / 22000)));
+      const count = reduced ? 0 : Math.max(80, Math.min(190, Math.round((width * height) / 10000)));
       nodes = [];
-      const hues = [190, 205, 222, 240, 160];
+      const hues = [48, 190, 205, 255, 210];
+      const maxRad = Math.max(width, height) * 0.72;
       for (let i = 0; i < count; i++) {
+        const rad0 = 20 + Math.random() * (maxRad - 20);
         nodes.push({
-          x: Math.random() * width,
-          y: Math.random() * height,
-          r: 0.8 + Math.random() * 1.6,
-          vx: (Math.random() - 0.5) * 0.35,
-          vy: (Math.random() - 0.5) * 0.35,
-          hue: hues[Math.floor(Math.random() * hues.length)]
+          ang: Math.random() * Math.PI * 2,
+          rad0,
+          rad: rad0,
+          r: 0.6 + Math.random() * 1.8,
+          hue: hues[Math.floor(Math.random() * hues.length)],
+          x: 0,
+          y: 0
         });
       }
     };
 
-    const stepParticles = () => {
-      const linkDist = 130;
+    const updateCartesian = (cx, cy) => {
       for (let i = 0; i < nodes.length; i++) {
         const a = nodes[i];
-        for (let j = i + 1; j < nodes.length; j++) {
-          const b = nodes[j];
-          const dx = a.x - b.x;
-          const dy = a.y - b.y;
-          const d2 = dx * dx + dy * dy;
-          if (d2 < linkDist * linkDist) {
-            const d = Math.sqrt(d2);
-            ctx.strokeStyle = `hsla(${a.hue}, 90%, 70%, ${(1 - d / linkDist) * 0.22})`;
-            ctx.lineWidth = 1;
-            ctx.beginPath();
-            ctx.moveTo(a.x, a.y);
-            ctx.lineTo(b.x, b.y);
-            ctx.stroke();
-          }
+        a.x = cx + a.rad * Math.cos(a.ang);
+        a.y = cy + a.rad * Math.sin(a.ang);
+      }
+    };
+
+    const stepParticles = () => {
+      const cx = width / 2;
+      const cy = height / 2;
+
+      if (burstPhase > 0) {
+        // BURST: the singularity detonates — everything flies outward
+        for (let i = 0; i < nodes.length; i++) {
+          const a = nodes[i];
+          const dx = a.x - cx;
+          const dy = a.y - cy;
+          const d = Math.sqrt(dx * dx + dy * dy) || 1;
+          const eject = burstPhase * 0.55 + 0.4;
+          a.x += (dx / d) * eject;
+          a.y += (dy / d) * eject;
+          a.r += 0.02;
         }
-        a.x += a.vx;
-        a.y += a.vy;
-        if (a.x < -20) a.x = width + 20;
-        else if (a.x > width + 20) a.x = -20;
-        if (a.y < -20) a.y = height + 20;
-        else if (a.y > height + 20) a.y = -20;
+        burstPhase -= 0.022;
+      } else if (swirling) {
+        // SWIRL: stars are swallowed — tighter spiral, faster orbit near the hole
+        for (let i = 0; i < nodes.length; i++) {
+          const a = nodes[i];
+          const closeness = 1 - a.rad / Math.max(a.rad0, 1);
+          const fall = 0.018 + 0.05 * closeness;
+          const orbit = 0.025 + 0.16 * closeness;
+          a.rad = Math.max(0.4, a.rad * (1 - fall));
+          a.ang += orbit;
+        }
+        updateCartesian(cx, cy);
+      }
+
+      for (let i = 0; i < nodes.length; i++) {
+        const a = nodes[i];
+        const dx = a.x - cx;
+        const dy = a.y - cy;
+        const d = Math.sqrt(dx * dx + dy * dy) || 1;
+        const core = Math.max(0, 1 - d / (width * 0.1));
+
+        ctx.beginPath();
+        ctx.arc(cx, cy, 2 + core * 12, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(248, 250, 252, ${0.12 + core * 0.55})`;
+        ctx.shadowColor = 'rgba(139, 92, 246, 0.9)';
+        ctx.shadowBlur = 30;
+        ctx.fill();
+
+        ctx.save();
+        ctx.translate(cx, cy);
+        ctx.rotate(a.ang);
+        ctx.strokeStyle = `hsla(${a.hue}, 95%, 82%, ${0.5 + core * 0.4})`;
+        ctx.lineWidth = 1.2;
+        ctx.beginPath();
+        ctx.ellipse(0, 0, 36, 8, 0, 0, Math.PI * 2);
+        ctx.stroke();
+        ctx.restore();
+
+        ctx.beginPath();
+        ctx.moveTo(a.x, a.y);
+        ctx.lineTo(a.x - (a.x - cx) * 0.09, a.y - (a.y - cy) * 0.09);
+        ctx.strokeStyle = `hsla(${a.hue}, 95%, ${78 + core * 12}%, 0.85)`;
+        ctx.lineWidth = a.r * 0.4;
+        ctx.shadowColor = `hsla(${a.hue}, 95%, 60%, 0.9)`;
+        ctx.shadowBlur = 10;
+        ctx.stroke();
 
         ctx.beginPath();
         ctx.arc(a.x, a.y, a.r, 0, Math.PI * 2);
-        ctx.fillStyle = `hsla(${a.hue}, 95%, 75%, 0.85)`;
-        ctx.shadowColor = `hsla(${a.hue}, 95%, 70%, 0.9)`;
-        ctx.shadowBlur = 8;
+        ctx.fillStyle = `hsla(${a.hue}, 95%, 82%, 0.9)`;
         ctx.fill();
       }
       ctx.shadowBlur = 0;
-      if (!finished) drawRaf = requestAnimationFrame(stepParticles);
     };
 
     const finish = () => {
@@ -991,6 +1040,31 @@ class SciCodeNexusApp {
       finished = true;
       if (drawRaf) cancelAnimationFrame(drawRaf);
       if (this.splashAnimId) cancelAnimationFrame(this.splashAnimId);
+      swirling = false;
+      burstPhase = 1;
+      if (ctx) {
+        ctx.shadowBlur = 0;
+        ctx.shadowColor = 'transparent';
+      }
+      // Run the burst explosion for ~800ms before revealing
+      if (reduced) {
+        finishReveal();
+        return;
+      }
+      const burstTick = () => {
+        if (ctx) {
+          ctx.clearRect(0, 0, width, height);
+          ctx.shadowBlur = 0;
+        }
+        stepParticles();
+        if (burstPhase > 0) requestAnimationFrame(burstTick);
+        else finishReveal();
+      };
+      splash.classList.add('bursting');
+      requestAnimationFrame(burstTick);
+    };
+
+    const finishReveal = () => {
       splash.classList.add('done');
       document.querySelectorAll('.reveal-words:not(.in-view)').forEach(el => el.classList.add('in-view'));
       window.dispatchEvent(new CustomEvent('nexus:ready'));
@@ -1013,6 +1087,7 @@ class SciCodeNexusApp {
         ctx.shadowBlur = 0;
       }
       stepParticles();
+      if (!finished) drawRaf = requestAnimationFrame(animate);
     };
     animate();
 
@@ -1035,6 +1110,11 @@ class SciCodeNexusApp {
     this.splashAnimId = requestAnimationFrame(tickProgress);
 
     splash.addEventListener('click', finish);
+
+    // Fail-safe: never leave the Astra hero hidden, even if an animation stalls
+    this.splashFallbackId = setTimeout(() => {
+      if (!finished) finish();
+    }, 4200);
 
     let resizing = false;
     window.addEventListener('resize', () => {

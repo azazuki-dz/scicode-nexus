@@ -30,7 +30,7 @@
   <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
 
   <!-- Custom Styles -->
-  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/styles.css?v=3">
 </head>
 <body class="selection:bg-indigo-500 selection:text-white">
 
@@ -931,7 +931,24 @@
   </div>
 
   <!-- Main Application Script (ES Module) -->
-  <script type="module" src="js/app.js"></script>
+  <script type="module" src="js/app.js?v=3"></script>
+
+  <!-- Resilient fallback: if anything stalls, never leave the page hidden -->
+  <script>
+    setTimeout(function () {
+      if (typeof window.scicodeApp === 'undefined') {
+        var splash = document.getElementById('nexus-splash');
+        if (splash) splash.remove();
+        document.querySelectorAll('.reveal-words:not(.in-view)').forEach(function (el) {
+          el.classList.add('in-view');
+        });
+        document.querySelectorAll('.reveal:not(.in-view)').forEach(function (el) {
+          el.classList.add('in-view');
+        });
+        document.body.style.overflow = '';
+      }
+    }, 5000);
+  </script>
 
 </body>
 </html>

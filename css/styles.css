@@ -280,6 +280,28 @@ input[type="range"] {
   opacity: 0;
   visibility: hidden;
 }
+#nexus-splash.bursting::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.95) 0%, rgba(167, 139, 250, 0.55) 35%, transparent 70%);
+  transform: scale(0.08);
+  transform-origin: center;
+  animation: nexusBurst 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  pointer-events: none;
+}
+@keyframes nexusBurst {
+  from {
+    transform: scale(0.08);
+    opacity: 1;
+  }
+  to {
+    transform: scale(2.6);
+    opacity: 0;
+  }
+}
 #nexus-splash-canvas {
   position: absolute;
   inset: 0;
@@ -994,5 +1016,37 @@ textarea:focus-visible {
     transform: none !important;
     transition-delay: 0s !important;
   }
+}
+
+/* ==========================================================================
+   ASTRA LAUNCHER OVERRIDE: keep OpenAI-black look in EVERY theme
+   (The launcher is a launch-screen; it stays black like the OpenAI site.)
+   ========================================================================== */
+
+[data-theme="light"] #tab-panel-launcher.astra-page,
+html[data-theme="light"] .astra-page {
+  background: #06070b !important;
+}
+[data-theme="light"] .astra-title {
+  color: #f8fafc !important;
+}
+[data-theme="light"] .astra-kicker,
+[data-theme="light"] .astra-sub {
+  color: #cbd5e1 !important;
+}
+[data-theme="light"] .astra-marquee {
+  border-color: rgba(255, 255, 255, 0.09) !important;
+}
+[data-theme="light"] .astra-stats .launcher-stat {
+  border-top-color: rgba(255, 255, 255, 0.14) !important;
+}
+[data-theme="light"] .astra-stats .launcher-stat:hover {
+  border-color: rgba(255, 255, 255, 0.14) !important;
+}
+[data-theme="light"] .astra-grain {
+  opacity: 0.05;
+}
+[data-theme="light"] #tab-panel-launcher .launch-card {
+  border-color: rgba(51, 65, 85, 0.9) !important;
 }
 }
