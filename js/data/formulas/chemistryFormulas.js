@@ -416,5 +416,96 @@ export const CHEMISTRY_FORMULAS = [
 
       return { result, unit: target === 'H' ? 'mol/L' : '', steps };
     }
+  },
+
+  {
+    id: 'normality',
+    name: 'Normality',
+    nameTh: 'ความเข้มข้นนอร์แมล',
+    category: 'chemistry',
+    categoryTh: 'เคมี',
+    icon: 'flask',
+    grade: 'ม.5',
+    latex: 'N = M \\times \\text{val}',
+    description: 'นอร์แมลลิตี = โมลาริตี(M) × จำนวนแคตไอออนหรือไฮโดรเจนที่ให้/รับ (val) เช่น HCl 1 M ให้ H⁺ 1 → N = 2 สำหรับ val = 2',
+    variables: [
+      { id: 'M', symbol: 'M', name: 'Molarity', nameTh: 'โมลาริตี (M)', unit: 'mol/L', defaultValue: 1, min: 0.0001, max: 1e6, step: 0.01 },
+      { id: 'val', symbol: 'val', name: 'Valency', nameTh: 'วาเลนซ์', unit: '', defaultValue: 2, min: 1, max: 6, step: 1 },
+      { id: 'N', symbol: 'N', name: 'Normality', nameTh: 'นอร์แมลลิตี (N)', unit: 'eq/L', defaultValue: 2, min: 0.0001, max: 1e6, step: 0.01 }
+    ],
+    solveTargets: ['N', 'M', 'val'],
+    calculate: (inputs, target = 'N') => {
+      const { M, val, N } = inputs;
+      let result, steps;
+      if (target === 'N') {
+        result = M * val;
+        steps = [
+          { title: 'สูตร', latex: 'N = M \\times \\text{val}', explanation: `M = ${M} mol/L, val = ${val}` },
+          { title: 'แทนค่า', latex: `N = ${M} \\times ${val}`, explanation: 'โมลาริตีคูณวาเลนซ์' },
+          { title: 'ผลลัพธ์', latex: `N = ${result} \\ \\text{eq/L}`, explanation: `นอร์แมลลิตีเท่ากับ ${result} eq/L` }
+        ];
+      } else if (target === 'M') {
+        if (val === 0) throw new Error('วาเลนซ์ val ต้องไม่เป็น 0');
+        result = N / val;
+        steps = [
+          { title: 'จัดรูปหา M', latex: 'M = \\frac{N}{\\text{val}}', explanation: `N = ${N} eq/L, val = ${val}` },
+          { title: 'ผลลัพธ์', latex: `M = \\frac{${N}}{${val}} = ${result.toFixed(4)} \\ \\text{mol/L}`, explanation: `โมลาริตีเท่ากับ ${result.toFixed(4)} mol/L` }
+        ];
+      } else {
+        if (M === 0) throw new Error('โมลาริตี M ต้องไม่เป็น 0');
+        result = N / M;
+        steps = [
+          { title: 'จัดรูปหา val', latex: '\\text{val} = \\frac{N}{M}', explanation: `N = ${N} eq/L, M = ${M} mol/L` },
+          { title: 'ผลลัพธ์', latex: `\\text{val} = \\frac{${N}}{${M}} = ${result.toFixed(2)}`, explanation: `วาเลนซ์เท่ากับ ${result.toFixed(2)}` }
+        ];
+      }
+      return { result, unit: target === 'N' ? 'eq/L' : target === 'M' ? 'mol/L' : '', steps };
+    }
+  },
+
+  {
+    id: 'percent_yield',
+    name: 'Percent Yield',
+    nameTh: 'เปอร์เซ็นต์ผลได้',
+    category: 'chemistry',
+    categoryTh: 'เคมี',
+    icon: 'percent',
+    grade: 'ม.5',
+    latex: '\\%\\text{yield} = \\frac{\\text{actual}}{\\text{theoretical}} \\times 100',
+    description: 'เปอร์เซ็นต์ผลได้ = ผลผลิตจริง/ผลผลิตตามทฤษฎี × 100 เช่น ได้จริง 18 จากทฤษฎี 20 = 90%',
+    variables: [
+      { id: 'actual', symbol: '\\text{actual}', name: 'Actual Yield', nameTh: 'ผลได้จริง', unit: 'g', defaultValue: 18, min: 0.0001, max: 1e9, step: 0.1 },
+      { id: 'theoretical', symbol: '\\text{theoretical}', name: 'Theoretical Yield', nameTh: 'ผลได้ตามทฤษฎี', unit: 'g', defaultValue: 20, min: 0.0001, max: 1e9, step: 0.1 },
+      { id: 'yield', symbol: '\\%\\text{yield}', name: 'Percent Yield', nameTh: 'เปอร์เซ็นต์ผลได้', unit: '%', defaultValue: 90, min: 0.001, max: 1e6, step: 0.1 }
+    ],
+    solveTargets: ['yield', 'actual', 'theoretical'],
+    calculate: (inputs, target = 'yield') => {
+      const { actual, theoretical, yield: y } = inputs;
+      let result, steps;
+      if (target === 'yield') {
+        if (theoretical === 0) throw new Error('ผลได้ตามทฤษฎีต้องไม่เป็น 0');
+        result = (actual / theoretical) * 100;
+        steps = [
+          { title: 'สูตร', latex: '\\%\\text{yield} = \\frac{\\text{actual}}{\\text{theoretical}} \\times 100', explanation: `actual = ${actual} g, theoretical = ${theoretical} g` },
+          { title: 'แทนค่า', latex: `\\%\\text{yield} = \\frac{${actual}}{${theoretical}} \\times 100`, explanation: 'ผลได้จริงหารตามทฤษฎี' },
+          { title: 'ผลลัพธ์', latex: `\\%\\text{yield} = ${result.toFixed(2)}%`, explanation: `เปอร์เซ็นต์ผลได้เท่ากับ ${result.toFixed(2)}%` }
+        ];
+      } else if (target === 'actual') {
+        if (y === 0) throw new Error('เปอร์เซ็นต์ผลได้ต้องไม่เป็น 0');
+        result = (y / 100) * theoretical;
+        steps = [
+          { title: 'จัดรูปหาผลได้จริง', latex: '\\text{actual} = \\frac{\\%\\text{yield} \\times \\text{theoretical}}{100}', explanation: `yield = ${y}%, theoretical = ${theoretical} g` },
+          { title: 'ผลลัพธ์', latex: `\\text{actual} = \\frac{${y} \\times ${theoretical}}{100} = ${result.toFixed(3)} \\ \\text{g}`, explanation: `ผลได้จริงเท่ากับ ${result.toFixed(3)} g` }
+        ];
+      } else {
+        if (y === 0) throw new Error('เปอร์เซ็นต์ผลได้ต้องไม่เป็น 0');
+        result = (actual * 100) / y;
+        steps = [
+          { title: 'จัดรูปหาผลได้ตามทฤษฎี', latex: '\\text{theoretical} = \\frac{\\text{actual} \\times 100}{\\%\\text{yield}}', explanation: `actual = ${actual} g, yield = ${y}%` },
+          { title: 'ผลลัพธ์', latex: `\\text{theoretical} = \\frac{${actual} \\times 100}{${y}} = ${result.toFixed(3)} \\ \\text{g}`, explanation: `ผลได้ตามทฤษฎีเท่ากับ ${result.toFixed(3)} g` }
+        ];
+      }
+      return { result, unit: target === 'yield' ? '%' : 'g', steps };
+    }
   }
 ];

@@ -38,6 +38,25 @@
   <div class="ambient-mesh"></div>
   <div class="grid-overlay"></div>
 
+  <!-- ==================== NEXUS SPLASH SCREEN (Entrance Animation) ==================== -->
+  <div id="nexus-splash" aria-hidden="false">
+    <canvas id="nexus-splash-canvas"></canvas>
+    <div class="nexus-splash-content">
+      <div class="nexus-mark">
+        <span class="ring"></span>
+        <span class="ring two"></span>
+        <div class="core"><span class="glyph">ΣN</span></div>
+      </div>
+      <h1 class="nexus-brand">
+        <span class="nexus-brand-part">SciCode</span>&nbsp;<span class="nexus-brand-part accent">Nexus</span>
+      </h1>
+      <p class="nexus-tagline">ศูนย์รวมพลังความรู้ · ฟิสิกส์ เคมี ชีวะ คณิตศาสตร์ และโค้ดดิ้ง &mdash; เชื่อมทุกสิ่งถึงกันในที่เดียว</p>
+      <div class="nexus-progress"><span id="nexus-progress-bar" class="nexus-progress-bar"></span></div>
+      <div class="nexus-progress-label"><span id="nexus-progress-text">0%</span></div>
+    </div>
+  </div>
+  <noscript><style>#nexus-splash{display:none!important}</style></noscript>
+
   <!-- Main Container -->
   <div class="relative z-10 flex flex-col min-h-screen">
 
@@ -46,7 +65,7 @@
       <div class="max-w-7xl mx-auto flex items-center justify-between gap-4">
         
         <!-- Logo & Branding -->
-        <div class="flex items-center gap-3 cursor-pointer select-none">
+        <div class="flex items-center gap-3 cursor-pointer select-none" id="brand-home" title="กลับหน้าแรก (Nexus Home)">
           <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-600 via-cyan-500 to-emerald-400 p-0.5 shadow-lg shadow-indigo-500/20">
             <div class="w-full h-full bg-slate-950 rounded-[10px] flex items-center justify-center">
               <span class="font-mono font-black text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-indigo-400 text-lg">ΣN</span>
@@ -58,7 +77,7 @@
                 <span>SciCode</span>
                 <span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-indigo-400">Nexus</span>
               </h1>
-              <span class="text-[10px] font-mono font-semibold px-2 py-0.5 rounded-full bg-indigo-500/20 text-indigo-300 border border-indigo-500/30">v1.0</span>
+              <span class="text-[10px] font-mono font-semibold px-2 py-0.5 rounded-full bg-indigo-500/20 text-indigo-300 border border-indigo-500/30">v1.1</span>
             </div>
             <p class="text-[11px] text-slate-400 hidden sm:block">Physics, Chemistry, Biology & Code Learning Lab</p>
           </div>
@@ -96,6 +115,10 @@
             <kbd class="font-mono text-[10px] bg-slate-800 text-slate-400 px-1.5 py-0.5 rounded border border-slate-700">Ctrl K</kbd>
           </button>
 
+          <button id="home-btn" class="p-2 rounded-xl bg-slate-900 border border-slate-800 text-slate-400 hover:text-indigo-300 transition-colors" title="กลับหน้าแรก (Home / Menu)">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+          </button>
+
           <button id="theme-toggle-btn" class="p-2 rounded-xl bg-slate-900 border border-slate-800 text-slate-400 hover:text-amber-400 transition-colors" title="สลับ Dark/Light Theme">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg>
           </button>
@@ -105,6 +128,10 @@
 
       <!-- Mobile Navigation Bar -->
       <div class="flex md:hidden items-center justify-around pt-3 mt-2 border-t border-slate-800/60">
+        <button data-tab="launcher" id="mobile-home-btn" class="nav-tab-btn flex flex-col items-center gap-1 text-xs text-slate-400 font-medium">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l9-9 9 9M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+          <span>หน้าแรก</span>
+        </button>
         <button data-tab="formulas" class="nav-tab-btn flex flex-col items-center gap-1 text-xs text-indigo-400 font-medium">
           <span>สูตร</span>
         </button>
@@ -125,6 +152,98 @@
 
     <!-- ==================== MAIN CONTENT BODY ==================== -->
     <main class="flex-1 max-w-7xl w-full mx-auto p-4 lg:p-8">
+
+      <!-- ===================================================================
+           HOME LAUNCHER: เลือกโหมดใช้งานก่อน แล้วกลับมาเปลี่ยนได้ทุกเมื่อ
+           =================================================================== -->
+      <section id="tab-panel-launcher" class="tab-panel">
+        <div class="launcher-hero glass-panel p-8 lg:p-12 rounded-[2rem] border border-slate-800 relative overflow-hidden reveal">
+          <div class="launcher-hero-glow"></div>
+          <div class="relative flex flex-col items-center text-center">
+            <span class="text-[11px] font-mono font-bold px-3 py-1 rounded-full bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 mb-5 tracking-widest">
+              NEXUS HOME HUB
+            </span>
+            <h2 class="text-2xl lg:text-4xl font-black text-slate-50 mb-3 leading-tight">อยากเริ่มต้นจากอะไรดี?</h2>
+            <p class="text-xs lg:text-sm text-slate-400 max-w-2xl leading-relaxed">
+              เลือกห้องที่อยากใช้ได้เลย แล้วกลับมาที่หน้าแรกนี้ได้ตลอดเวลาเพื่อสลับไปใช้โหมดอื่น
+              &mdash; ทั้งสูตรคำนวณ การจำลองฟิสิกส์ แล็บโค้ด คลังความรู้ และหลักสูตร ม.1&ndash;ม.6
+            </p>
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 w-full max-w-2xl mt-7">
+              <div class="launcher-stat"><div class="num" id="lstat-formulas">0</div><div class="text-[11px] text-slate-500 mt-0.5">สูตรคำนวณ</div></div>
+              <div class="launcher-stat"><div class="num" id="lstat-sims">0</div><div class="text-[11px] text-slate-500 mt-0.5">ห้องจำลอง</div></div>
+              <div class="launcher-stat"><div class="num" id="lstat-lessons">0</div><div class="text-[11px] text-slate-500 mt-0.5">บทเรียนโค้ด</div></div>
+              <div class="launcher-stat"><div class="num" id="lstat-topics">0</div><div class="text-[11px] text-slate-500 mt-0.5">หัวข้อหลักสูตร</div></div>
+            </div>
+          </div>
+        </div>
+
+        <div id="launcher-feature-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 mt-6">
+
+          <!-- Feature 1: Formulas -->
+          <div data-launch="formulas" class="launch-card glass-panel border border-slate-800 reveal">
+            <div class="launch-card-icon bg-gradient-to-br from-indigo-600 to-cyan-500 text-white">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
+            </div>
+            <h3 class="launch-title text-base font-bold text-slate-100 mb-1.5">สูตร &amp; ตัวคำนวณ</h3>
+            <p class="text-xs text-slate-400 leading-relaxed mb-4">คำนวณสูตรฟิสิกส์ เคมี ชีวะ คณิตศาสตร์ และการเงิน แบบหลายตัวแปร พร้อมขั้นตอนเฉลยละเอียดทีละขั้น</p>
+            <span class="launch-go">เข้าใช้งาน <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7-7 7M21 12H3"/></svg></span>
+          </div>
+
+          <!-- Feature 2: Simulations -->
+          <div data-launch="simulations" class="launch-card glass-panel border border-slate-800 reveal">
+            <div class="launch-card-icon bg-gradient-to-br from-cyan-500 to-emerald-500 text-white">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            </div>
+            <h3 class="launch-title text-base font-bold text-slate-100 mb-1.5">การจำลองฟิสิกส์ (Live)</h3>
+            <p class="text-xs text-slate-400 leading-relaxed mb-4">ลองยิงโพรเจกไทล์บนดาวแต่ละดวง และทดลองลูกตุ้มแบบตอบสนองทันที 60 FPS</p>
+            <span class="launch-go">เข้าใช้งาน <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7-7 7M21 12H3"/></svg></span>
+          </div>
+
+          <!-- Feature 3: Code Lab -->
+          <div data-launch="lab" class="launch-card glass-panel border border-slate-800 reveal">
+            <div class="launch-card-icon bg-gradient-to-br from-amber-500 to-rose-500 text-white">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg>
+            </div>
+            <h3 class="launch-title text-base font-bold text-slate-100 mb-1.5">ห้องแล็บโค้ด (Math-to-Code)</h3>
+            <p class="text-xs text-slate-400 leading-relaxed mb-4">แปลงคณิตศาสตร์ให้เป็นโค้ด JavaScript ทีละบทเรียน พร้อมตรวจคำตอบอัตโนมัติในเทอร์มินัลจำลอง</p>
+            <span class="launch-go">เข้าใช้งาน <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7-7 7M21 12H3"/></svg></span>
+          </div>
+
+          <!-- Feature 4: Vault -->
+          <div data-launch="vault" class="launch-card glass-panel border border-slate-800 reveal">
+            <div class="launch-card-icon bg-gradient-to-br from-purple-600 to-fuchsia-500 text-white">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+            </div>
+            <h3 class="launch-title text-base font-bold text-slate-100 mb-1.5">คลังความรู้ &amp; Roadmap</h3>
+            <p class="text-xs text-slate-400 leading-relaxed mb-4">เส้นทางการเรียนรู้ สรุปสูตรยอดฮิตแยกวิชา และแหล่งเรียนรู้ออนไลน์ระดับโลกคัดสรรมาให้</p>
+            <span class="launch-go">เข้าใช้งาน <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7-7 7M21 12H3"/></svg></span>
+          </div>
+
+          <!-- Feature 5: Curriculum -->
+          <div data-launch="curriculum" class="launch-card glass-panel border border-slate-800 reveal">
+            <div class="launch-card-icon bg-gradient-to-br from-emerald-500 to-lime-500 text-white">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"/></svg>
+            </div>
+            <h3 class="launch-title text-base font-bold text-slate-100 mb-1.5">หลักสูตร ม.1&ndash;ม.6</h3>
+            <p class="text-xs text-slate-400 leading-relaxed mb-4">สรุปเนื้อหาเข้มข้นตามกลุ่มสาระวิชา พร้อมเทคนิคพิชิตข้อสอบ O-NET / TGAT / A-Level</p>
+            <span class="launch-go">เข้าใช้งาน <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7-7 7M21 12H3"/></svg></span>
+          </div>
+
+          <!-- Tip Card -->
+          <div class="launch-card glass-panel border border-slate-800/60 reveal">
+            <div class="launch-card-icon bg-gradient-to-br from-slate-600 to-slate-500 text-white">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg>
+            </div>
+            <h3 class="launch-title text-base font-bold text-slate-100 mb-1.5">เคล็ดลับการใช้งาน</h3>
+            <ul class="text-xs text-slate-400 space-y-2 leading-relaxed">
+              <li>⌨ กด <span class="font-mono text-cyan-300 font-bold">Ctrl + K</span> เพื่อค้นหาทั่วทั้งเว็บได้ทันที</li>
+              <li>⌂ ปุ่มมุมขวาบน กลับไปหน้าแรกเพื่อสลับโหมดได้ตลอดเวลา</li>
+              <li>🌙 ปุ่มมุมขวาบน สลับโหมดมืด / สว่าง ให้เข้าตา</li>
+            </ul>
+          </div>
+
+        </div>
+      </section>
 
       <!-- ===================================================================
            TAB 1: FORMULAS & DYNAMIC STEP-BY-STEP SOLVER

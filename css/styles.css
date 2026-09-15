@@ -257,3 +257,319 @@ input[type="range"] {
 .btn-interactive:active {
   transform: translateY(0) scale(0.98);
 }
+
+/* ==========================================================================
+   NEXUS ENTRANCE SPLASH
+   ========================================================================== */
+#nexus-splash {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  color: #e2e8f0;
+  background:
+    radial-gradient(1100px 700px at 75% 15%, rgba(30, 27, 75, 0.9) 0%, transparent 60%),
+    radial-gradient(900px 600px at 15% 85%, rgba(8, 51, 68, 0.9) 0%, transparent 55%),
+    linear-gradient(160deg, #04060d 0%, #0b1023 55%, #071a26 100%);
+  transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.7s;
+}
+#nexus-splash.done {
+  opacity: 0;
+  visibility: hidden;
+}
+#nexus-splash-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+.nexus-splash-content {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 0 24px;
+}
+
+.nexus-mark {
+  position: relative;
+  width: 96px;
+  height: 96px;
+  margin-bottom: 30px;
+}
+.nexus-mark .ring {
+  position: absolute;
+  inset: -16px;
+  border-radius: 50%;
+  border: 1px dashed rgba(103, 232, 249, 0.45);
+  animation: nexusSpin 14s linear infinite;
+}
+.nexus-mark .ring.two {
+  inset: -32px;
+  border-color: rgba(165, 180, 252, 0.3);
+  animation-duration: 24s;
+  animation-direction: reverse;
+}
+.nexus-mark .core {
+  position: relative;
+  inset: 0;
+  width: 96px;
+  height: 96px;
+  border-radius: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(145deg, #312e81, #0e7490);
+  box-shadow: 0 0 60px rgba(99, 102, 241, 0.45), inset 0 0 30px rgba(6, 182, 212, 0.25);
+}
+.nexus-mark .core::after {
+  content: '';
+  position: absolute;
+  inset: 5px;
+  border-radius: 24px;
+  background: radial-gradient(circle at 50% 50%, #0b1023 45%, transparent 90%);
+}
+.nexus-mark .glyph {
+  position: relative;
+  z-index: 2;
+  font-family: var(--font-mono);
+  font-weight: 800;
+  font-size: 1.9rem;
+  background: linear-gradient(110deg, #67e8f9, #a5b4fc, #6ee7b7);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+@keyframes nexusSpin {
+  to { transform: rotate(360deg); }
+}
+
+.nexus-brand {
+  font-size: clamp(2.2rem, 7vw, 3.8rem);
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  margin: 0 0 12px;
+  line-height: 1.05;
+  opacity: 0;
+  transform: translateY(14px);
+  filter: blur(6px);
+  animation: nexusReveal 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.2s forwards;
+}
+.nexus-brand-part {
+  background: linear-gradient(110deg, #f8fafc, #cbd5e1);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.nexus-brand-part.accent {
+  background: linear-gradient(110deg, #22d3ee, #a5b4fc, #34d399);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.nexus-tagline {
+  opacity: 0;
+  transform: translateY(10px);
+  animation: nexusReveal 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.55s forwards;
+  color: #94a3b8;
+  font-size: 0.85rem;
+  letter-spacing: 0.02em;
+  max-width: 520px;
+}
+.nexus-progress {
+  margin-top: 38px;
+  width: min(320px, 70vw);
+  height: 4px;
+  border-radius: 99px;
+  background: rgba(148, 163, 184, 0.15);
+  overflow: hidden;
+  opacity: 0;
+  animation: nexusReveal 0.5s 0.8s forwards;
+}
+.nexus-progress-bar {
+  display: block;
+  height: 100%;
+  width: 0%;
+  border-radius: 99px;
+  background: linear-gradient(90deg, #22d3ee, #6366f1, #10b981);
+  box-shadow: 0 0 18px rgba(34, 211, 238, 0.6);
+  transition: width 0.12s linear;
+}
+.nexus-progress-label {
+  margin-top: 12px;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.28em;
+  color: #64748b;
+  opacity: 0;
+  animation: nexusReveal 0.5s 0.8s forwards;
+}
+@keyframes nexusReveal {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+}
+
+/* ==========================================================================
+   REVEAL-ON-SCROLL UTILITIES
+   ========================================================================== */
+.reveal {
+  opacity: 0;
+  transform: translateY(26px);
+  transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+.reveal.in-view {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ==========================================================================
+   HOME LAUNCHER HUB
+   ========================================================================== */
+.launcher-hero {
+  background: linear-gradient(120deg, rgba(49, 46, 129, 0.35), rgba(8, 51, 68, 0.3));
+}
+.launcher-hero-glow {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(620px 420px at 50% 0%, rgba(99, 102, 241, 0.14) 0%, transparent 70%);
+  pointer-events: none;
+}
+.launcher-stat {
+  background: rgba(15, 23, 42, 0.6);
+  border: 1px solid var(--border-subtle);
+  border-radius: 1rem;
+  padding: 0.85rem 1rem;
+  text-align: center;
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.25s;
+}
+.launcher-stat:hover {
+  transform: translateY(-3px);
+  border-color: var(--border-active);
+}
+.launcher-stat .num {
+  font-size: 1.5rem;
+  font-weight: 900;
+  font-family: var(--font-mono);
+  background: linear-gradient(110deg, #67e8f9, #a5b4fc);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.launch-card {
+  position: relative;
+  padding: 1.5rem;
+  border-radius: 1.5rem;
+  overflow: hidden;
+  cursor: pointer;
+}
+.launch-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(240px 160px at var(--mx, 50%) var(--my, 0%), rgba(255, 255, 255, 0.07) 0%, transparent 70%);
+  opacity: 0;
+  transition: opacity 0.3s;
+  pointer-events: none;
+}
+.launch-card:hover::before {
+  opacity: 1;
+}
+.launch-card-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1rem;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.3);
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.launch-card:hover .launch-card-icon {
+  transform: translateY(-3px) scale(1.06);
+}
+.launch-go {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #94a3b8;
+  transition: color 0.2s, gap 0.2s;
+}
+.launch-card:hover .launch-go {
+  color: #22d3ee;
+  gap: 0.6rem;
+}
+
+/* ==========================================================================
+   UI FLOW POLISH
+   ========================================================================== */
+.glass-panel {
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s, box-shadow 0.3s;
+}
+.glass-panel:hover {
+  transform: translateY(-2px);
+}
+
+#brand-home {
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), filter 0.25s;
+}
+#brand-home:hover {
+  transform: translateY(-2px);
+  filter: drop-shadow(0 4px 14px rgba(99, 102, 241, 0.45));
+}
+
+.nav-tab-btn {
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid rgba(99, 102, 241, 0.7);
+  outline-offset: 2px;
+}
+
+.formula-item-card {
+  animation: fadeIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+}
+
+/* Slow breathing drift on the ambient mesh */
+.ambient-mesh {
+  animation: meshDrift 26s ease-in-out infinite alternate;
+}
+@keyframes meshDrift {
+  from { filter: hue-rotate(0deg); }
+  to { filter: hue-rotate(16deg); }
+}
+
+/* ==========================================================================
+   REDUCED MOTION
+   ========================================================================== */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  .reveal {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  #nexus-splash {
+    display: none !important;
+  }
+}

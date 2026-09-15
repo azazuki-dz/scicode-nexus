@@ -440,5 +440,61 @@ export const WAVES_LIGHT_FORMULAS = [
 
       return { result, unit: target === 'd' ? 'm' : target === 'lambda' ? 'm' : '°', steps };
     }
+  },
+
+  {
+    id: 'doppler_effect',
+    name: 'Doppler Effect (Approaching Source)',
+    nameTh: 'ปรากฏการณ์ดอปเปลอร์ (แหล่งเข้าใกล้)',
+    category: 'waves',
+    categoryTh: 'คลื่นและแสง',
+    icon: 'volume-2',
+    grade: 'ม.6',
+    latex: 'f\' = f \\cdot \\frac{v}{v - v_s}',
+    description: 'ความถี่ที่ผู้ฟังได้ยินเมื่อแหล่งกำเนิดเคลื่อนที่เข้าหา f\' = f·v/(v−vs) เช่น f=500 Hz, v=340 m/s, vs=20 m/s ได้ 531.25 Hz',
+    variables: [
+      { id: 'f', symbol: 'f', name: 'Source Frequency', nameTh: 'ความถี่ต้นกำเนิด (f)', unit: 'Hz', defaultValue: 500, min: 0.0001, max: 1e10, step: 1 },
+      { id: 'v', symbol: 'v', name: 'Wave Speed', nameTh: 'ความเร็วคลื่น (v)', unit: 'm/s', defaultValue: 340, min: 0.0001, max: 1e8, step: 1 },
+      { id: 'vs', symbol: 'v_s', name: 'Source Speed', nameTh: 'ความเร็วแหล่งกำเนิด (vs)', unit: 'm/s', defaultValue: 20, min: 0, max: 1e8, step: 1 },
+      { id: 'fobs', symbol: 'f\'', name: 'Observed Frequency', nameTh: 'ความถี่ที่ได้ยิน (f\')', unit: 'Hz', defaultValue: 531.25, min: 0.0001, max: 1e10, step: 1 }
+    ],
+    solveTargets: ['fobs', 'f', 'v', 'vs'],
+    calculate: (inputs, target = 'fobs') => {
+      const { f, v, vs, fobs } = inputs;
+      let result, steps;
+      if (target === 'fobs') {
+        if (v === vs) { throw new Error('vs ต้องน้อยกว่า v (ห้ามเท่ากับความเร็วคลื่น)'); }
+        result = (f * v) / (v - vs);
+        steps = [
+          { title: 'สูตร', latex: 'f\' = f \\cdot \\frac{v}{v - v_s}', explanation: `f = ${f} Hz, v = ${v} m/s, vs = ${vs} m/s` },
+          { title: 'แทนค่า', latex: `f' = ${f} \\times \\frac{${v}}{${v} - ${vs}}`, explanation: 'ความถี่เพิ่มขึ้นเพราะแหล่งเข้าหาผู้ฟัง' },
+          { title: 'ผลลัพธ์', latex: `f' = ${result.toFixed(3)} \\ \\text{Hz}`, explanation: `ความถี่ที่ได้ยินเพิ่มเป็น ${result.toFixed(3)} Hz` }
+        ];
+      } else if (target === 'f') {
+        if (v === vs) { throw new Error('vs ต้องน้อยกว่า v'); }
+        result = (fobs * (v - vs)) / v;
+        steps = [
+          { title: 'จัดรูปหา f', latex: 'f = \\frac{f\'(v - v_s)}{v}', explanation: `f' = ${fobs}, v = ${v}, vs = ${vs}` },
+          { title: 'ผลลัพธ์', latex: `f = \\frac{${fobs} \\times (${v} - ${vs})}{${v}} = ${result.toFixed(3)} \\ \\text{Hz}`, explanation: `ความถี่ต้นกำเนิดเท่ากับ ${result.toFixed(3)} Hz` }
+        ];
+      } else if (target === 'v') {
+        if (fobs === f) { throw new Error('f\' ต้องไม่เท่ากับ f จึงจะหา v ได้'); }
+        result = (fobs * vs) / (fobs - f);
+        steps = [
+          { title: 'จัดรูปหา v', latex: 'v = \\frac{f\'\\,v_s}{f\' - f}', explanation: `f' = ${fobs}, f = ${f}, vs = ${vs}` },
+          { title: 'ผลลัพธ์', latex: `v = \\frac{${fobs} \\times ${vs}}{${fobs} - ${f}} = ${result.toFixed(3)} \\ \\text{m/s}`, explanation: `ความเร็วคลื่นเท่ากับ ${result.toFixed(3)} m/s` }
+        ];
+      } else {
+        if (f === 0) throw new Error('ความถี่ f ต้องไม่เป็น 0');
+        if (fobs === 0) throw new Error('f\' ต้องไม่เป็น 0');
+        result = v - (f * v) / fobs;
+        if (result <= 0) throw new Error('ข้อมูลไม่สอดคล้อง (ได้ vs ≤ 0)');
+        steps = [
+          { title: 'จัดรูปหา vs', latex: 'v_s = v - \\frac{f \\cdot v}{f\'}', explanation: `f = ${f}, v = ${v}, f' = ${fobs}` },
+          { title: 'ผลลัพธ์', latex: `v_s = ${v} - \\frac{${f} \\times ${v}}{${fobs}} = ${result.toFixed(3)} \\ \\text{m/s}`, explanation: `ความเร็วแหล่งกำเนิดเท่ากับ ${result.toFixed(3)} m/s` }
+        ];
+      }
+      return { result, unit: target === 'f' || target === 'fobs' ? 'Hz' : 'm/s', steps };
+    }
   }
 ];

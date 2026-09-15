@@ -276,5 +276,115 @@ export const SEQUENCES_FORMULAS = [
       ];
       return { result, unit: '', steps };
     }
+  },
+
+  {
+    id: 'sum_naturals',
+    name: 'Sum of First n Naturals',
+    nameTh: 'ผลบวกจำนวนนับ n ตัวแรก',
+    category: 'sequences',
+    categoryTh: 'ลำดับและอนุกรม',
+    icon: 'list',
+    grade: 'ม.4',
+    latex: 'S = \\frac{n(n+1)}{2}',
+    description: 'ผลบวก 1 + 2 + 3 + ... + n = n(n+1)/2 เช่น n = 5 ได้ 1+2+3+4+5 = 15',
+    variables: [
+      { id: 'n', symbol: 'n', name: 'Term Count', nameTh: 'จำนวนพจน์ (n)', unit: '', defaultValue: 5, min: 1, max: 1e9, step: 1 },
+      { id: 'S', symbol: 'S', name: 'Sum', nameTh: 'ผลบวก', unit: '', defaultValue: 15, min: 1, max: 1e18, step: 1 }
+    ],
+    solveTargets: ['S', 'n'],
+    calculate: (inputs, target = 'S') => {
+      const { n, S } = inputs;
+      let result, steps;
+      if (target === 'S') {
+        result = (n * (n + 1)) / 2;
+        steps = [
+          { title: 'สูตร', latex: 'S = \\frac{n(n+1)}{2}', explanation: `n = ${n}` },
+          { title: 'แทนค่า', latex: `S = \\frac{${n} \\times ${n + 1}}{2}`, explanation: 'แทนจำนวนพจน์ลงในสูตร' },
+          { title: 'ผลลัพธ์', latex: `S = ${result}`, explanation: `ผลบวก 1 ถึง ${n} เท่ากับ ${result}` }
+        ];
+      } else {
+        const cand = (Math.sqrt(8 * S + 1) - 1) / 2;
+        const nVal = Math.round(cand);
+        if (Math.abs(nVal - cand) > 1e-9 || nVal < 1) throw new Error('S ต้องเป็นผลบวกจำนวนนับลงตัว (เช่น 15, 21, 28 ...)');
+        result = nVal;
+        steps = [
+          { title: 'จัดรูปหา n', latex: 'n = \\frac{\\sqrt{8S + 1} - 1}{2}', explanation: `S = ${S}` },
+          { title: 'ผลลัพธ์', latex: `n = ${nVal}`, explanation: `ต้องมีทั้งหมด ${nVal} พจน์ จึงจะรวมได้ ${S}` }
+        ];
+      }
+      return { result, unit: '', steps };
+    }
+  },
+
+  {
+    id: 'sum_squares',
+    name: 'Sum of Squared Naturals',
+    nameTh: 'ผลบวกกำลังสอง n ตัวแรก',
+    category: 'sequences',
+    categoryTh: 'ลำดับและอนุกรม',
+    icon: 'square',
+    grade: 'ม.5',
+    latex: 'S = \\frac{n(n+1)(2n+1)}{6}',
+    description: 'ผลบวก 1² + 2² + ... + n² = n(n+1)(2n+1)/6 เช่น n = 5 ได้ 1+4+9+16+25 = 55',
+    variables: [
+      { id: 'n', symbol: 'n', name: 'Term Count', nameTh: 'จำนวนพจน์ (n)', unit: '', defaultValue: 5, min: 1, max: 1e5, step: 1 }
+    ],
+    solveTargets: ['S'],
+    calculate: (inputs) => {
+      const { n } = inputs;
+      const result = (n * (n + 1) * (2 * n + 1)) / 6;
+      const steps = [
+        { title: 'สูตร', latex: 'S = \\frac{n(n+1)(2n+1)}{6}', explanation: `n = ${n}` },
+        { title: 'แทนค่า', latex: `S = \\frac{${n} \\times ${n + 1} \\times ${2 * n + 1}}{6}`, explanation: 'แทนจำนวนพจน์' },
+        { title: 'ผลลัพธ์', latex: `S = ${result}`, explanation: `ผลบวกกำลังสอง 1² ถึง ${n}² เท่ากับ ${result}` }
+      ];
+      return { result, unit: '', steps };
+    }
+  },
+
+  {
+    id: 'geometric_mean',
+    name: 'Geometric Mean',
+    nameTh: 'ค่าเฉลี่ยเรขาคณิต',
+    category: 'sequences',
+    categoryTh: 'ลำดับและอนุกรม',
+    icon: 'percent',
+    grade: 'ม.5',
+    latex: 'g = \\sqrt{ab}',
+    description: 'ค่าเฉลี่ยเรขาคณิตของสองจำนวน = √(ab) เช่น √(4×9) = 6 ใช้หาพจน์กลางของลำดับเรขาคณิต',
+    variables: [
+      { id: 'a', symbol: 'a', name: 'Value a', nameTh: 'จำนวน a', unit: '', defaultValue: 4, min: 0.0001, max: 1e12, step: 1 },
+      { id: 'b', symbol: 'b', name: 'Value b', nameTh: 'จำนวน b', unit: '', defaultValue: 9, min: 0.0001, max: 1e12, step: 1 },
+      { id: 'g', symbol: 'g', name: 'Geometric Mean', nameTh: 'ค่าเฉลี่ยเรขาคณิต', unit: '', defaultValue: 6, min: 0.0001, max: 1e12, step: 1 }
+    ],
+    solveTargets: ['g', 'a', 'b'],
+    calculate: (inputs, target = 'g') => {
+      const { a, b, g } = inputs;
+      let result, steps;
+      if (target === 'g') {
+        result = Math.sqrt(a * b);
+        steps = [
+          { title: 'สูตร', latex: 'g = \\sqrt{ab}', explanation: `a = ${a}, b = ${b}` },
+          { title: 'แทนค่า', latex: `g = \\sqrt{${a} \\times ${b}} = \\sqrt{${a * b}}`, explanation: 'คูณแล้วเปิดราก' },
+          { title: 'ผลลัพธ์', latex: `g = ${result.toFixed(4)}`, explanation: `ค่าเฉลี่ยเรขาคณิตเท่ากับ ${result.toFixed(4)}` }
+        ];
+      } else if (target === 'a') {
+        if (b === 0) throw new Error('b ต้องไม่เป็น 0');
+        result = (g * g) / b;
+        steps = [
+          { title: 'จัดรูปหา a', latex: 'a = \\frac{g^2}{b}', explanation: `g = ${g}, b = ${b}` },
+          { title: 'ผลลัพธ์', latex: `a = \\frac{${g}^2}{${b}} = ${result.toFixed(4)}`, explanation: `จำนวน a เท่ากับ ${result.toFixed(4)}` }
+        ];
+      } else {
+        if (a === 0) throw new Error('a ต้องไม่เป็น 0');
+        result = (g * g) / a;
+        steps = [
+          { title: 'จัดรูปหา b', latex: 'b = \\frac{g^2}{a}', explanation: `g = ${g}, a = ${a}` },
+          { title: 'ผลลัพธ์', latex: `b = \\frac{${g}^2}{${a}} = ${result.toFixed(4)}`, explanation: `จำนวน b เท่ากับ ${result.toFixed(4)}` }
+        ];
+      }
+      return { result, unit: '', steps };
+    }
   }
 ];

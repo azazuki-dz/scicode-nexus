@@ -199,6 +199,51 @@ export const BIOLOGY_FORMULAS = [
 
       return { result, unit: target === 'p' ? '' : 'ตัว', steps };
     }
+  },
+
+  {
+    id: 'cardiac_output',
+    name: 'Cardiac Output',
+    nameTh: 'ปริมาณเลือดที่หัวใจฉีดต่อนาที',
+    category: 'biology',
+    categoryTh: 'ชีววิทยา',
+    icon: 'heart',
+    grade: 'ม.4',
+    latex: 'CO = HR \\times SV',
+    description: 'cardiac output = อัตราการเต้นหัวใจ (HR) × ปริมาตรเลือดฉีดต่อครั้ง (SV) เช่น 70 ครั้ง/นาที × 75 มล. = 5250 มล./นาที',
+    variables: [
+      { id: 'HR', symbol: 'HR', name: 'Heart Rate', nameTh: 'อัตราการเต้นหัวใจ', unit: 'ครั้ง/นาที', defaultValue: 70, min: 1, max: 400, step: 1 },
+      { id: 'SV', symbol: 'SV', name: 'Stroke Volume', nameTh: 'ปริมาตรเลือดต่อครั้ง', unit: 'mL', defaultValue: 75, min: 1, max: 500, step: 1 },
+      { id: 'CO', symbol: 'CO', name: 'Cardiac Output', nameTh: 'Cardiac Output', unit: 'mL/min', defaultValue: 5250, min: 1, max: 1e6, step: 1 }
+    ],
+    solveTargets: ['CO', 'HR', 'SV'],
+    calculate: (inputs, target = 'CO') => {
+      const { HR, SV, CO } = inputs;
+      let result, steps;
+      if (target === 'CO') {
+        result = HR * SV;
+        steps = [
+          { title: 'สูตร', latex: 'CO = HR \\times SV', explanation: `HR = ${HR} ครั้ง/นาที, SV = ${SV} mL` },
+          { title: 'แทนค่า', latex: `CO = ${HR} \\times ${SV}`, explanation: 'อัตราเต้นคูณปริมาตรต่อครั้ง' },
+          { title: 'ผลลัพธ์', latex: `CO = ${result} \\ \\text{mL/min}`, explanation: `หัวใจฉีดเลือด ${result.toLocaleString()} มล. ต่อนาที` }
+        ];
+      } else if (target === 'HR') {
+        if (SV === 0) throw new Error('SV ต้องไม่เป็น 0');
+        result = CO / SV;
+        steps = [
+          { title: 'จัดรูปหา HR', latex: 'HR = \\frac{CO}{SV}', explanation: `CO = ${CO} mL/min, SV = ${SV} mL` },
+          { title: 'ผลลัพธ์', latex: `HR = \\frac{${CO}}{${SV}} = ${result.toFixed(1)} \\ \\text{ครั้ง/นาที}`, explanation: `อัตราการเต้นหัวใจเท่ากับ ${result.toFixed(1)} ครั้ง/นาที` }
+        ];
+      } else {
+        if (HR === 0) throw new Error('HR ต้องไม่เป็น 0');
+        result = CO / HR;
+        steps = [
+          { title: 'จัดรูปหา SV', latex: 'SV = \\frac{CO}{HR}', explanation: `CO = ${CO} mL/min, HR = ${HR} ครั้ง/นาที` },
+          { title: 'ผลลัพธ์', latex: `SV = \\frac{${CO}}{${HR}} = ${result.toFixed(1)} \\ \\text{mL}`, explanation: `ปริมาตรเลือดต่อครั้งเท่ากับ ${result.toFixed(1)} mL` }
+        ];
+      }
+      return { result, unit: target === 'CO' ? 'mL/min' : target === 'HR' ? 'ครั้ง/นาที' : 'mL', steps };
+    }
   }
 ];
 

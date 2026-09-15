@@ -500,5 +500,97 @@ export const ELECTRICITY_FORMULAS = [
 
       return { result, unit: target === 'theta' ? '°' : target === 'B' ? 'T' : 'N', steps };
     }
+  },
+
+  {
+    id: 'electric_field_point',
+    name: 'Electric Field of a Point Charge',
+    nameTh: 'สนามไฟฟ้าจุดประจุ',
+    category: 'electricity',
+    categoryTh: 'ไฟฟ้าและแม่เหล็ก',
+    icon: 'zap',
+    grade: 'ม.6',
+    latex: 'E = \\frac{kQ}{r^2}',
+    description: 'สนามไฟฟ้า E = kQ/r² โดย k = 8.99×10⁹ นิวตัน·เมตร²/คูลอมบ์² เช่น Q=10⁻⁵ C ที่ r=1 m ได้ 89,900 N/C',
+    variables: [
+      { id: 'Q', symbol: 'Q', name: 'Charge', nameTh: 'ประจุ (Q)', unit: 'C', defaultValue: 0.00001, min: -1e6, max: 1e6, step: 1e-6 },
+      { id: 'r', symbol: 'r', name: 'Distance', nameTh: 'ระยะห่าง (r)', unit: 'm', defaultValue: 1, min: 0.0001, max: 1e7, step: 0.1 },
+      { id: 'E', symbol: 'E', name: 'Electric Field', nameTh: 'สนามไฟฟ้า (E)', unit: 'N/C', defaultValue: 89900, min: -1e15, max: 1e15, step: 1 }
+    ],
+    solveTargets: ['E', 'Q', 'r'],
+    calculate: (inputs, target = 'E') => {
+      const { Q, r, E } = inputs;
+      const k = 8.99e9;
+      let result, steps;
+      if (target === 'E') {
+        result = (k * Q) / (r * r);
+        steps = [
+          { title: 'สูตร', latex: 'E = \\frac{kQ}{r^2}', explanation: `Q = ${Q.toExponential(1)} C, r = ${r} m, k = 8.99×10⁹` },
+          { title: 'แทนค่า', latex: `E = \\frac{8.99 \\times 10^9 \\times ${Q.toExponential(1)}}{${r}^2}`, explanation: 'แทนประจุและระยะห่าง' },
+          { title: 'ผลลัพธ์', latex: `E = ${result.toExponential(4)} \\ \\text{N/C}`, explanation: `สนามไฟฟ้าเท่ากับ ${result.toExponential(4)} นิวตัน/คูลอมบ์` }
+        ];
+      } else if (target === 'Q') {
+        result = (E * r * r) / k;
+        steps = [
+          { title: 'จัดรูปหา Q', latex: 'Q = \\frac{Er^2}{k}', explanation: `E = ${E.toExponential(3)} N/C, r = ${r} m` },
+          { title: 'ผลลัพธ์', latex: `Q = \\frac{${E.toExponential(3)} \\times ${r}^2}{8.99 \\times 10^9} = ${result.toExponential(4)} \\ \\text{C}`, explanation: `ประจุเท่ากับ ${result.toExponential(4)} คูลอมบ์` }
+        ];
+      } else {
+        if (E === 0) throw new Error('สนามไฟฟ้า E ต้องไม่เป็น 0');
+        result = Math.sqrt(Math.abs((k * Q) / E));
+        steps = [
+          { title: 'จัดรูปหา r', latex: 'r = \\sqrt{\\left|\\frac{kQ}{E}\\right|}', explanation: `Q = ${Q.toExponential(1)} C, E = ${E.toExponential(3)} N/C` },
+          { title: 'ผลลัพธ์', latex: `r = \\sqrt{\\frac{8.99 \\times 10^9 \\times ${Q.toExponential(1)}}{${E.toExponential(3)}}} = ${result.toFixed(3)} \\ \\text{m}`, explanation: `ระยะห่างเท่ากับ ${result.toFixed(3)} เมตร` }
+        ];
+      }
+      return { result, unit: target === 'E' ? 'N/C' : target === 'Q' ? 'C' : 'm', steps };
+    }
+  },
+
+  {
+    id: 'capacitors_series',
+    name: 'Capacitors in Series',
+    nameTh: 'ตัวเก็บประจุอนุกรม',
+    category: 'electricity',
+    categoryTh: 'ไฟฟ้าและแม่เหล็ก',
+    icon: 'layers',
+    grade: 'ม.6',
+    latex: 'C = \\frac{C_1 C_2}{C_1 + C_2}',
+    description: 'ความจุรวมอนุกรมสองตัว = ผลคูณ/ผลบวก เช่น C₁=C₂=4 µF ได้ C = 16/8 = 2 µF (น้อยกว่าตัวเล็กสุด)',
+    variables: [
+      { id: 'C1', symbol: 'C_1', name: 'Capacitance 1', nameTh: 'ความจุตัวที่ 1', unit: 'µF', defaultValue: 4, min: 0.0001, max: 1e9, step: 0.1 },
+      { id: 'C2', symbol: 'C_2', name: 'Capacitance 2', nameTh: 'ความจุตัวที่ 2', unit: 'µF', defaultValue: 4, min: 0.0001, max: 1e9, step: 0.1 },
+      { id: 'C', symbol: 'C', name: 'Total Capacitance', nameTh: 'ความจุรวม (C)', unit: 'µF', defaultValue: 2, min: 0.0001, max: 1e9, step: 0.1 }
+    ],
+    solveTargets: ['C', 'C1', 'C2'],
+    calculate: (inputs, target = 'C') => {
+      const { C1, C2, C } = inputs;
+      let result, steps;
+      if (target === 'C') {
+        result = (C1 * C2) / (C1 + C2);
+        steps = [
+          { title: 'สูตร', latex: 'C = \\frac{C_1 C_2}{C_1 + C_2}', explanation: `C₁ = ${C1} µF, C₂ = ${C2} µF` },
+          { title: 'แทนค่า', latex: `C = \\frac{${C1} \\times ${C2}}{${C1} + ${C2}} = \\frac{${C1 * C2}}{${C1 + C2}}`, explanation: 'ผลคูณหารผลบวกของความจุทั้งสอง' },
+          { title: 'ผลลัพธ์', latex: `C = ${result.toFixed(4)} \\ \\text{µF}`, explanation: `ความจุรวมเท่ากับ ${result.toFixed(4)} µF` }
+        ];
+      } else if (target === 'C1') {
+        if (C2 === C) throw new Error('C₂ ต้องไม่เท่ากับ C (ตัวส่วนเป็น 0)');
+        result = (C * C2) / (C2 - C);
+        if (result <= 0) throw new Error('ข้อมูลไม่สอดคล้อง (C₁ ติดลบหรือ 0)');
+        steps = [
+          { title: 'จัดรูปหา C₁', latex: 'C_1 = \\frac{C\\,C_2}{C_2 - C}', explanation: `C = ${C} µF, C₂ = ${C2} µF` },
+          { title: 'ผลลัพธ์', latex: `C_1 = \\frac{${C} \\times ${C2}}{${C2} - ${C}} = ${result.toFixed(4)} \\ \\text{µF}`, explanation: `ความจุตัวที่ 1 เท่ากับ ${result.toFixed(4)} µF` }
+        ];
+      } else {
+        if (C1 === C) throw new Error('C₁ ต้องไม่เท่ากับ C (ตัวส่วนเป็น 0)');
+        result = (C * C1) / (C1 - C);
+        if (result <= 0) throw new Error('ข้อมูลไม่สอดคล้อง (C₂ ติดลบหรือ 0)');
+        steps = [
+          { title: 'จัดรูปหา C₂', latex: 'C_2 = \\frac{C\\,C_1}{C_1 - C}', explanation: `C = ${C} µF, C₁ = ${C1} µF` },
+          { title: 'ผลลัพธ์', latex: `C_2 = \\frac{${C} \\times ${C1}}{${C1} - ${C}} = ${result.toFixed(4)} \\ \\text{µF}`, explanation: `ความจุตัวที่ 2 เท่ากับ ${result.toFixed(4)} µF` }
+        ];
+      }
+      return { result, unit: 'µF', steps };
+    }
   }
 ];

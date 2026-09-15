@@ -512,5 +512,150 @@ export const MECHANICS_FORMULAS = [
 
       return { result, unit: target === 'L' ? 'm' : target === 'g' ? 'm/s²' : 's', steps };
     }
-  }
+  },
+
+
+  {
+    id: 'gravitational_pe',
+    name: 'Gravitational Potential Energy',
+    nameTh: 'พลังงานศักย์โน้มถ่วง',
+    category: 'mechanics',
+    categoryTh: 'กลศาสตร์',
+    icon: 'arrow-up',
+    grade: 'ม.4',
+    latex: 'PE = mgh',
+    description: 'พลังงานศักย์โน้มถ่วง = มวล·ความเร่งโน้มถ่วง·ความสูง เช่น m=5 kg, h=10 m ได้ 490.5 จูล',
+    variables: [
+      { id: 'm', symbol: 'm', name: 'Mass', nameTh: 'มวล (m)', unit: 'kg', defaultValue: 5, min: 0.0001, max: 1e9, step: 0.1 },
+      { id: 'g', symbol: 'g', name: 'Gravity', nameTh: 'ความเร่งโน้มถ่วง (g)', unit: 'm/s²', defaultValue: 9.81, min: 0.0001, max: 100, step: 0.01 },
+      { id: 'h', symbol: 'h', name: 'Height', nameTh: 'ความสูง (h)', unit: 'm', defaultValue: 10, min: 0, max: 1e7, step: 0.1 },
+      { id: 'PE', symbol: 'PE', name: 'Potential Energy', nameTh: 'พลังงานศักย์', unit: 'J', defaultValue: 490.5, min: 0, max: 1e18, step: 1 }
+    ],
+    solveTargets: ['PE', 'm', 'g', 'h'],
+    calculate: (inputs, target = 'PE') => {
+      const { m, g, h, PE } = inputs;
+      let result, steps;
+      if (target === 'PE') {
+        result = m * g * h;
+        steps = [
+          { title: 'สูตร', latex: 'PE = mgh', explanation: `m = ${m} kg, g = ${g} m/s², h = ${h} m` },
+          { title: 'แทนค่า', latex: `PE = ${m} \\times ${g} \\times ${h}`, explanation: 'แทนค่าทั้งสามตัว' },
+          { title: 'ผลลัพธ์', latex: `PE = ${result.toFixed(2)} \\ \\text{J}`, explanation: `พลังงานศักย์เท่ากับ ${result.toFixed(2)} จูล` }
+        ];
+      } else if (target === 'm') {
+        if (g === 0 || h === 0) throw new Error('g และ h ต้องไม่เป็น 0');
+        result = PE / (g * h);
+        steps = [
+          { title: 'จัดรูปหา m', latex: 'm = \\frac{PE}{gh}', explanation: `PE = ${PE} J, g = ${g}, h = ${h}` },
+          { title: 'ผลลัพธ์', latex: `m = \\frac{${PE}}{${g} \\times ${h}} = ${result.toFixed(3)} \\ \\text{kg}`, explanation: `มวลเท่ากับ ${result.toFixed(3)} kg` }
+        ];
+      } else if (target === 'g') {
+        if (m === 0 || h === 0) throw new Error('m และ h ต้องไม่เป็น 0');
+        result = PE / (m * h);
+        steps = [
+          { title: 'จัดรูปหา g', latex: 'g = \\frac{PE}{mh}', explanation: `PE = ${PE} J, m = ${m}, h = ${h}` },
+          { title: 'ผลลัพธ์', latex: `g = \\frac{${PE}}{${m} \\times ${h}} = ${result.toFixed(3)} \\ \\text{m/s}^2`, explanation: `ความเร่งโน้มถ่วงเท่ากับ ${result.toFixed(3)} m/s²` }
+        ];
+      } else {
+        if (m === 0 || g === 0) throw new Error('m และ g ต้องไม่เป็น 0');
+        result = PE / (m * g);
+        steps = [
+          { title: 'จัดรูปหา h', latex: 'h = \\frac{PE}{mg}', explanation: `PE = ${PE} J, m = ${m}, g = ${g}` },
+          { title: 'ผลลัพธ์', latex: `h = \\frac{${PE}}{${m} \\times ${g}} = ${result.toFixed(3)} \\ \\text{m}`, explanation: `ความสูงเท่ากับ ${result.toFixed(3)} m` }
+        ];
+      }
+      return { result, unit: target === 'PE' ? 'J' : target === 'm' ? 'kg' : target === 'g' ? 'm/s²' : 'm', steps };
+    }
+  },
+
+  {
+    id: 'spring_energy',
+    name: 'Spring Potential Energy',
+    nameTh: 'พลังงานศักย์สปริง',
+    category: 'mechanics',
+    categoryTh: 'กลศาสตร์',
+    icon: 'activity',
+    grade: 'ม.5',
+    latex: 'E = \\frac{1}{2}kx^2',
+    description: 'พลังงานศักย์ยืดหยุ่น = ½·ค่าคงที่สปริง(k)·ระยะยืด²(x²) เช่น k=200 N/m, x=0.3 m ได้ 9 จูล',
+    variables: [
+      { id: 'k', symbol: 'k', name: 'Spring Constant', nameTh: 'ค่าคงที่สปริง (k)', unit: 'N/m', defaultValue: 200, min: 0.0001, max: 1e9, step: 1 },
+      { id: 'x', symbol: 'x', name: 'Displacement', nameTh: 'ระยะยืด/หด (x)', unit: 'm', defaultValue: 0.3, min: 0, max: 1e6, step: 0.01 },
+      { id: 'E', symbol: 'E', name: 'Spring Energy', nameTh: 'พลังงานศักย์สปริง', unit: 'J', defaultValue: 9, min: 0, max: 1e18, step: 0.1 }
+    ],
+    solveTargets: ['E', 'k', 'x'],
+    calculate: (inputs, target = 'E') => {
+      const { k, x, E } = inputs;
+      let result, steps;
+      if (target === 'E') {
+        result = 0.5 * k * x * x;
+        steps = [
+          { title: 'สูตร', latex: 'E = \\frac{1}{2}kx^2', explanation: `k = ${k} N/m, x = ${x} m` },
+          { title: 'แทนค่า', latex: `E = \\frac{1}{2} \\times ${k} \\times ${x}^2`, explanation: 'แทนค่าคงที่สปริงและระยะยืด' },
+          { title: 'ผลลัพธ์', latex: `E = ${result.toFixed(3)} \\ \\text{J}`, explanation: `พลังงานศักย์สปริงเท่ากับ ${result.toFixed(3)} จูล` }
+        ];
+      } else if (target === 'k') {
+        if (x === 0) throw new Error('ระยะ x ต้องไม่เป็น 0');
+        result = (2 * E) / (x * x);
+        steps = [
+          { title: 'จัดรูปหา k', latex: 'k = \\frac{2E}{x^2}', explanation: `E = ${E} J, x = ${x} m` },
+          { title: 'ผลลัพธ์', latex: `k = \\frac{2 \\times ${E}}{${x}^2} = ${result.toFixed(3)} \\ \\text{N/m}`, explanation: `ค่าคงที่สปริงเท่ากับ ${result.toFixed(3)} N/m` }
+        ];
+      } else {
+        if (k === 0) throw new Error('ค่าคงที่สปริง k ต้องไม่เป็น 0');
+        result = Math.sqrt((2 * E) / k);
+        steps = [
+          { title: 'จัดรูปหา x', latex: 'x = \\sqrt{\\frac{2E}{k}}', explanation: `E = ${E} J, k = ${k} N/m` },
+          { title: 'ผลลัพธ์', latex: `x = \\sqrt{\\frac{2 \\times ${E}}{${k}}} = ${result.toFixed(3)} \\ \\text{m}`, explanation: `ระยะยืดเท่ากับ ${result.toFixed(3)} m` }
+        ];
+      }
+      return { result, unit: target === 'E' ? 'J' : target === 'k' ? 'N/m' : 'm', steps };
+    }
+  },
+
+  {
+    id: 'mechanical_power',
+    name: 'Mechanical Power',
+    nameTh: 'กำลังกล',
+    category: 'mechanics',
+    categoryTh: 'กลศาสตร์',
+    icon: 'cpu',
+    grade: 'ม.4',
+    latex: 'P = \\frac{W}{t}',
+    description: 'กำลัง = งาน(W)/เวลา(t) เช่น งาน 500 จูล ใน 10 วินาที ได้กำลัง 50 วัตต์',
+    variables: [
+      { id: 'W', symbol: 'W', name: 'Work', nameTh: 'งาน (W)', unit: 'J', defaultValue: 500, min: 0, max: 1e15, step: 1 },
+      { id: 't', symbol: 't', name: 'Time', nameTh: 'เวลา (t)', unit: 's', defaultValue: 10, min: 0.0001, max: 1e9, step: 0.1 },
+      { id: 'P', symbol: 'P', name: 'Power', nameTh: 'กำลัง (P)', unit: 'W', defaultValue: 50, min: 0, max: 1e15, step: 0.1 }
+    ],
+    solveTargets: ['P', 'W', 't'],
+    calculate: (inputs, target = 'P') => {
+      const { W, t, P } = inputs;
+      let result, steps;
+      if (target === 'P') {
+        result = W / t;
+        steps = [
+          { title: 'สูตร', latex: 'P = \\frac{W}{t}', explanation: `W = ${W} J, t = ${t} s` },
+          { title: 'แทนค่า', latex: `P = \\frac{${W}}{${t}}`, explanation: 'งานหารเวลาที่ใช้' },
+          { title: 'ผลลัพธ์', latex: `P = ${result.toFixed(3)} \\ \\text{W}`, explanation: `กำลังเท่ากับ ${result.toFixed(3)} วัตต์` }
+        ];
+      } else if (target === 'W') {
+        result = P * t;
+        steps = [
+          { title: 'จัดรูปหา W', latex: 'W = P \\times t', explanation: `P = ${P} W, t = ${t} s` },
+          { title: 'ผลลัพธ์', latex: `W = ${P} \\times ${t} = ${result.toFixed(3)} \\ \\text{J}`, explanation: `งานเท่ากับ ${result.toFixed(3)} จูล` }
+        ];
+      } else {
+        if (P === 0) throw new Error('กำลัง P ต้องไม่เป็น 0');
+        result = W / P;
+        steps = [
+          { title: 'จัดรูปหา t', latex: 't = \\frac{W}{P}', explanation: `W = ${W} J, P = ${P} W` },
+          { title: 'ผลลัพธ์', latex: `t = \\frac{${W}}{${P}} = ${result.toFixed(3)} \\ \\text{s}`, explanation: `เวลาเท่ากับ ${result.toFixed(3)} วินาที` }
+        ];
+      }
+      return { result, unit: target === 'P' ? 'W' : target === 'W' ? 'J' : 's', steps };
+    }
+  },
+
+
 ];

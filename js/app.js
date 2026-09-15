@@ -16,7 +16,7 @@ import { showToast } from './ui/toast.js';
 
 class SciCodeNexusApp {
   constructor() {
-    this.currentTab = 'formulas';
+    this.currentTab = 'launcher';
     this.currentCategory = 'all';
     this.solver = new FormulaSolver();
     this.codeRunner = null;
@@ -25,11 +25,14 @@ class SciCodeNexusApp {
     this.currentLesson = LESSONS_DATA[0];
     this.commandPalette = null;
     this.curriculumViewer = null;
+    this.revealObserver = null;
+    this.splashAnimId = null;
 
     this.init();
   }
 
   init() {
+    this.initNexusSplash();
     this.initTheme();
     this.initTabs();
     this.initFormulasSection();
@@ -39,9 +42,17 @@ class SciCodeNexusApp {
     this.initCurriculumSection();
     this.initCommandPalette();
     this.initGlobalEvents();
+    this.initLauncher();
+
+    // Start on the Nexus Home Hub instead of a specific tab
+    this.switchTab('launcher');
 
     // Render initial formula
     this.renderFormulaDetail();
+
+    // Reveal-on-scroll animations for launcher & static sections
+    this.observeReveals();
+    setTimeout(() => this.observeReveals(), 150);
   }
 
   // ==================== THEME MANAGEMENT ====================
@@ -101,6 +112,9 @@ class SciCodeNexusApp {
         if (this.pendulumSim) this.pendulumSim.resize();
       }, 50);
     }
+
+    // Smooth-scroll back to top whenever the view changes
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
   // ==================== FORMULAS & SOLVER MODULE ====================
@@ -234,7 +248,7 @@ class SciCodeNexusApp {
           <div class="flex-1 h-px bg-slate-800/80"></div>
         </div>
         <div class="space-y-2">
-          ${groups[cat.id].map(f => this.renderFormulaCard(f)).join('')}
+          ${groups[cat.id].map((f, i) => this.renderFormulaCard(f, i)).join('')}
         </div>
       </div>
     `).join('');
@@ -256,10 +270,11 @@ class SciCodeNexusApp {
     });
   }
 
-  renderFormulaCard(formula) {
+  renderFormulaCard(formula, idx = 0) {
     const isSelected = this.solver.currentFormula.id === formula.id;
+    const stagger = Math.min(idx * 18, 240);
     return `
-      <div data-id="${formula.id}" class="formula-item-card group p-3 rounded-xl border transition-all cursor-pointer ${
+      <div data-id="${formula.id}" style="animation-delay:${stagger}ms" class="formula-item-card group p-3 rounded-xl border transition-all cursor-pointer ${
         isSelected
           ? 'bg-indigo-950/40 border-indigo-500/80 shadow-md shadow-indigo-500/10 ring-1 ring-indigo-500/40'
           : 'bg-slate-900/60 border-slate-800 hover:border-slate-600/70 hover:bg-slate-800/40'
@@ -775,7 +790,210 @@ class SciCodeNexusApp {
   }
 
   initGlobalEvents() {
-    // Quick shortcut listeners or helpers
+    // Home button (desktop header) -> back to launcher hub
+    document.getElementById('home-btn')?.addEventListener('click', () => {
+      this.switchTab('launcher');
+    });
+
+    // Clicking the brand logo also returns home
+    document.getElementById('brand-home')?.addEventListener('click', () => {
+      this.switchTab('launcher');
+    });
+  }
+
+  initLauncher() {
+    const setStat = (id, val) => {
+      const el = document.getElementById(id);
+      if (el) el.textContent = String(val);
+    };
+    setStat('lstat-formulas', FORMULAS_DATA.length);
+    setStat('lstat-sims', 2);
+    setStat('lstat-lessons', LESSONS_DATA.length);
+    setStat('lstat-topics', ALL_CURRICULUM_DATA.length);
+
+    // Launch cards -> jump to the corresponding tab
+    document.querySelectorAll('[data-launch]').forEach(card => {
+      card.addEventListener('click', () => {
+        const tab = card.getAttribute('data-launch');
+        this.switchTab(tab);
+        const title = card.querySelector('.launch-title')?.textContent || tab;
+        showToast(`เข้าใช้งาน: ${title}`, 'info', 1200);
+      });
+    });
+
+    // Spotlight glow follows the cursor across the grid
+    document.querySelectorAll('.launch-card').forEach(card => {
+      card.addEventListener('mousemove', (e) => {
+        const r = card.getBoundingClientRect();
+        card.style.setProperty('--mx', `${((e.clientX - r.left) / r.width) * 100}%`);
+        card.style.setProperty('--my', `${((e.clientY - r.top) / r.height) * 100}%`);
+      });
+    });
+  }
+
+  // Particle-network entrance animation shown once on load
+  initNexusSplash() {
+    const splash = document.getElementById('nexus-splash');
+    if (!splash) return;
+    const canvas = document.getElementById('nexus-splash-canvas');
+    const ctx = canvas ? canvas.getContext('2d') : null;
+    const bar = document.getElementById('nexus-progress-bar');
+    const pctLabel = document.getElementById('nexus-progress-text');
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    let nodes = [];
+    let drawRaf = null;
+    let width = 0;
+    let height = 0;
+    let finished = false;
+
+    const resize = () => {
+      if (!canvas) return;
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      width = splash.clientWidth;
+      height = splash.clientHeight;
+      canvas.width = Math.round(width * dpr);
+      canvas.height = Math.round(height * dpr);
+      canvas.style.width = `${width}px`;
+      canvas.style.height = `${height}px`;
+      if (ctx) ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    };
+
+    const spawn = () => {
+      const count = reduced ? 0 : Math.max(40, Math.min(110, Math.round((width * height) / 22000)));
+      nodes = [];
+      const hues = [190, 205, 222, 240, 160];
+      for (let i = 0; i < count; i++) {
+        nodes.push({
+          x: Math.random() * width,
+          y: Math.random() * height,
+          r: 0.8 + Math.random() * 1.6,
+          vx: (Math.random() - 0.5) * 0.35,
+          vy: (Math.random() - 0.5) * 0.35,
+          hue: hues[Math.floor(Math.random() * hues.length)]
+        });
+      }
+    };
+
+    const stepParticles = () => {
+      const linkDist = 130;
+      for (let i = 0; i < nodes.length; i++) {
+        const a = nodes[i];
+        for (let j = i + 1; j < nodes.length; j++) {
+          const b = nodes[j];
+          const dx = a.x - b.x;
+          const dy = a.y - b.y;
+          const d2 = dx * dx + dy * dy;
+          if (d2 < linkDist * linkDist) {
+            const d = Math.sqrt(d2);
+            ctx.strokeStyle = `hsla(${a.hue}, 90%, 70%, ${(1 - d / linkDist) * 0.22})`;
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(a.x, a.y);
+            ctx.lineTo(b.x, b.y);
+            ctx.stroke();
+          }
+        }
+        a.x += a.vx;
+        a.y += a.vy;
+        if (a.x < -20) a.x = width + 20;
+        else if (a.x > width + 20) a.x = -20;
+        if (a.y < -20) a.y = height + 20;
+        else if (a.y > height + 20) a.y = -20;
+
+        ctx.beginPath();
+        ctx.arc(a.x, a.y, a.r, 0, Math.PI * 2);
+        ctx.fillStyle = `hsla(${a.hue}, 95%, 75%, 0.85)`;
+        ctx.shadowColor = `hsla(${a.hue}, 95%, 70%, 0.9)`;
+        ctx.shadowBlur = 8;
+        ctx.fill();
+      }
+      ctx.shadowBlur = 0;
+      if (!finished) drawRaf = requestAnimationFrame(stepParticles);
+    };
+
+    const finish = () => {
+      if (finished) return;
+      finished = true;
+      if (drawRaf) cancelAnimationFrame(drawRaf);
+      if (this.splashAnimId) cancelAnimationFrame(this.splashAnimId);
+      splash.classList.add('done');
+      document.body.style.overflow = '';
+      setTimeout(() => splash.remove(), 750);
+    };
+
+    resize();
+    spawn();
+    document.body.style.overflow = 'hidden';
+
+    if (reduced) {
+      finish();
+      return;
+    }
+
+    const animate = () => {
+      if (ctx) {
+        ctx.clearRect(0, 0, width, height);
+        ctx.shadowBlur = 0;
+      }
+      stepParticles();
+    };
+    animate();
+
+    // Load progress meter (eased), then reveal the app
+    let progress = 0;
+    const duration = 2100;
+    const startT = performance.now();
+    const tickProgress = (now) => {
+      const p = Math.min(1, (now - startT) / duration);
+      const eased = 1 - Math.pow(1 - p, 3);
+      progress = Math.round(eased * 100);
+      if (bar) bar.style.width = `${progress}%`;
+      if (pctLabel) pctLabel.textContent = `${progress}%`;
+      if (p < 1) {
+        this.splashAnimId = requestAnimationFrame(tickProgress);
+      } else {
+        finish();
+      }
+    };
+    this.splashAnimId = requestAnimationFrame(tickProgress);
+
+    splash.addEventListener('click', finish);
+
+    let resizing = false;
+    window.addEventListener('resize', () => {
+      if (resizing) return;
+      resizing = true;
+      setTimeout(() => {
+        resizing = false;
+        resize();
+        spawn();
+      }, 150);
+    });
+  }
+
+  setupRevealObserver() {
+    if (!('IntersectionObserver' in window)) {
+      document.querySelectorAll('.reveal').forEach(el => el.classList.add('in-view'));
+      return;
+    }
+    this.revealObserver = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('in-view');
+          this.revealObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+  }
+
+  // (Re)attach reveal observers to any .reveal elements not yet visible
+  observeReveals() {
+    if (!this.revealObserver) this.setupRevealObserver();
+    document.querySelectorAll('.reveal:not(.in-view)').forEach(el => {
+      if (this.revealObserver) this.revealObserver.observe(el);
+      else el.classList.add('in-view');
+    });
   }
 }
 

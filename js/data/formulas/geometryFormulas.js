@@ -417,5 +417,132 @@ export const GEOMETRY_FORMULAS = [
       ];
       return { result, unit: '', steps };
     }
+  },
+
+  {
+    id: 'pythagorean',
+    name: 'Pythagorean Theorem',
+    nameTh: 'ทฤษฎีบทพีทาโกรัส',
+    category: 'geometry',
+    categoryTh: 'เรขาคณิต',
+    icon: 'triangle',
+    grade: 'ม.3',
+    latex: 'c^2 = a^2 + b^2',
+    description: 'ความสัมพันธ์ของด้านในสามเหลี่ยมมุมฉาก c² = a² + b² เมื่อ c เป็นด้านตรงข้ามมุมฉาก',
+    variables: [
+      { id: 'a', symbol: 'a', name: 'Leg a', nameTh: 'ด้านประกอบมุมฉาก a', unit: '', defaultValue: 3, min: 0.0001, max: 1e9, step: 0.1 },
+      { id: 'b', symbol: 'b', name: 'Leg b', nameTh: 'ด้านประกอบมุมฉาก b', unit: '', defaultValue: 4, min: 0.0001, max: 1e9, step: 0.1 },
+      { id: 'c', symbol: 'c', name: 'Hypotenuse c', nameTh: 'ด้านตรงข้ามมุมฉาก c', unit: '', defaultValue: 5, min: 0.0001, max: 1e9, step: 0.1 }
+    ],
+    solveTargets: ['c', 'a', 'b'],
+    calculate: (inputs, target = 'c') => {
+      const { a, b, c } = inputs;
+      let result, steps;
+      if (target === 'c') {
+        result = Math.sqrt(a * a + b * b);
+        steps = [
+          { title: 'สูตร', latex: 'c^2 = a^2 + b^2', explanation: `a = ${a}, b = ${b}` },
+          { title: 'แทนค่า', latex: `c^2 = ${a}^2 + ${b}^2 = ${a * a} + ${b * b} = ${a * a + b * b}`, explanation: `ผลรวมกำลังสองเท่ากับ ${(a * a + b * b).toFixed(4)}` },
+          { title: 'ผลลัพธ์', latex: `c = \\sqrt{${(a * a + b * b).toFixed(4)}} = ${result.toFixed(4)}`, explanation: `ด้านตรงข้ามมุมฉากยาว ${result.toFixed(4)}` }
+        ];
+      } else if (target === 'a') {
+        if (c <= a) throw new Error('c ต้องมากกว่า a (ด้านตรงข้ามมุมฉากยาวที่สุด)');
+        result = Math.sqrt(c * c - b * b);
+        steps = [
+          { title: 'จัดรูปหา a', latex: 'a = \\sqrt{c^2 - b^2}', explanation: `c = ${c}, b = ${b}` },
+          { title: 'ผลลัพธ์', latex: `a = \\sqrt{${c}^2 - ${b}^2} = ${result.toFixed(4)}`, explanation: `ด้าน a ยาว ${result.toFixed(4)}` }
+        ];
+      } else {
+        if (c <= b) throw new Error('c ต้องมากกว่า b (ด้านตรงข้ามมุมฉากยาวที่สุด)');
+        result = Math.sqrt(c * c - a * a);
+        steps = [
+          { title: 'จัดรูปหา b', latex: 'b = \\sqrt{c^2 - a^2}', explanation: `c = ${c}, a = ${a}` },
+          { title: 'ผลลัพธ์', latex: `b = \\sqrt{${c}^2 - ${a}^2} = ${result.toFixed(4)}`, explanation: `ด้าน b ยาว ${result.toFixed(4)}` }
+        ];
+      }
+      return { result, unit: '', steps };
+    }
+  },
+
+  {
+    id: 'sphere_surface_area',
+    name: 'Sphere Surface Area',
+    nameTh: 'พื้นที่ผิวทรงกลม',
+    category: 'geometry',
+    categoryTh: 'เรขาคณิต',
+    icon: 'circle',
+    grade: 'ม.6',
+    latex: 'A = 4\\pi r^2',
+    description: 'พื้นที่ผิวของทรงกลม A = 4πr² คิดจากรัศมี r หน่วยพื้นที่',
+    variables: [
+      { id: 'r', symbol: 'r', name: 'Radius', nameTh: 'รัศมี', unit: '', defaultValue: 3, min: 0.0001, max: 1e7, step: 0.1 },
+      { id: 'A', symbol: 'A', name: 'Surface Area', nameTh: 'พื้นที่ผิว', unit: 'ตร.หน่วย', defaultValue: 113.0973, min: 0.0001, max: 1e15, step: 1 }
+    ],
+    solveTargets: ['A', 'r'],
+    calculate: (inputs, target = 'A') => {
+      const { r, A } = inputs;
+      let result, steps;
+      if (target === 'A') {
+        result = 4 * Math.PI * r * r;
+        steps = [
+          { title: 'สูตร', latex: 'A = 4\\pi r^2', explanation: `r = ${r}` },
+          { title: 'แทนค่า', latex: `A = 4 \\times \\pi \\times ${r}^2`, explanation: 'แทนค่ารัศมีลงในสูตร' },
+          { title: 'ผลลัพธ์', latex: `A = ${result.toFixed(4)} \\ \\text{ตร.หน่วย}`, explanation: `พื้นที่ผิวเท่ากับ ${result.toFixed(4)} ตร.หน่วย` }
+        ];
+      } else {
+        if (A <= 0) throw new Error('พื้นที่ผิว A ต้องมากกว่า 0');
+        result = Math.sqrt(A / (4 * Math.PI));
+        steps = [
+          { title: 'จัดรูปหา r', latex: 'r = \\sqrt{\\frac{A}{4\\pi}}', explanation: `A = ${A}` },
+          { title: 'ผลลัพธ์', latex: `r = \\sqrt{\\frac{${A}}{4\\pi}} = ${result.toFixed(4)}`, explanation: `รัศมีเท่ากับ ${result.toFixed(4)}` }
+        ];
+      }
+      return { result, unit: target === 'A' ? 'ตร.หน่วย' : '', steps };
+    }
+  },
+
+  {
+    id: 'pyramid_volume',
+    name: 'Pyramid Volume',
+    nameTh: 'ปริมาตรพีระมิด',
+    category: 'geometry',
+    categoryTh: 'เรขาคณิต',
+    icon: 'layers',
+    grade: 'ม.2',
+    latex: 'V = \\frac{1}{3}Bh',
+    description: 'ปริมาตรพีระมิด = ⅓ × พื้นที่ฐาน (B) × สูง (h) ทั้งปริซึมชนิดใดก็ได้ที่มีฐานเป็นรูปหลายเหลี่ยม',
+    variables: [
+      { id: 'B', symbol: 'B', name: 'Base Area', nameTh: 'พื้นที่ฐาน', unit: 'ตร.หน่วย', defaultValue: 30, min: 0.0001, max: 1e12, step: 1 },
+      { id: 'h', symbol: 'h', name: 'Height', nameTh: 'ความสูง', unit: '', defaultValue: 4, min: 0.0001, max: 1e9, step: 0.1 },
+      { id: 'V', symbol: 'V', name: 'Volume', nameTh: 'ปริมาตร', unit: 'ลบ.หน่วย', defaultValue: 40, min: 0.0001, max: 1e15, step: 1 }
+    ],
+    solveTargets: ['V', 'B', 'h'],
+    calculate: (inputs, target = 'V') => {
+      const { B, h, V } = inputs;
+      let result, steps;
+      if (target === 'V') {
+        result = (B * h) / 3;
+        steps = [
+          { title: 'สูตร', latex: 'V = \\frac{1}{3}Bh', explanation: `B = ${B}, h = ${h}` },
+          { title: 'แทนค่า', latex: `V = \\frac{1}{3} \\times ${B} \\times ${h}`, explanation: 'แทนพื้นที่ฐานและความสูง' },
+          { title: 'ผลลัพธ์', latex: `V = ${result.toFixed(4)} \\ \\text{ลบ.หน่วย}`, explanation: `ปริมาตรเท่ากับ ${result.toFixed(4)} ลบ.หน่วย` }
+        ];
+      } else if (target === 'B') {
+        if (h === 0) throw new Error('ความสูง h ต้องไม่เป็น 0');
+        result = (3 * V) / h;
+        steps = [
+          { title: 'จัดรูปหา B', latex: 'B = \\frac{3V}{h}', explanation: `V = ${V}, h = ${h}` },
+          { title: 'ผลลัพธ์', latex: `B = \\frac{3 \\times ${V}}{${h}} = ${result.toFixed(4)}`, explanation: `พื้นที่ฐานเท่ากับ ${result.toFixed(4)} ตร.หน่วย` }
+        ];
+      } else {
+        if (B === 0) throw new Error('พื้นที่ฐาน B ต้องไม่เป็น 0');
+        result = (3 * V) / B;
+        steps = [
+          { title: 'จัดรูปหา h', latex: 'h = \\frac{3V}{B}', explanation: `V = ${V}, B = ${B}` },
+          { title: 'ผลลัพธ์', latex: `h = \\frac{3 \\times ${V}}{${B}} = ${result.toFixed(4)}`, explanation: `ความสูงเท่ากับ ${result.toFixed(4)}` }
+        ];
+      }
+      return { result, unit: target === 'V' ? 'ลบ.หน่วย' : target === 'B' ? 'ตร.หน่วย' : '', steps };
+    }
   }
 ];

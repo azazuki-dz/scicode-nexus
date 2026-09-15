@@ -233,5 +233,89 @@ export const ALGEBRA_FORMULAS = [
 
       return { result, unit: '', steps };
     }
+  },
+
+  {
+    id: 'quadratic_formula',
+    name: 'Quadratic Formula',
+    nameTh: 'สูตรสมการกำลังสอง',
+    category: 'algebra',
+    categoryTh: 'พีชคณิต',
+    icon: 'function',
+    grade: 'ม.4',
+    latex: 'x = \\frac{-b \\pm \\sqrt{b^2 - 4ac}}{2a}',
+    description: 'หารากของสมการ ax² + bx + c = 0 พร้อมค่า discriminant b² − 4ac บอกจำนวนรากแท้จริง',
+    variables: [
+      { id: 'a', symbol: 'a', name: 'Coefficient a', nameTh: 'สัมประสิทธิ์ a', unit: '', defaultValue: 2, min: -1e6, max: 1e6, step: 0.1 },
+      { id: 'b', symbol: 'b', name: 'Coefficient b', nameTh: 'สัมประสิทธิ์ b', unit: '', defaultValue: 5, min: -1e6, max: 1e6, step: 0.1 },
+      { id: 'c', symbol: 'c', name: 'Constant c', nameTh: 'ค่าคงที่ c', unit: '', defaultValue: -3, min: -1e6, max: 1e6, step: 0.1 }
+    ],
+    solveTargets: ['x', 'D'],
+    calculate: (inputs, target = 'x') => {
+      const { a, b, c } = inputs;
+      if (a === 0) throw new Error('a ต้องไม่เป็น 0 (ไม่ใช่สมการกำลังสอง)');
+      const Dv = b * b - 4 * a * c;
+
+      if (target === 'D') {
+        return {
+          result: Dv,
+          unit: '',
+          steps: [
+            { title: 'คำนวณ discriminant', latex: `\\Delta = b^2 - 4ac = ${b}^2 - 4 \\times ${a} \\times ${c}`, explanation: `แทนค่า a = ${a}, b = ${b}, c = ${c}` },
+            { title: 'ผลลัพธ์', latex: `\\Delta = ${Dv}`, explanation: Dv > 0 ? 'รากแท้จริง 2 ค่าต่างกัน' : Dv === 0 ? 'รากจริงซ้ำ 1 ค่า' : 'ไม่มีรากแท้จริง' }
+          ]
+        };
+      }
+
+      if (Dv < 0) throw new Error('discriminant ติดลบ → สมการนี้ไม่มีรากแท้จริง');
+      const sq = Math.sqrt(Dv);
+      const r1 = (-b + sq) / (2 * a);
+      const r2 = (-b - sq) / (2 * a);
+      return {
+        result: r1,
+        unit: '',
+        steps: [
+          { title: 'สูตรราก', latex: 'x = \\frac{-b \\pm \\sqrt{b^2 - 4ac}}{2a}', explanation: `a = ${a}, b = ${b}, c = ${c}` },
+          { title: 'คำนวณ discriminant', latex: `\\Delta = b^2 - 4ac = ${b}^2 - 4 \\times ${a} \\times ${c} = ${Dv}`, explanation: Dv > 0 ? 'รากแท้จริง 2 ค่า' : 'รากซ้ำ 1 ค่า' },
+          { title: 'แทนค่า', latex: `x = \\frac{-(${b}) \\pm \\sqrt{${Dv}}}{2 \\times ${a}}`, explanation: 'แทนค่าลงในสูตร' },
+          { title: 'ผลลัพธ์', latex: `x = ${r1.toFixed(4)} \\ \\text{หรือ} \\ x = ${r2.toFixed(4)}`, explanation: `รากทั้งสองคือ ${r1.toFixed(4)} และ ${r2.toFixed(4)}` }
+        ]
+      };
+    }
+  },
+
+  {
+    id: 'exponent_value',
+    name: 'Exponent Value',
+    nameTh: 'หาค่าเลขชี้กำลัง',
+    category: 'algebra',
+    categoryTh: 'พีชคณิต',
+    icon: 'power',
+    grade: 'ม.3',
+    latex: 'b^n = v',
+    description: 'หาค่า n ที่ทำให้ bⁿ = v เช่น 3ⁿ = 27 ได้ n = 3 (สำหรับค่าลงตัวพอดีเท่านั้น)',
+    variables: [
+      { id: 'b', symbol: 'b', name: 'Base', nameTh: 'ฐาน', unit: '', defaultValue: 3, min: 1.0000001, max: 1e6, step: 0.1 },
+      { id: 'v', symbol: 'v', name: 'Value', nameTh: 'ค่า v', unit: '', defaultValue: 27, min: 1e-12, max: 1e24, step: 1 }
+    ],
+    solveTargets: ['n'],
+    calculate: (inputs) => {
+      const { b, v } = inputs;
+      if (b <= 0) throw new Error('ฐาน b ต้องมากกว่า 0');
+      if (v <= 0) throw new Error('ค่า v ต้องมากกว่า 0');
+      const exact = Math.log(v) / Math.log(b);
+      const n = Math.round(exact);
+      if (Math.abs(n - exact) > 1e-9) throw new Error('ค่า v ไม่ใช่เลขยกกำลังพอดีของฐานนี้ (ผลลัพธ์ไม่ลงตัว)');
+      const result = n;
+      return {
+        result,
+        unit: '',
+        steps: [
+          { title: 'สมการ', latex: `${b}^{n} = ${v}`, explanation: 'ต้องการหาเลขชี้กำลัง n' },
+          { title: 'ใช้ log แก้สมการ', latex: `n = \\frac{\\log ${v}}{\\log ${b}} = ${exact.toFixed(6)}`, explanation: 'เปลี่ยนเป็น log เพื่อแยก n ออกมา' },
+          { title: 'ผลลัพธ์', latex: `${b}^{${n}} = ${Math.pow(b, n).toFixed(4)}`, explanation: `เลขชี้กำลัง n เท่ากับ ${n}` }
+        ]
+      };
+    }
   }
 ];

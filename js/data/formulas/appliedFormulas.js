@@ -205,6 +205,90 @@ export const ECONOMICS_FORMULAS = [
 
       return { result, unit: target === 'inflation' ? '%' : '', steps };
     }
+  },
+
+  {
+    id: 'simple_multiplier',
+    name: 'Money Multiplier',
+    nameTh: 'ตัวทวีเงิน',
+    category: 'economics',
+    categoryTh: 'เศรษฐศาสตร์',
+    icon: 'trending-up',
+    grade: 'ม.6',
+    latex: 'k = \\frac{1}{\\text{rrr}}',
+    description: 'ตัวทวีเงิน = 1/อัตราสำรองตามกฎหมาย (rrr) เช่น rrr = 10% จะได้เงินฝากสร้างได้ k = 10 เท่า',
+    variables: [
+      { id: 'reserve', symbol: '\\text{rrr}', name: 'Required Reserve Ratio', nameTh: 'อัตราสำรองตามกฎหมาย', unit: '', defaultValue: 0.1, min: 0.0001, max: 0.9999, step: 0.01 },
+      { id: 'k', symbol: 'k', name: 'Money Multiplier', nameTh: 'ตัวทวีเงิน', unit: 'เท่า', defaultValue: 10, min: 1.0001, max: 1e5, step: 0.1 }
+    ],
+    solveTargets: ['k', 'reserve'],
+    calculate: (inputs, target = 'k') => {
+      const { reserve, k } = inputs;
+      let result, steps;
+      if (target === 'k') {
+        if (reserve === 0) throw new Error('อัตราสำรอง rrr ต้องไม่เป็น 0');
+        result = 1 / reserve;
+        steps = [
+          { title: 'สูตร', latex: 'k = \\frac{1}{\\text{rrr}}', explanation: `rrr = ${reserve} (${(reserve * 100).toFixed(1)}%)` },
+          { title: 'แทนค่า', latex: `k = \\frac{1}{${reserve}}`, explanation: '1 หารด้วยอัตราสำรอง' },
+          { title: 'ผลลัพธ์', latex: `k = ${result.toFixed(2)} \\ \\text{เท่า}`, explanation: `เงินฝากขยายได้สูงสุด ${result.toFixed(2)} เท่า` }
+        ];
+      } else {
+        if (k === 0) throw new Error('ตัวทวีเงิน k ต้องไม่เป็น 0');
+        result = 1 / k;
+        steps = [
+          { title: 'จัดรูปหาอัตราสำรอง', latex: '\\text{rrr} = \\frac{1}{k}', explanation: `k = ${k}` },
+          { title: 'ผลลัพธ์', latex: `\\text{rrr} = \\frac{1}{${k}} = ${result.toFixed(4)} \\ (${(result * 100).toFixed(1)}%)`, explanation: `อัตราสำรองเท่ากับ ${(result * 100).toFixed(1)}%` }
+        ];
+      }
+      return { result, unit: '', steps };
+    }
+  },
+
+  {
+    id: 'unemployment_rate',
+    name: 'Unemployment Rate',
+    nameTh: 'อัตราการว่างงาน',
+    category: 'economics',
+    categoryTh: 'เศรษฐศาสตร์',
+    icon: 'users',
+    grade: 'ม.6',
+    latex: 'u = \\frac{\\text{unemployed}}{\\text{labor force}} \\times 100',
+    description: 'อัตราการว่างงาน = ผู้ว่างงาน/กำลังแรงงาน × 100 เช่น ว่างงาน 25 จากกำลังแรงงาน 500 คน ได้ 5%',
+    variables: [
+      { id: 'unemployed', symbol: '\\text{unemployed}', name: 'Unemployed', nameTh: 'ผู้ว่างงาน', unit: 'คน', defaultValue: 25, min: 0, max: 1e9, step: 1 },
+      { id: 'labor', symbol: '\\text{labor}', name: 'Labor Force', nameTh: 'กำลังแรงงาน', unit: 'คน', defaultValue: 500, min: 1, max: 1e9, step: 1 },
+      { id: 'rate', symbol: 'u', name: 'Unemployment Rate', nameTh: 'อัตราการว่างงาน', unit: '%', defaultValue: 5, min: 0, max: 1e6, step: 0.1 }
+    ],
+    solveTargets: ['rate', 'unemployed', 'labor'],
+    calculate: (inputs, target = 'rate') => {
+      const { unemployed, labor, rate } = inputs;
+      let result, steps;
+      if (target === 'rate') {
+        if (labor === 0) throw new Error('กำลังแรงงานต้องไม่เป็น 0');
+        result = (unemployed / labor) * 100;
+        steps = [
+          { title: 'สูตร', latex: 'u = \\frac{\\text{unemployed}}{\\text{labor}} \\times 100', explanation: `unemployed = ${unemployed} คน, labor = ${labor} คน` },
+          { title: 'แทนค่า', latex: `u = \\frac{${unemployed}}{${labor}} \\times 100`, explanation: 'ผู้ว่างงานหารกำลังแรงงาน' },
+          { title: 'ผลลัพธ์', latex: `u = ${result.toFixed(2)}%`, explanation: `อัตราการว่างงานเท่ากับ ${result.toFixed(2)}%` }
+        ];
+      } else if (target === 'unemployed') {
+        if (rate === 0) throw new Error('อัตราการว่างงานต้องไม่เป็น 0');
+        result = (rate / 100) * labor;
+        steps = [
+          { title: 'จัดรูปหาผู้ว่างงาน', latex: '\\text{unemployed} = \\frac{u \\times \\text{labor}}{100}', explanation: `u = ${rate}%, labor = ${labor} คน` },
+          { title: 'ผลลัพธ์', latex: `\\text{unemployed} = \\frac{${rate} \\times ${labor}}{100} = ${result.toFixed(1)} \\ \\text{คน}`, explanation: `ผู้ว่างงานเท่ากับ ${result.toFixed(1)} คน` }
+        ];
+      } else {
+        if (rate === 0) throw new Error('อัตราการว่างงานต้องไม่เป็น 0');
+        result = (unemployed * 100) / rate;
+        steps = [
+          { title: 'จัดรูปหากำลังแรงงาน', latex: '\\text{labor} = \\frac{\\text{unemployed} \\times 100}{u}', explanation: `unemployed = ${unemployed} คน, u = ${rate}%` },
+          { title: 'ผลลัพธ์', latex: `\\text{labor} = \\frac{${unemployed} \\times 100}{${rate}} = ${result.toFixed(1)} \\ \\text{คน}`, explanation: `กำลังแรงงานเท่ากับ ${result.toFixed(1)} คน` }
+        ];
+      }
+      return { result, unit: target === 'rate' ? '%' : 'คน', steps };
+    }
   }
 ];
 
@@ -324,6 +408,52 @@ export const HEALTH_FORMULAS = [
         { title: 'ผลลัพธ์', latex: `BMR = ${result.toFixed(0)} \\ \\text{kcal/วัน}`, explanation: `ร่างกายเผาผลาญพื้นฐาน ${result.toFixed(0)} แคลอรีต่อวัน` }
       ];
       return { result, unit: 'kcal/วัน', steps };
+    }
+
+  },
+
+  {
+    id: 'tdee',
+    name: 'Total Daily Energy Expenditure',
+    nameTh: 'พลังงานที่ร่างกายใช้ต่อวัน',
+    category: 'health',
+    categoryTh: 'สุขภาพและพลศึกษา',
+    icon: 'activity',
+    grade: 'ม.4',
+    latex: '\\text{TDEE} = \\text{BMR} \\times \\text{activity}',
+    description: 'พลังงานรวมต่อวัน = BMR × ระดับกิจกรรม เช่น BMR 1500 แคลอรี × 1.55 (ออกกำลังปานกลาง) = 2325 แคลอรี/วัน',
+    variables: [
+      { id: 'BMR', symbol: '\\text{BMR}', name: 'Basal Metabolic Rate', nameTh: 'Basal Metabolic Rate', unit: 'kcal/วัน', defaultValue: 1500, min: 300, max: 10000, step: 10 },
+      { id: 'activity', symbol: '\\text{activity}', name: 'Activity Factor', nameTh: 'ตัวคูณระดับกิจกรรม', unit: '', defaultValue: 1.55, min: 1, max: 2.5, step: 0.05 },
+      { id: 'tdee', symbol: '\\text{TDEE}', name: 'Total Daily Energy', nameTh: 'พลังงานรวมต่อวัน', unit: 'kcal/วัน', defaultValue: 2325, min: 300, max: 30000, step: 10 }
+    ],
+    solveTargets: ['tdee', 'BMR', 'activity'],
+    calculate: (inputs, target = 'tdee') => {
+      const { BMR, activity, tdee } = inputs;
+      let result, steps;
+      if (target === 'tdee') {
+        result = BMR * activity;
+        steps = [
+          { title: 'สูตร', latex: '\\text{TDEE} = \\text{BMR} \\times \\text{activity}', explanation: `BMR = ${BMR} kcal/วัน, activity = ${activity}` },
+          { title: 'แทนค่า', latex: `\\text{TDEE} = ${BMR} \\times ${activity}`, explanation: 'BMR คูณตัวคูณกิจกรรม' },
+          { title: 'ผลลัพธ์', latex: `\\text{TDEE} = ${result.toFixed(0)} \\ \\text{kcal/วัน}`, explanation: `ร่างกายใช้พลังงานประมาณ ${result.toFixed(0)} แคลอรีต่อวัน` }
+        ];
+      } else if (target === 'BMR') {
+        if (activity === 0) throw new Error('ตัวคูณกิจกรรมต้องไม่เป็น 0');
+        result = tdee / activity;
+        steps = [
+          { title: 'จัดรูปหา BMR', latex: '\\text{BMR} = \\frac{\\text{TDEE}}{\\text{activity}}', explanation: `TDEE = ${tdee} kcal/วัน, activity = ${activity}` },
+          { title: 'ผลลัพธ์', latex: `\\text{BMR} = \\frac{${tdee}}{${activity}} = ${result.toFixed(0)} \\ \\text{kcal/วัน}`, explanation: `BMR เท่ากับประมาณ ${result.toFixed(0)} แคลอรี/วัน` }
+        ];
+      } else {
+        if (BMR === 0) throw new Error('BMR ต้องไม่เป็น 0');
+        result = tdee / BMR;
+        steps = [
+          { title: 'จัดรูปหาตัวคูณกิจกรรม', latex: '\\text{activity} = \\frac{\\text{TDEE}}{\\text{BMR}}', explanation: `TDEE = ${tdee} kcal/วัน, BMR = ${BMR} kcal/วัน` },
+          { title: 'ผลลัพธ์', latex: `\\text{activity} = \\frac{${tdee}}{${BMR}} = ${result.toFixed(2)}`, explanation: `ตัวคูณกิจกรรมเท่ากับ ${result.toFixed(2)}` }
+        ];
+      }
+      return { result, unit: target === 'activity' ? '' : 'kcal/วัน', steps };
     }
   }
 ];
@@ -497,6 +627,97 @@ export const TECHNOLOGY_FORMULAS = [
       }
 
       return { result, unit: target === 'size' ? 'MB' : target === 'speed' ? 'MB/s' : 's', steps };
+    }
+  },
+
+  {
+    id: 'upload_time',
+    name: 'Upload Time',
+    nameTh: 'เวลาในการอัปโหลดไฟล์',
+    category: 'tech',
+    categoryTh: 'เทคโนโลยีดิจิทัล',
+    icon: 'upload',
+    grade: 'ม.4',
+    latex: 't = \\frac{\\text{size} \\times 8}{\\text{rate}}',
+    description: 'เวลาอัปโหลด = ขนาดไฟล์(MB)×8/ความเร็ว(Mbps) เช่น 25 MB บน 20 Mbps ใช้เวลา 10 วินาที',
+    variables: [
+      { id: 'size', symbol: '\\text{size}', name: 'File Size', nameTh: 'ขนาดไฟล์', unit: 'MB', defaultValue: 25, min: 0.001, max: 1e9, step: 1 },
+      { id: 'rate', symbol: '\\text{rate}', name: 'Upload Speed', nameTh: 'ความเร็วอัปโหลด', unit: 'Mbps', defaultValue: 20, min: 0.001, max: 1e6, step: 1 },
+      { id: 'time', symbol: 't', name: 'Time', nameTh: 'เวลา', unit: 's', defaultValue: 10, min: 0.001, max: 1e9, step: 0.1 }
+    ],
+    solveTargets: ['time', 'size', 'rate'],
+    calculate: (inputs, target = 'time') => {
+      const { size, rate, time } = inputs;
+      let result, steps;
+      if (target === 'time') {
+        if (rate === 0) throw new Error('ความเร็วต้องไม่เป็น 0');
+        result = (size * 8) / rate;
+        steps = [
+          { title: 'สูตร', latex: 't = \\frac{\\text{size} \\times 8}{\\text{rate}}', explanation: `size = ${size} MB, rate = ${rate} Mbps` },
+          { title: 'แปลงหน่วย', latex: `${size} \\ \\text{MB} = ${size} \\times 8 = ${size * 8} \\ \\text{Mb}`, explanation: '1 MB = 8 เมกะบิต (Mb)' },
+          { title: 'แทนค่า', latex: `t = \\frac{${size * 8}}{${rate}}`, explanation: 'ขนาดบิตหารความเร็วต่อวินาที' },
+          { title: 'ผลลัพธ์', latex: `t = ${result.toFixed(2)} \\ \\text{s}`, explanation: `ใช้เวลาอัปโหลด ${result.toFixed(2)} วินาที` }
+        ];
+      } else if (target === 'size') {
+        result = (time * rate) / 8;
+        steps = [
+          { title: 'จัดรูปหาขนาดไฟล์', latex: '\\text{size} = \\frac{t \\times \\text{rate}}{8}', explanation: `t = ${time} s, rate = ${rate} Mbps` },
+          { title: 'ผลลัพธ์', latex: `\\text{size} = \\frac{${time} \\times ${rate}}{8} = ${result.toFixed(2)} \\ \\text{MB}`, explanation: `ขนาดไฟล์เท่ากับ ${result.toFixed(2)} MB` }
+        ];
+      } else {
+        if (time === 0) throw new Error('เวลา t ต้องไม่เป็น 0');
+        result = (size * 8) / time;
+        steps = [
+          { title: 'จัดรูปหาความเร็ว', latex: '\\text{rate} = \\frac{\\text{size} \\times 8}{t}', explanation: `size = ${size} MB, t = ${time} s` },
+          { title: 'ผลลัพธ์', latex: `\\text{rate} = \\frac{${size} \\times 8}{${time}} = ${result.toFixed(2)} \\ \\text{Mbps}`, explanation: `ความเร็วอัปโหลดเท่ากับ ${result.toFixed(2)} Mbps` }
+        ];
+      }
+      return { result, unit: target === 'time' ? 's' : target === 'size' ? 'MB' : 'Mbps', steps };
+    }
+  },
+
+  {
+    id: 'text_file_size',
+    name: 'Text File Size',
+    nameTh: 'ขนาดไฟล์ข้อความ',
+    category: 'tech',
+    categoryTh: 'เทคโนโลยีดิจิทัล',
+    icon: 'file-text',
+    grade: 'ม.4',
+    latex: '\\text{size} = \\text{chars} \\times \\text{bytes/char}',
+    description: 'ขนาดไฟล์ข้อความ = จำนวนตัวอักษร × ไบต์ต่อตัวอักษร เช่น 1000 ตัวอักษร × 2 ไบต์ (UTF-16) = 2000 ไบต์',
+    variables: [
+      { id: 'chars', symbol: '\\text{chars}', name: 'Character Count', nameTh: 'จำนวนตัวอักษร', unit: 'ตัว', defaultValue: 1000, min: 1, max: 1e9, step: 1 },
+      { id: 'bpc', symbol: '\\text{bytes/char}', name: 'Bytes per Character', nameTh: 'ไบต์ต่อตัวอักษร', unit: 'B/ตัว', defaultValue: 2, min: 1, max: 8, step: 1 },
+      { id: 'size', symbol: '\\text{size}', name: 'File Size', nameTh: 'ขนาดไฟล์', unit: 'bytes', defaultValue: 2000, min: 1, max: 1e12, step: 1 }
+    ],
+    solveTargets: ['size', 'chars', 'bpc'],
+    calculate: (inputs, target = 'size') => {
+      const { chars, bpc, size } = inputs;
+      let result, steps;
+      if (target === 'size') {
+        result = chars * bpc;
+        steps = [
+          { title: 'สูตร', latex: '\\text{size} = \\text{chars} \\times \\text{bytes/char}', explanation: `chars = ${chars}, bytes/char = ${bpc}` },
+          { title: 'แทนค่า', latex: `\\text{size} = ${chars} \\times ${bpc}`, explanation: 'จำนวนตัวอักษรคูณไบต์ต่อตัว' },
+          { title: 'ผลลัพธ์', latex: `\\text{size} = ${result.toLocaleString()} \\ \\text{bytes}`, explanation: `ไฟล์มีขนาด ${result.toLocaleString()} ไบต์ (${(result / 1024).toFixed(2)} KB)` }
+        ];
+      } else if (target === 'chars') {
+        if (bpc === 0) throw new Error('ไบต์ต่อตัวต้องไม่เป็น 0');
+        result = size / bpc;
+        steps = [
+          { title: 'จัดรูปหาจำนวนตัวอักษร', latex: '\\text{chars} = \\frac{\\text{size}}{\\text{bytes/char}}', explanation: `size = ${size} bytes, bytes/char = ${bpc}` },
+          { title: 'ผลลัพธ์', latex: `\\text{chars} = \\frac{${size}}{${bpc}} = ${result.toFixed(1)} \\ \\text{ตัว}`, explanation: `ตัวอักษรประมาณ ${result.toFixed(1)} ตัว` }
+        ];
+      } else {
+        if (chars === 0) throw new Error('จำนวนตัวอักษรต้องไม่เป็น 0');
+        result = size / chars;
+        steps = [
+          { title: 'จัดรูปหาไบต์ต่อตัว', latex: '\\text{bytes/char} = \\frac{\\text{size}}{\\text{chars}}', explanation: `size = ${size} bytes, chars = ${chars}` },
+          { title: 'ผลลัพธ์', latex: `\\text{bytes/char} = \\frac{${size}}{${chars}} = ${result.toFixed(2)} \\ \\text{B/ตัว}`, explanation: `แต่ละตัวอักษรใช้ ${result.toFixed(2)} ไบต์` }
+        ];
+      }
+      return { result, unit: target === 'size' ? 'bytes' : target === 'chars' ? 'ตัว' : 'B/ตัว', steps };
     }
   }
 ];

@@ -342,5 +342,6 @@ export const THERMODYNAMICS_FORMULAS = [
 
       return { result, unit: target === 'V1' || target === 'V2' ? 'm³' : target === 'T1' || target === 'T2' ? 'K' : 'Pa', steps };
     }
-  }
+  },
+
 ];
