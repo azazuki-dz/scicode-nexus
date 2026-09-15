@@ -185,6 +185,19 @@ body {
   font-size: 1em;
 }
 
+/* Constrain dynamic formula containers (bulletproof vs Tailwind CDN) so the page
+   never grows into endless scroll — lists/steps scroll internally instead */
+#formula-items-list {
+  max-height: min(640px, 55vh);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+#formula-steps-container {
+  max-height: 58vh;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
 /* Custom Scrollbar */
 ::-webkit-scrollbar {
   width: 8px;
