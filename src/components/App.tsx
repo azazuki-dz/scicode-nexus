@@ -39,6 +39,49 @@ function AppContent() {
     }
   }, [])
 
+  // Reveal-on-scroll system: .reveal / .reveal-words stay opacity:0 until
+  // .in-view is added (port of the original js/app.js IntersectionObserver).
+  useEffect(() => {
+    const reveal = (el: Element) => {
+      el.classList.add('in-view')
+    }
+    const targets = () =>
+      Array.from(document.querySelectorAll('.reveal:not(.in-view), .reveal-words:not(.in-view)'))
+
+    if (!('IntersectionObserver' in window)) {
+      // No observer support: reveal everything immediately
+      targets().forEach(reveal)
+      return
+    }
+
+    const observer = new IntersectionObserver(
+      entries => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            reveal(entry.target)
+            observer.unobserve(entry.target)
+          }
+        })
+      },
+      { threshold: 0.1 }
+    )
+
+    const refresh = () => {
+      targets().forEach(el => {
+        const r = el.getBoundingClientRect()
+        if (r.top < window.innerHeight && r.bottom > 0) reveal(el)
+        else observer.observe(el)
+      })
+    }
+
+    refresh()
+    const raf = requestAnimationFrame(refresh)
+    return () => {
+      cancelAnimationFrame(raf)
+      observer.disconnect()
+    }
+  }, [activeTab, splashDone])
+
   useEffect(() => {
     window.addEventListener('keydown', handleKeyDown)
     return () => window.removeEventListener('keydown', handleKeyDown)
