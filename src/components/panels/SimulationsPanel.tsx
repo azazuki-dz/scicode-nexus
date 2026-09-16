@@ -91,7 +91,7 @@ function ProjectileView() {
             </div>
             <input type="range" min={5} max={80} step={0.5} value={params.v0}
               onChange={e => setParams(p => ({ ...p, v0: parseFloat(e.target.value) }))}
-              className="w-full h-1.5 bg-slate-700 rounded-lg appearance-none cursor-pointer" />
+              className="glass-range w-full h-1.5 rounded-lg appearance-none cursor-pointer" />
           </div>
 
           <div className="mb-4">
@@ -101,14 +101,14 @@ function ProjectileView() {
             </div>
             <input type="range" min={0} max={90} step={1} value={params.angle}
               onChange={e => setParams(p => ({ ...p, angle: parseFloat(e.target.value) }))}
-              className="w-full h-1.5 bg-slate-700 rounded-lg appearance-none cursor-pointer" />
+              className="glass-range w-full h-1.5 rounded-lg appearance-none cursor-pointer" />
           </div>
 
           <div className="mb-4">
             <label className="text-xs text-slate-300 block mb-1.5">ความโน้มถ่วง (g)</label>
             <select value={params.gravity}
               onChange={e => setParams(p => ({ ...p, gravity: parseFloat(e.target.value) }))}
-              className="w-full bg-slate-900 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs text-slate-100 focus:outline-none focus:border-indigo-500">
+              className="glass-input w-full rounded-lg px-2.5 py-1.5 text-xs">
               <option value={1.62}>ดวงจันทร์ (1.62 m/s²)</option>
               <option value={3.71}>ดาวอังคาร (3.71 m/s²)</option>
               <option value={9.8}>โลก (9.8 m/s²)</option>
@@ -179,7 +179,7 @@ function PendulumView() {
             </div>
             <input type="range" min={0.5} max={5} step={0.1} value={params.length}
               onChange={e => applyParams({ ...params, length: parseFloat(e.target.value) })}
-              className="w-full h-1.5 bg-slate-700 rounded-lg appearance-none cursor-pointer" />
+              className="glass-range w-full h-1.5 rounded-lg appearance-none cursor-pointer" />
           </div>
 
           <div className="mb-4">

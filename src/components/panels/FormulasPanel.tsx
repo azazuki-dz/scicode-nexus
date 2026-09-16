@@ -143,7 +143,7 @@ export function FormulasPanel() {
                 value={searchQuery}
                 onChange={e => setSearchQuery(e.target.value)}
                 placeholder="ค้นหาชื่อสูตร หรือคำอธิบาย..."
-                className="w-full bg-slate-900 border border-slate-700/80 rounded-xl pl-9 pr-4 py-2 text-xs text-slate-100 placeholder-slate-500 focus:outline-none focus:border-indigo-500 transition-colors"
+                className="glass-input w-full rounded-xl pl-9 pr-4 py-2 text-xs"
               />
               <svg className="w-4 h-4 text-slate-400 absolute left-3 top-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
             </div>
@@ -308,7 +308,7 @@ return (
                           step={v.step || 0.1}
                           value={currentVal}
                           onChange={e => updateInput(v.id, e.target.value)}
-                          className="w-28 bg-slate-900 border border-slate-700 rounded-lg px-2.5 py-1 text-sm font-mono text-slate-100 focus:outline-none focus:border-indigo-500"
+                          className="glass-input w-28 rounded-lg px-2.5 py-1 text-sm font-mono"
                         />
                         <input
                           type="range"
@@ -317,7 +317,7 @@ return (
                           step={v.step || 0.1}
                           value={currentVal}
                           onChange={e => updateInput(v.id, e.target.value)}
-                          className="flex-1 h-1.5 bg-slate-700 rounded-lg appearance-none cursor-pointer"
+                          className="glass-range flex-1 h-1.5 rounded-lg appearance-none cursor-pointer" style={{ ['--fill' as string]: `${Math.min(100, Math.max(0, (((currentVal ?? 0) - (v.min ?? -1e6)) / ((v.max ?? 1e6) - (v.min ?? -1e6))) * 100))}%` }}
                         />
                       </div>
                     )}

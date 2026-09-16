@@ -4,6 +4,8 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap');
 
+@import "tailwindcss";
+
 :root {
   --font-sans: 'Plus Jakarta Sans', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
   --font-mono: 'JetBrains Mono', monospace;
@@ -12,10 +14,10 @@
   --bg-primary: #090d16;
   --bg-secondary: #0f172a;
   --bg-tertiary: #1e293b;
-  --bg-card: rgba(15, 23, 42, 0.75);
-  --bg-card-hover: rgba(30, 41, 59, 0.85);
-  --border-subtle: rgba(255, 255, 255, 0.08);
-  --border-active: rgba(99, 102, 241, 0.4);
+  --bg-card: rgba(15, 23, 42, 0.55);
+  --bg-card-hover: rgba(30, 41, 59, 0.7);
+  --border-subtle: rgba(255, 255, 255, 0.10);
+  --border-active: rgba(129, 140, 248, 0.45);
   
   --text-primary: #f8fafc;
   --text-secondary: #94a3b8;
@@ -39,10 +41,10 @@
   --bg-primary: #f8fafc;
   --bg-secondary: #ffffff;
   --bg-tertiary: #f1f5f9;
-  --bg-card: rgba(255, 255, 255, 0.85);
-  --bg-card-hover: rgba(241, 245, 249, 0.95);
-  --border-subtle: rgba(0, 0, 0, 0.08);
-  --border-active: rgba(99, 102, 241, 0.5);
+  --bg-card: rgba(255, 255, 255, 0.55);
+  --bg-card-hover: rgba(241, 245, 249, 0.75);
+  --border-subtle: rgba(0, 0, 0, 0.10);
+  --border-active: rgba(99, 102, 241, 0.55);
   
   --text-primary: #0f172a;
   --text-secondary: #475569;
@@ -102,18 +104,81 @@ body {
 
 /* Glassmorphism Cards */
 .glass-panel {
+  position: relative;
   background: var(--bg-card);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(24px) saturate(140%);
+  -webkit-backdrop-filter: blur(24px) saturate(140%);
   border: 1px solid var(--border-subtle);
   border-radius: 1rem;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.22), inset 0 1px 0 rgba(255, 255, 255, 0.05);
   transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .glass-panel:hover {
   border-color: var(--border-active);
   box-shadow: 0 12px 40px rgba(0, 0, 0, 0.28);
+}
+
+/* Glass Inputs & Selects */
+.glass-input {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border-subtle);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  color: var(--text-primary);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+}
+.glass-input::placeholder {
+  color: var(--text-muted);
+}
+.glass-input:focus {
+  outline: none;
+  border-color: rgba(129, 140, 248, 0.5);
+  box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.15);
+  background: rgba(255, 255, 255, 0.08);
+}
+select.glass-input {
+  background-color: rgba(15, 23, 42, 0.7);
+}
+[data-theme="light"] select.glass-input {
+  background-color: rgba(255, 255, 255, 0.7);
+}
+
+/* Glass Range Slider */
+input[type="range"].glass-range {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.12);
+  background-image: linear-gradient(90deg, #818cf8, #22d3ee);
+  background-repeat: no-repeat;
+  background-size: var(--fill, 50%) 100%;
+  cursor: pointer;
+}
+[data-theme="light"] input[type="range"].glass-range {
+  background-color: rgba(0, 0, 0, 0.12);
+  background-image: linear-gradient(90deg, #6366f1, #06b6d4);
+}
+input[type="range"].glass-range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #f8fafc;
+  border: 2px solid #6366f1;
+  box-shadow: 0 0 10px rgba(99, 102, 241, 0.5);
+  cursor: grab;
+}
+input[type="range"].glass-range::-moz-range-thumb {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #f8fafc;
+  border: 2px solid #6366f1;
+  box-shadow: 0 0 10px rgba(99, 102, 241, 0.5);
+  cursor: grab;
 }
 
 /* Neon Glow Accents */
