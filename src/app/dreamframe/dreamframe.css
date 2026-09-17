@@ -1,0 +1,365 @@
+/* ============================================================
+   DREAMFRAME — experimental digital-art landing
+   Black / white editorial, wireframe figure behind type
+   ============================================================ */
+
+html:has(.df-root),
+body:has(.df-root) {
+  background: #000;
+}
+
+.df-root {
+  position: relative;
+  min-height: 100dvh;
+  width: 100%;
+  background: #000;
+  color: #fafafa;
+  overflow-x: hidden;
+  font-family: Inter, 'Helvetica Neue', Arial, system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Opaque black cover that sits above the site's ambient-mesh/grid-overlay */
+.df-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  background: #000;
+}
+
+/* ---- Wireframe figure ---- */
+.df-fig-wrap {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  pointer-events: none;
+  animation: dfFigIn 1.8s cubic-bezier(0.16, 1, 0.3, 1) 0.15s both;
+}
+.df-figure {
+  position: absolute;
+  inset: 0;
+}
+.df-figure canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  opacity: 0.96;
+}
+.df-fig-fade {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    ellipse 62% 46% at 58% 44%,
+    transparent 34%,
+    rgba(0, 0, 0, 0.5) 78%
+  );
+}
+
+/* ---- Entrance ---- */
+@keyframes dfFigIn {
+  from { opacity: 0; transform: scale(1.04); }
+  to   { opacity: 1; transform: scale(1); }
+}
+.df-enter {
+  opacity: 0;
+  transform: translateY(14px);
+  animation: dfRise 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+@keyframes dfRise {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ---- Top metadata ---- */
+.df-meta {
+  position: absolute;
+  top: 4.8%;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 30;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9.5px;
+  letter-spacing: 0.4em;
+  color: #6f6f6f;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.df-meta-top {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.df-meta-star {
+  color: #bdb8ef;
+  font-size: 11px;
+  line-height: 1;
+}
+.df-meta-sub {
+  letter-spacing: 0.5em;
+}
+
+/* ---- Top-right navigation ---- */
+.df-nav {
+  position: absolute;
+  top: 4.8%;
+  right: 3.6%;
+  z-index: 30;
+  display: flex;
+  align-items: center;
+  gap: 34px;
+}
+.df-nav a {
+  position: relative;
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: #cfcfcf;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+.df-nav a::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -7px;
+  height: 1px;
+  background: #fafafa;
+  transform: scaleX(0);
+  transform-origin: right center;
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.df-nav a:hover {
+  color: #fff;
+}
+.df-nav a:hover::after {
+  transform: scaleX(1);
+  transform-origin: left center;
+}
+
+/* ---- Headline ---- */
+.df-headline {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 36%;
+  z-index: 30;
+  margin: 0;
+  padding: 0 3vw;
+  text-align: center;
+  font-family: Inter, 'Helvetica Neue', Arial, system-ui, sans-serif;
+  font-weight: 200;
+  font-size: clamp(3rem, 9.6vw, 9.4rem);
+  line-height: 0.95;
+  letter-spacing: -0.025em;
+  text-transform: uppercase;
+  color: #fafafa;
+  text-shadow: 0 0 26px rgba(0, 0, 0, 0.65);
+  user-select: none;
+}
+
+/* ---- CTA ---- */
+.df-cta {
+  position: absolute;
+  top: 68.5%;
+  left: 55.5%;
+  z-index: 30;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding-bottom: 10px;
+  font-size: 12px;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: #e6e6e6;
+  text-decoration: none;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+  transition: color 0.3s ease, border-color 0.3s ease;
+}
+.df-cta .df-arrow {
+  font-size: 15px;
+  line-height: 1;
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.df-cta:hover {
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.95);
+}
+.df-cta:hover .df-arrow {
+  transform: translateX(6px);
+}
+
+/* ---- Wordmark (lower left) ---- */
+.df-brand-wrap {
+  position: absolute;
+  left: 3.6%;
+  bottom: 5.5%;
+  z-index: 30;
+}
+.df-brand {
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: 0.32em;
+  color: #fafafa;
+  text-transform: uppercase;
+}
+.df-brand-sub {
+  margin-top: 9px;
+  font-size: 9.5px;
+  letter-spacing: 0.46em;
+  color: #717171;
+  text-transform: uppercase;
+}
+
+/* ---- Left vertical nav ---- */
+.df-leftnav {
+  position: absolute;
+  left: 2%;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 30;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  font-size: 9.5px;
+  letter-spacing: 0.34em;
+  text-transform: uppercase;
+  color: #6f6f6f;
+}
+.df-leftnav a {
+  color: #6f6f6f;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+.df-leftnav a:hover {
+  color: #f2f2f2;
+}
+.df-rule {
+  display: block;
+  width: 34px;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.16);
+  transform: rotate(90deg);
+}
+.df-leftnav .df-rule {
+  width: 22px;
+}
+
+/* ---- Right vertical info ---- */
+.df-rightinfo {
+  position: absolute;
+  right: 2%;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 30;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 8.5px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: #666;
+}
+.df-rightinfo .df-rule {
+  width: 18px;
+}
+
+/* ---- Selection ---- */
+.df-root ::selection {
+  background: rgba(138, 138, 255, 0.28);
+  color: #fff;
+}
+
+/* ---- Reduced motion ---- */
+@media (prefers-reduced-motion: reduce) {
+  .df-enter,
+  .df-fig-wrap {
+    animation: none !important;
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ============================================================
+   Responsive
+   ============================================================ */
+@media (max-width: 1024px) {
+  .df-headline {
+    font-size: clamp(2.6rem, 10vw, 6rem);
+    top: 38%;
+    line-height: 1;
+  }
+  .df-cta {
+    left: 54%;
+    top: 72%;
+  }
+  .df-fig-fade {
+    background: radial-gradient(
+      ellipse 70% 50% at 55% 46%,
+      transparent 30%,
+      rgba(0, 0, 0, 0.55) 80%
+    );
+  }
+}
+
+@media (max-width: 768px) {
+  .df-meta {
+    top: 4%;
+    font-size: 8px;
+    letter-spacing: 0.32em;
+  }
+  .df-nav {
+    top: 4.2%;
+    right: 4%;
+    gap: 22px;
+  }
+  .df-nav a {
+    font-size: 10px;
+  }
+  .df-leftnav,
+  .df-rightinfo {
+    display: none;
+  }
+  .df-headline {
+    top: 40%;
+    padding: 0 4vw;
+    font-size: clamp(2.3rem, 11vw, 4.4rem);
+    line-height: 1.05;
+  }
+  .df-cta {
+    left: auto;
+    right: 6%;
+    top: 74%;
+  }
+  .df-brand-wrap {
+    left: 5%;
+    bottom: 5%;
+  }
+}
+
+@media (max-width: 480px) {
+  .df-brand {
+    font-size: 17px;
+  }
+  .df-brand-sub {
+    letter-spacing: 0.32em;
+  }
+  .df-headline {
+    top: 42%;
+  }
+  .df-meta,
+  .df-nav {
+    white-space: nowrap;
+  }
+}
