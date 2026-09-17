@@ -198,8 +198,16 @@ export function CodeLabPanel() {
                 return (
                   <div
                     key={lesson.id}
+                    role="button"
+                    tabIndex={0}
                     onClick={() => loadLesson(lesson)}
-                    className={`lesson-card-item p-3.5 rounded-xl border transition-all cursor-pointer ${
+                    onKeyDown={e => {
+                      if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault()
+                        loadLesson(lesson)
+                      }
+                    }}
+                    className={`lesson-card-item p-3.5 rounded-xl border transition-all cursor-pointer focus-visible:outline-2 focus-visible:outline-indigo-500 ${
                       isSelected
                         ? 'bg-amber-950/30 border-amber-500/70 shadow-md shadow-amber-500/10'
                         : 'bg-slate-900/60 border-slate-800 hover:border-slate-700 hover:bg-slate-800/40'
@@ -273,8 +281,8 @@ export function CodeLabPanel() {
                   <span className="text-[11px] font-mono text-slate-500 ml-2">index.js</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <button onClick={resetCode} className="text-[11px] font-semibold text-slate-400 hover:text-slate-200 px-2.5 py-1 rounded-lg bg-slate-800 border border-slate-700">↺ รีเซ็ต</button>
-                  <button onClick={revealSolution} className="text-[11px] font-semibold text-slate-400 hover:text-slate-200 px-2.5 py-1 rounded-lg bg-slate-800 border border-slate-700">👁 เฉลย</button>
+                  <button onClick={resetCode} className="text-[11px] font-semibold text-slate-400 hover:text-slate-200 px-3 py-1.5 rounded-lg bg-slate-800 border border-slate-700">↺ รีเซ็ต</button>
+                  <button onClick={revealSolution} className="text-[11px] font-semibold text-slate-400 hover:text-slate-200 px-3 py-1.5 rounded-lg bg-slate-800 border border-slate-700">👁 เฉลย</button>
                 </div>
               </div>
               <textarea
@@ -287,8 +295,8 @@ export function CodeLabPanel() {
 
             {/* Action buttons */}
             <div className="flex flex-wrap gap-2 mt-4">
-              <button onClick={runCode} className="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold">▶ รันโค้ด</button>
-              <button onClick={runTests} className="px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold">✓ ตรวจคำตอบ</button>
+              <button onClick={runCode} className="flex-1 sm:flex-none px-4 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold">▶ รันโค้ด</button>
+              <button onClick={runTests} className="flex-1 sm:flex-none px-4 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold">✓ ตรวจคำตอบ</button>
             </div>
           </div>
 

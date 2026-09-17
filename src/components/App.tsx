@@ -100,11 +100,11 @@ function AppContent() {
 
   return (
     <>
-      <div className="fixed top-4 right-4 z-40 flex items-center gap-3">
+      <div className="fixed right-[max(env(safe-area-inset-right),0.75rem)] top-[max(env(safe-area-inset-top),0.75rem)] z-40 flex items-center gap-3">
         <button
           id="theme-toggle-btn"
           onClick={toggleTheme}
-          className="glass-panel p-2 rounded-xl"
+          className="glass-panel p-2 sm:p-2.5 rounded-xl"
           aria-label={`สลับโหมด${theme === 'dark' ? 'สว่าง' : 'มืด'}`}
         >
           {theme === 'dark' ? (
@@ -116,33 +116,34 @@ function AppContent() {
         <button
           id="brand-home"
           onClick={() => setActiveTab('launcher')}
-          className="glass-panel p-2 rounded-xl"
+          className="glass-panel p-2 sm:p-2.5 rounded-xl"
           aria-label="หน้าแรก"
         >
           <svg className="w-5 h-5 text-cyan-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 22V12" /></svg>
         </button>
       </div>
 
-      <nav className="fixed bottom-0 left-0 right-0 z-40 glass-panel border-t border-slate-700/50" style={{ backdropFilter: 'blur(16px)' }}>
-        <div className="flex items-center justify-around px-2 py-1.5">
+      <nav className="app-bottom-nav fixed bottom-0 left-0 right-0 z-40 glass-panel border-t border-slate-700/50" style={{ backdropFilter: 'blur(16px)' }}>
+        <div className="flex items-stretch justify-around gap-0.5 px-1 sm:px-2">
           {TABS.map((tab) => (
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
-              className={`nav-tab-btn flex flex-col items-center gap-1 px-3 py-2 rounded-xl text-xs font-semibold transition-all ${
+              className={`nav-tab-btn flex flex-1 min-w-0 flex-col items-center justify-center gap-0.5 sm:gap-1 px-1 sm:px-3 py-2 sm:py-2.5 rounded-xl text-[10px] sm:text-xs font-semibold transition-all ${
                 activeTab === tab.id
                   ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-500/30'
                   : 'text-slate-400 hover:text-slate-200 hover:border-slate-600'
               }`}
+              aria-current={activeTab === tab.id ? 'page' : undefined}
             >
-              <span className="text-lg">{tab.icon}</span>
-              <span>{tab.label}</span>
+              <span className="text-base sm:text-lg leading-none">{tab.icon}</span>
+              <span className="truncate px-0.5">{tab.label}</span>
             </button>
           ))}
         </div>
       </nav>
 
-      <main className="pb-20 pt-4 px-4">
+      <main className="mx-auto w-full max-w-7xl pb-24 sm:pb-28 pt-4 sm:pt-6 px-3 sm:px-6">
         {renderTabPanel(activeTab)}
       </main>
 

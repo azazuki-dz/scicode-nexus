@@ -148,7 +148,7 @@ select.glass-input {
 input[type="range"].glass-range {
   -webkit-appearance: none;
   appearance: none;
-  height: 6px;
+  height: 8px;
   border-radius: 999px;
   background: rgba(255, 255, 255, 0.12);
   background-image: linear-gradient(90deg, #818cf8, #22d3ee);
@@ -163,8 +163,8 @@ input[type="range"].glass-range {
 input[type="range"].glass-range::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
-  width: 14px;
-  height: 14px;
+  width: 20px;
+  height: 20px;
   border-radius: 50%;
   background: #f8fafc;
   border: 2px solid #6366f1;
@@ -172,13 +172,17 @@ input[type="range"].glass-range::-webkit-slider-thumb {
   cursor: grab;
 }
 input[type="range"].glass-range::-moz-range-thumb {
-  width: 14px;
-  height: 14px;
+  width: 20px;
+  height: 20px;
   border-radius: 50%;
   background: #f8fafc;
   border: 2px solid #6366f1;
   box-shadow: 0 0 10px rgba(99, 102, 241, 0.5);
   cursor: grab;
+}
+input[type="range"].glass-range::-webkit-slider-runnable-track {
+  height: 8px;
+  border-radius: 999px;
 }
 
 /* Neon Glow Accents */
@@ -675,6 +679,7 @@ textarea:focus-visible {
 .astra-page {
   position: relative;
   background: transparent;
+  overflow-x: hidden;
 }
 
 /* ----- Film grain (no longer used — was causing a visible rectangular edge) ----- */
@@ -1490,5 +1495,46 @@ textarea:focus-visible {
   #detail-formula-katex {
     animation: none !important;
     transition: none !important;
+  }
+}
+
+/* ==========================================================================
+   ACCESSIBILITY & TOUCH — MOBILE / TABLET / DESKTOP
+   ========================================================================== */
+
+/* Remove iOS tap highlight + accidental text selection on interactive elements */
+button,
+a,
+select,
+input,
+textarea,
+[role="button"] {
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+/* Keep font scaling stable when rotating on mobile (prevents iOS auto-zoom) */
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+/* Bottom nav (and any fixed footer) clears the iPhone home-bar / Android gesture area */
+.app-bottom-nav {
+  padding-bottom: max(env(safe-area-inset-bottom), 0px);
+}
+
+/* Slightly larger, easier-to-grab sliders on coarse-pointer (touch) screens */
+@media (pointer: coarse) {
+  input[type="range"].glass-range:hover::-webkit-slider-thumb {
+    box-shadow: 0 0 14px rgba(99, 102, 241, 0.7);
+  }
+}
+
+/* Compact list paddings on very narrow screens so 6-tab nav scroll targets stay comfy */
+@media (max-width: 380px) {
+  .app-bottom-nav .nav-tab-btn {
+    padding-left: 0.25rem;
+    padding-right: 0.25rem;
   }
 }

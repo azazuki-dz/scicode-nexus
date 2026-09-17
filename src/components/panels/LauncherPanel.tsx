@@ -180,8 +180,16 @@ export function LauncherPanel({ onLaunch }: { onLaunch: (tab: LauncherTab) => vo
           <div
             key={feature.tab}
             ref={el => { launchCardRefs.current[idx] = el }}
+            role="button"
+            tabIndex={0}
             onClick={() => handleLaunch(feature.tab, feature.title)}
-            className="launch-card glass-panel border border-slate-800 reveal cursor-pointer"
+            onKeyDown={e => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault()
+                handleLaunch(feature.tab, feature.title)
+              }
+            }}
+            className="launch-card glass-panel border border-slate-800 reveal cursor-pointer focus-visible:outline-2 focus-visible:outline-indigo-500"
           >
             <div className={`launch-card-icon bg-gradient-to-br ${feature.gradient} text-white`}>
               {feature.icon}

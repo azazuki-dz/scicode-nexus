@@ -17,13 +17,13 @@ export function SimulationsPanel() {
           <div className="flex items-center p-1 bg-slate-900 rounded-xl border border-slate-800">
             <button
               onClick={() => setActiveSim('projectile')}
-              className={`px-4 py-1.5 rounded-lg text-xs font-semibold transition-all ${activeSim === 'projectile' ? 'bg-slate-700 text-white' : 'text-slate-400 hover:text-slate-200'}`}
+              className={`px-3 sm:px-4 py-2 rounded-lg text-xs font-semibold transition-all ${activeSim === 'projectile' ? 'bg-slate-700 text-white' : 'text-slate-400 hover:text-slate-200'}`}
             >
               การเคลื่อนที่แบบโพรเจกไทล์
             </button>
             <button
               onClick={() => setActiveSim('pendulum')}
-              className={`px-4 py-1.5 rounded-lg text-xs font-semibold transition-all ${activeSim === 'pendulum' ? 'bg-slate-700 text-white' : 'text-slate-400 hover:text-slate-200'}`}
+              className={`px-3 sm:px-4 py-2 rounded-lg text-xs font-semibold transition-all ${activeSim === 'pendulum' ? 'bg-slate-700 text-white' : 'text-slate-400 hover:text-slate-200'}`}
             >
               การแกว่งลูกตุ้มนาฬิกา
             </button>
@@ -91,7 +91,7 @@ function ProjectileView() {
             </div>
             <input type="range" min={5} max={80} step={0.5} value={params.v0}
               onChange={e => setParams(p => ({ ...p, v0: parseFloat(e.target.value) }))}
-              className="glass-range w-full h-1.5 rounded-lg appearance-none cursor-pointer" />
+              className="glass-range w-full rounded-lg appearance-none cursor-pointer" />
           </div>
 
           <div className="mb-4">
@@ -101,7 +101,7 @@ function ProjectileView() {
             </div>
             <input type="range" min={0} max={90} step={1} value={params.angle}
               onChange={e => setParams(p => ({ ...p, angle: parseFloat(e.target.value) }))}
-              className="glass-range w-full h-1.5 rounded-lg appearance-none cursor-pointer" />
+              className="glass-range w-full rounded-lg appearance-none cursor-pointer" />
           </div>
 
           <div className="mb-4">
@@ -117,11 +117,11 @@ function ProjectileView() {
           </div>
 
           <div className="flex flex-wrap gap-2">
-            <button onClick={launch} className="flex-1 px-4 py-2 rounded-xl bg-gradient-to-r from-cyan-600 to-indigo-600 text-white text-xs font-bold shadow-lg shadow-cyan-500/20">
+            <button onClick={launch} className="flex-1 px-4 py-2.5 rounded-xl bg-gradient-to-r from-cyan-600 to-indigo-600 text-white text-xs font-bold shadow-lg shadow-cyan-500/20">
               🚀 ยิง!
             </button>
-            <button onClick={() => sim.pause()} className="flex-1 px-4 py-2 rounded-xl bg-slate-800 text-slate-200 border border-slate-700 text-xs font-semibold">⏯ หยุดชั่วคราว</button>
-            <button onClick={() => sim.reset()} className="flex-1 px-4 py-2 rounded-xl bg-slate-800 text-slate-200 border border-slate-700 text-xs font-semibold">↺ รีเซ็ต</button>
+            <button onClick={() => sim.pause()} className="flex-1 px-4 py-2.5 rounded-xl bg-slate-800 text-slate-200 border border-slate-700 text-xs font-semibold">⏯ หยุดชั่วคราว</button>
+            <button onClick={() => sim.reset()} className="flex-1 px-4 py-2.5 rounded-xl bg-slate-800 text-slate-200 border border-slate-700 text-xs font-semibold">↺ รีเซ็ต</button>
           </div>
         </div>
       </div>
@@ -179,14 +179,14 @@ function PendulumView() {
             </div>
             <input type="range" min={0.5} max={5} step={0.1} value={params.length}
               onChange={e => applyParams({ ...params, length: parseFloat(e.target.value) })}
-              className="glass-range w-full h-1.5 rounded-lg appearance-none cursor-pointer" />
+              className="glass-range w-full rounded-lg appearance-none cursor-pointer" />
           </div>
 
           <div className="mb-4">
             <label className="text-xs text-slate-300 block mb-1.5">ความโน้มถ่วง (g)</label>
             <select value={params.gravity}
               onChange={e => applyParams({ ...params, gravity: parseFloat(e.target.value) })}
-              className="w-full bg-slate-900 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs text-slate-100 focus:outline-none focus:border-indigo-500">
+              className="glass-input w-full rounded-lg px-2.5 py-2 text-xs">
               <option value={1.62}>ดวงจันทร์ (1.62 m/s²)</option>
               <option value={9.8}>โลก (9.8 m/s²)</option>
               <option value={24.79}>ดาวพฤหัสบดี (24.79 m/s²)</option>
@@ -200,10 +200,10 @@ function PendulumView() {
             </div>
             <input type="range" min={0} max={0.02} step={0.001} value={params.damping}
               onChange={e => applyParams({ ...params, damping: parseFloat(e.target.value) })}
-              className="w-full h-1.5 bg-slate-700 rounded-lg appearance-none cursor-pointer" />
+              className="glass-range w-full rounded-lg appearance-none cursor-pointer" />
           </div>
 
-          <button onClick={() => sim.reset(40)} className="w-full px-4 py-2 rounded-xl bg-gradient-to-r from-purple-600 to-indigo-600 text-white text-xs font-bold shadow-lg shadow-purple-500/20">
+          <button onClick={() => sim.reset(40)} className="w-full px-4 py-2.5 rounded-xl bg-gradient-to-r from-purple-600 to-indigo-600 text-white text-xs font-bold shadow-lg shadow-purple-500/20">
             ↺ รีเซ็ตมุม (40°)
           </button>
         </div>
