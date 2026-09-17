@@ -346,5 +346,89 @@ function molarMass(formula) {
         { name: 'H2SO4 → ~98.079 g/mol', passed: Math.abs(r4 - 98.079) < 0.02, output: r4, expected: 98.079 }
       ];
     }
+  },
+
+  {
+    id: 'lesson-three-scene',
+    type: '3d',
+    title: 'บทเรียนที่ 7: สร้างฉาก 3 มิติด้วย Three.js',
+    category: '3D Graphics',
+    difficulty: 'Beginner',
+    badgeColor: 'sky',
+    description: 'ก้าวเข้าสู่โลกเกมเอนจินจริง! เรียนรู้การสร้างทรงกล่อง ทรงกลม และทรงกระบอกในฉาก 3 มิติด้วย Three.js พร้อมจัดการแสง เท็กซ์เจอร์สี และตำแหน่งกล้อง',
+    mathFormula: '\\vec{p} = (x, y, z), \\quad \\text{camera}_{pos} = (5, 4, 6) \\to (0, 0, 0)',
+    instructions: [
+      'ใช้ `THREE.BoxGeometry(w, h, d)`, `THREE.SphereGeometry(r, ...)`, `THREE.CylinderGeometry(r1, r2, h, ...)` สร้างทรงกล่อง / ทรงกลม / ทรงกระบอก',
+      'กำหนดแสงสีให้วัตถุด้วย `new THREE.MeshStandardMaterial({ color: 0xrrggbb })`',
+      'เพิ่มวัตถุลงฉากด้วย `scene.add(...)` แล้วเลื่อนตำแหน่งด้วย `.position.set(x, y, z)`',
+      'ลองย้ายกล้องดูมุมมองใหม่โดยใช้ `camera.position.set(x, y, z)` (กดค้างบนฉากเพื่อหมุนมุมมองได้)'
+    ],
+    starterCode: `// ✅ มี THREE, scene, camera, renderer เตรียมไว้ให้แล้ว
+// ฟังก์ชันช่วย: addBox, addSphere, addCylinder, addCone
+//   เช่น addSphere(รัศมี, สี, x, y, z)  หรือ addBox(กว้าง, สูง, ลึก, สี, x, y, z)
+// (สร้างเองแบบเต็มก็ได้: new THREE.Mesh(new THREE.BoxGeometry(...), new THREE.MeshStandardMaterial({ color: ... })))
+
+// 1. พื้นแท่นสีฟ้า
+const ground = new THREE.Mesh(
+  new THREE.BoxGeometry(6, 0.2, 6),
+  new THREE.MeshStandardMaterial({ color: 0x38bdf8 })
+);
+scene.add(ground);
+
+// 2. กล่องสีส้มแดงตรงกลาง
+const box = new THREE.Mesh(
+  new THREE.BoxGeometry(1.2, 1.2, 1.2),
+  new THREE.MeshStandardMaterial({ color: 0xff6b6b })
+);
+box.position.set(0, 0.9, 0);
+scene.add(box);
+
+// 3. เขียนโค้ดของคุณตรงนี้: เพิ่มทรงกลมและทรงกระบอกให้ครบ
+// เช่น:
+// const sphere = addSphere(0.6, 0x48c774, 2, 0.6, 0);
+// const cyl = addCylinder(0.5, 0.5, 1.4, 0xffd93d, -2, 0.9, 0);
+
+// 4. ลองย้ายกล้อง: camera.position.set(6, 5, 6);
+`,
+    solutionCode: `const ground = new THREE.Mesh(
+  new THREE.BoxGeometry(8, 0.2, 8),
+  new THREE.MeshStandardMaterial({ color: 0x243b55 })
+);
+scene.add(ground);
+
+const box = new THREE.Mesh(
+  new THREE.BoxGeometry(1.4, 1.4, 1.4),
+  new THREE.MeshStandardMaterial({ color: 0xff6b6b })
+);
+box.position.set(-1.5, 0.9, 0);
+scene.add(box);
+
+const sphere = new THREE.Mesh(
+  new THREE.SphereGeometry(0.7, 32, 32),
+  new THREE.MeshStandardMaterial({ color: 0xffd93d, metalness: 0.4, roughness: 0.3 })
+);
+sphere.position.set(1.5, 0.8, 0);
+scene.add(sphere);
+
+const cyl = new THREE.Mesh(
+  new THREE.CylinderGeometry(0.4, 0.4, 1.6, 32),
+  new THREE.MeshStandardMaterial({ color: 0x48c774 })
+);
+cyl.position.set(0, 1, -2);
+scene.add(cyl);
+
+// มุมกล้องสวย ๆ: camera.position.set(6, 4, 7);
+`,
+    validate: (probe) => {
+      const boxCount = probe.meshes.filter(m => m.type === 'box').length
+      const sphereCount = probe.meshes.filter(m => m.type === 'sphere').length
+      const cylinderCount = probe.meshes.filter(m => m.type === 'cylinder').length
+
+      return [
+        { name: 'มีทรงกล่อง (Box) อย่างน้อย 1 อัน', passed: boxCount >= 1, output: `${boxCount} อัน`, expected: '≥ 1' },
+        { name: 'มีทรงกลม (Sphere) อย่างน้อย 1 อัน', passed: sphereCount >= 1, output: `${sphereCount} อัน`, expected: '≥ 1' },
+        { name: 'มีวัตถุในฉากอย่างน้อย 4 ชิ้น (รวมพื้น)', passed: probe.objectCount >= 4, output: `${probe.objectCount} ชิ้น`, expected: '≥ 4' }
+      ]
+    }
   }
 ];

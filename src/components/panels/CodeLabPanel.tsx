@@ -4,6 +4,8 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import { LESSONS_DATA } from '@/data/lessons'
 import { MathDisplay } from '@/components/MathDisplay'
 import { useToast } from '@/components/ToastProvider'
+import { ThreePreviewHost } from '@/components/three/ThreePreviewHost'
+import type { SceneProbe } from '@/components/three/ThreeLabPreview'
 
 interface Lesson {
   id: string
@@ -16,7 +18,8 @@ interface Lesson {
   instructions: string[]
   starterCode: string
   solutionCode: string
-  validate: (fn: (...args: any[]) => any) => Array<{ name: string; passed: boolean; output: string; expected: string }>
+  type?: 'console' | '3d'
+  validate: (target: any) => Array<{ name: string; passed: boolean; output: string; expected: string }>
 }
 
 type LogType = 'log' | 'warn' | 'error' | 'info' | 'test-pass' | 'test-fail'
@@ -54,6 +57,8 @@ export function CodeLabPanel() {
   const [currentLesson, setCurrentLesson] = useState<Lesson>(LESSONS_DATA[0] as Lesson)
   const [code, setCode] = useState((LESSONS_DATA[0] as Lesson).starterCode)
   const [logs, setLogs] = useState<LogEntry[]>([])
+  const [runKey, setRunKey] = useState(0)
+  const [lastProbe, setLastProbe] = useState<SceneProbe | null>(null)
   const terminalRef = useRef<HTMLDivElement>(null)
 
   const appendLog = useCallback((type: LogType, ...args: any[]) => {
@@ -76,10 +81,16 @@ export function CodeLabPanel() {
     setCurrentLesson(lesson)
     setCode(lesson.starterCode)
     setLogs([{ type: 'info', text: '// Terminal Output Ready...' }])
+    setLastProbe(null)
+    setRunKey(0)
   }
 
   const runCode = () => {
     setLogs([])
+    if (currentLesson.type === '3d') {
+      setRunKey(k => k + 1)
+      return
+    }
     const fakeConsole = {
       log: (...args: any[]) => appendLog('log', ...args),
       warn: (...args: any[]) => appendLog('warn', ...args),
@@ -103,6 +114,27 @@ export function CodeLabPanel() {
   const runTests = () => {
     setLogs([])
     appendLog('info', `Running test suite for: ${currentLesson.title}...`)
+    if (currentLesson.type === '3d') {
+      if (!lastProbe) {
+        appendLog('warn', 'กด ▶ รันโค้ดก่อนเพื่อสร้างฉาก 3 มิติ แล้วค่อยกดตรวจคำตอบ')
+        return
+      }
+      const results = currentLesson.validate(lastProbe)
+      let passCount = 0
+      results.forEach(test => {
+        if (test.passed) {
+          passCount++
+          appendLog('test-pass', `PASS: ${test.name}`)
+        } else {
+          appendLog('test-fail', `FAIL: ${test.name} (พบ: ${test.output}, ต้องการ: ${test.expected})`)
+        }
+      })
+      appendLog(passCount === results.length ? 'test-pass' : 'warn',
+        passCount === results.length
+          ? `🎉 ยินดีด้วย! ผ่านการทดสอบทั้งหมด ${passCount}/${results.length} ข้อ`
+          : `ผ่าน ${passCount}/${results.length} ข้อ ลองเพิ่ม/จัดวางวัตถุในฉากอีกครั้ง`)
+      return
+    }
     try {
       const evalWrapper = new Function(`
         "use strict";
@@ -198,6 +230,28 @@ export function CodeLabPanel() {
               <span className="text-[10px] font-black text-slate-500 uppercase tracking-widest">สูตรทางคณิตศาสตร์</span>
               <div className="text-lg text-cyan-300 font-mono"><MathDisplay latex={currentLesson.mathFormula} /></div>
             </div>
+
+            {currentLesson.type === '3d' && (
+              <div className="rounded-2xl border border-slate-800 overflow-hidden mb-4">
+                <div className="flex items-center justify-between px-4 py-2 bg-slate-900 border-b border-slate-800">
+                  <div className="flex items-center gap-2">
+                    <span className="w-2 h-2 rounded-full bg-sky-400 animate-pulse"></span>
+                    <span className="text-[11px] font-mono text-slate-400">3D Preview — ลากเมาส์หมุนมุมมองได้</span>
+                  </div>
+                  <span className="text-[10px] font-semibold text-slate-500">{lastProbe ? `วัตถุในฉาก: ${lastProbe.objectCount} ชิ้น` : 'กด ▶ รันโค้ดเพื่อสร้างฉาก'}</span>
+                </div>
+                <div className="w-full h-[340px] bg-slate-950">
+                  {runKey > 0 && (
+                    <ThreePreviewHost
+                      code={code}
+                      runKey={runKey}
+                      onLog={(type, ...args) => appendLog(type as LogType, ...args)}
+                      onProbe={setLastProbe}
+                    />
+                  )}
+                </div>
+              </div>
+            )}
 
             <div className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">วิธีทำ</div>
             <ul className="space-y-1.5 mb-4">
