@@ -39,7 +39,7 @@ class MeshBuilder {
     const h = Math.max(0, Math.min(1, y / 6.0))
     const foot = Math.max(0, Math.min(1, (y - 0.25) / 1.1))
     const depth = Math.max(0, Math.min(0.7, z * 0.28))
-    const v = Math.min(1, (0.26 + h * 0.6 + depth) * (0.22 + 0.78 * foot))
+    const v = Math.min(1, (0.34 + h * 0.52 + depth) * (0.45 + 0.55 * foot))
     const j = (Math.random() - 0.5) * 0.05
     const c = Math.min(1, Math.max(0, v + j))
     return [c, c, c + 0.012] as [number, number, number]
@@ -135,6 +135,62 @@ class MeshBuilder {
       )
     }
     geo.dispose()
+  }
+
+  addScribble(
+    center: THREE.Vector3,
+    radii: THREE.Vector3,
+    count: number,
+    minLen = 0.06,
+    maxLen = 0.22
+  ) {
+    const p = new THREE.Vector3()
+    const dir = new THREE.Vector3()
+    for (let i = 0; i < count; i++) {
+      dir.set(Math.random() * 2 - 1, Math.random() * 2 - 1, Math.random() * 2 - 1)
+      const l = dir.length() || 1
+      const shell = 0.55 + Math.random() * 0.45
+      dir.multiplyScalar(shell / l)
+      p.set(
+        center.x + dir.x * radii.x,
+        center.y + dir.y * radii.y,
+        center.z + dir.z * radii.z
+      )
+      dir.set(Math.random() * 2 - 1, Math.random() * 2 - 1, Math.random() * 2 - 1).normalize()
+      const len = minLen + Math.random() * (maxLen - minLen)
+      const qx = p.x + dir.x * len
+      const qy = p.y + dir.y * len
+      const qz = p.z + dir.z * len
+      const bright = Math.random() < 0.35
+      const b = bright ? 0.55 + Math.random() * 0.4 : 0.25 + Math.random() * 0.3
+      const j = (Math.random() - 0.5) * 0.06
+      const c = Math.min(1, Math.max(0, b + j)) as number
+      const col: [number, number, number] = [c, c, Math.min(1, c + 0.01)]
+      this.addLine([p.x, p.y, p.z], [qx, qy, qz], col, col)
+    }
+  }
+
+  addScribbleLimb(
+    from: THREE.Vector3,
+    to: THREE.Vector3,
+    radius: number,
+    count: number,
+    minLen = 0.05,
+    maxLen = 0.18
+  ) {
+    const c = new THREE.Vector3()
+    for (let i = 0; i < count; i++) {
+      const t = Math.random()
+      c.lerpVectors(from, to, t)
+      const wobble = radius * (0.7 + Math.random() * 0.5)
+      this.addScribble(
+        c,
+        new THREE.Vector3(wobble, wobble, wobble),
+        1,
+        minLen,
+        maxLen
+      )
+    }
   }
 
   build() {
@@ -245,13 +301,16 @@ export function WireframeHuman() {
       ], 7, 14)
     }
 
+    // Left arm reaches out to the viewer's left, toward the camera
     const leftShoulder = new THREE.Vector3(-0.68, 4.4, 0.05)
-    const leftElbow = new THREE.Vector3(-0.92, 3.1, 0.28)
-    const leftWrist = new THREE.Vector3(-0.8, 2.3, 0.42)
+    const leftElbow = new THREE.Vector3(-1.5, 3.95, 0.7)
+    const leftWrist = new THREE.Vector3(-1.95, 3.6, 1.4)
+    const leftPalm = new THREE.Vector3(-2.05, 3.55, 1.8)
+    // Right arm extends down and out to the right
     const rightShoulder = new THREE.Vector3(0.68, 4.4, 0.05)
-    const rightElbow = new THREE.Vector3(0.86, 3.32, 0.6)
-    const rightWrist = new THREE.Vector3(0.55, 2.68, 1.5)
-    const rightPalm = new THREE.Vector3(0.5, 2.6, 1.95)
+    const rightElbow = new THREE.Vector3(1.35, 3.5, 0.1)
+    const rightWrist = new THREE.Vector3(1.95, 2.4, -0.05)
+    const rightPalm = new THREE.Vector3(2.1, 2.1, -0.1)
 
     builder.addTube(leftShoulder, leftElbow, [
       { t: 0, r: 0.13 },
@@ -263,13 +322,20 @@ export function WireframeHuman() {
       { t: 0.5, r: 0.08 },
       { t: 1, r: 0.05 },
     ], 7, 12)
-    builder.addSphere(leftWrist, 0.06, 0.15)
-    for (const [dx, dz] of [[-0.1, 0.3], [-0.06, 0.34], [0, 0.34], [0.07, 0.3]]) {
+    builder.addSphere(leftPalm, 0.09, 0.12)
+    const leftFingerTips: Array<[number, number, number]> = [
+      [-2.3, 3.85, 2.1],
+      [-2.2, 3.68, 2.24],
+      [-2.08, 3.58, 2.3],
+      [-1.95, 3.5, 2.26],
+      [-1.88, 3.42, 2.12],
+    ]
+    for (const tip of leftFingerTips) {
       builder.addLine(
-        [leftWrist.x, leftWrist.y, leftWrist.z + 0.05],
-        [leftWrist.x + dx, leftWrist.y - 0.06, leftWrist.z + dz],
-        [0.42, 0.42, 0.43],
-        [0.55, 0.55, 0.56]
+        [leftPalm.x, leftPalm.y, leftPalm.z + 0.04],
+        tip,
+        [0.5, 0.5, 0.51],
+        [0.64, 0.64, 0.65]
       )
     }
 
@@ -283,23 +349,47 @@ export function WireframeHuman() {
       { t: 0.5, r: 0.075 },
       { t: 1, r: 0.05 },
     ], 7, 12)
-    builder.addSphere(rightPalm, 0.085, 0.12)
-    const fingerTips: Array<[number, number, number]> = [
-      [0.62, 2.74, 2.34],
-      [0.55, 2.66, 2.42],
-      [0.45, 2.61, 2.44],
-      [0.35, 2.57, 2.36],
-      [0.3, 2.52, 2.24],
+    builder.addSphere(rightPalm, 0.075, 0.12)
+    const rightFingerTips: Array<[number, number, number]> = [
+      [2.2, 1.95, -0.05],
+      [2.14, 1.88, 0.02],
+      [2.05, 1.84, 0.02],
+      [1.96, 1.86, -0.04],
     ]
-    for (const tip of fingerTips) {
+    for (const tip of rightFingerTips) {
       builder.addLine(
-        [rightPalm.x, rightPalm.y, rightPalm.z + 0.05],
+        [rightPalm.x, rightPalm.y, rightPalm.z],
         tip,
-        [0.5, 0.5, 0.51],
-        [0.62, 0.62, 0.63]
+        [0.45, 0.45, 0.46],
+        [0.58, 0.58, 0.59]
       )
     }
     builder.addLine([0, 4.2, 0], [0.68, 4.4, 0.05], [0.55, 0.55, 0.56], [0.62, 0.62, 0.63])
+
+    // ---- dense scribble shell (chaotic sketch look) ----
+    builder.addScribble(new THREE.Vector3(0.1, 5.5, 0), new THREE.Vector3(0.44, 0.52, 0.44), 430, 0.05, 0.2)
+    builder.addScribble(new THREE.Vector3(0, 4.72, 0.01), new THREE.Vector3(0.15, 0.22, 0.15), 70)
+    for (let i = 0; i < 6; i++) {
+      const y = 2.55 + (i / 5) * 1.75
+      const r = torsoWidth(y)
+      builder.addScribble(
+        new THREE.Vector3(0, y, 0),
+        new THREE.Vector3(r, 0.24, r * 0.45),
+        130
+      )
+    }
+    builder.addScribble(new THREE.Vector3(-0.55, 4.35, 0.02), new THREE.Vector3(0.22, 0.2, 0.18), 80)
+    builder.addScribble(new THREE.Vector3(0.55, 4.35, 0.02), new THREE.Vector3(0.22, 0.2, 0.18), 80)
+    builder.addScribbleLimb(leftShoulder, leftElbow, 0.14, 90)
+    builder.addScribbleLimb(leftElbow, leftWrist, 0.11, 90)
+    builder.addScribble(leftPalm, new THREE.Vector3(0.15, 0.13, 0.15), 120, 0.04, 0.15)
+    builder.addScribbleLimb(rightShoulder, rightElbow, 0.14, 90)
+    builder.addScribbleLimb(rightElbow, rightWrist, 0.11, 90)
+    builder.addScribble(rightPalm, new THREE.Vector3(0.12, 0.12, 0.12), 60, 0.04, 0.14)
+    for (const [hip, knee, ankle] of legs) {
+      builder.addScribbleLimb(hip, knee, 0.17, 110)
+      builder.addScribbleLimb(knee, ankle, 0.1, 80)
+    }
 
     const geo = builder.build()
     const mat = new THREE.LineBasicMaterial({
@@ -333,7 +423,7 @@ export function WireframeHuman() {
     const group = new THREE.Group()
     group.add(human)
     group.add(particles)
-    group.position.set(1.05, 0, 0)
+    group.position.set(1.5, 0, 0)
     group.rotation.y = 0.12
     scene.add(group)
 
@@ -352,7 +442,7 @@ export function WireframeHuman() {
     const resize = () => {
       const w = host.clientWidth || 1
       const h = host.clientHeight || 1
-      const s = Math.max(0.38, Math.min(1, Math.min(w, h) / 900))
+      const s = Math.max(0.38, Math.min(1, Math.min(w, h) / 820))
       group.scale.setScalar(s)
       camera.aspect = w / h
       camera.updateProjectionMatrix()
@@ -375,7 +465,7 @@ export function WireframeHuman() {
         group.rotation.y = 0.12 + Math.sin(t * 0.09) * 0.22
         group.rotation.z = Math.sin(t * 0.05) * 0.015
         group.position.y = Math.sin(t * 0.7) * 0.09
-        group.position.x = 1.05 + mx * 0.22
+        group.position.x = 1.5 + mx * 0.22
         group.scale.multiplyScalar(1 + Math.sin(t * 0.45) * 0.006)
         camera.position.x = mx * 0.3
         camera.position.y = 3.7 + my * 0.12

@@ -18,11 +18,11 @@ export default function DreamframePage() {
       </div>
 
       <div className="df-meta df-enter" style={{ animationDelay: '0.08s' }}>
+        <span className="df-meta-star">✳</span>
         <span className="df-meta-top">
-          <span className="df-meta-star">✳</span>
           <span>AI GENERATIVE SYSTEM</span>
+          <span className="df-meta-sub">DREAMFRAME / 01</span>
         </span>
-        <span className="df-meta-sub">DREAMFRAME / 01</span>
       </div>
 
       <nav className="df-nav df-enter" style={{ animationDelay: '0.14s' }} aria-label="Primary">
@@ -31,9 +31,7 @@ export default function DreamframePage() {
       </nav>
 
       <h1 className="df-headline df-enter" style={{ animationDelay: '0.32s' }}>
-        WE CREATE
-        <br />
-        IMAGINATIONS.
+        WE CREATE IMAGINATIONS.
       </h1>
 
       <a className="df-cta df-enter" style={{ animationDelay: '0.5s' }} href="#create">
@@ -44,6 +42,25 @@ export default function DreamframePage() {
       <div className="df-brand-wrap df-enter" style={{ animationDelay: '0.6s' }}>
         <div className="df-brand">DREAMFRAME</div>
         <div className="df-brand-sub">AI IMAGE GENERATION</div>
+        <svg
+          className="df-brand-line"
+          width="120"
+          height="24"
+          viewBox="0 0 120 24"
+          fill="none"
+          aria-hidden="true"
+        >
+          <path
+            d="M0 2 H100 L64 22"
+            stroke="rgba(255, 255, 255, 0.55)"
+            strokeWidth="1.5"
+          />
+        </svg>
+      </div>
+
+      <div className="df-scroll df-enter" style={{ animationDelay: '0.72s' }}>
+        <span>Scroll Down</span>
+        <span className="df-rule" />
       </div>
 
       <nav className="df-leftnav df-enter" style={{ animationDelay: '0.66s' }} aria-label="Section">
