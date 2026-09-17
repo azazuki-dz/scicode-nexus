@@ -1,24 +1,24 @@
 ﻿// @ts-nocheck
 
 /**
- * Trigonometry Formulas (เธ•เธฃเธตเนเธเธ“เธกเธดเธ•เธด) - เธก.3, เธก.4-5
+ * Trigonometry Formulas (ตรีโกณมิติ) - ม.3, ม.4-5
  */
 
 export const TRIGONOMETRY_FORMULAS = [
   {
     id: 'sine_ratio',
     name: 'Sine Ratio',
-    nameTh: 'เธญเธฑเธ•เธฃเธฒเธชเนเธงเธ sin (เธ•เธฃเธเธเนเธฒเธก/เธเธฒเธ)',
+    nameTh: 'อัตราส่วน sin (ตรงข้าม/ฉาก)',
     category: 'trigonometry',
-    categoryTh: 'เธ•เธฃเธตเนเธเธ“เธกเธดเธ•เธด',
+    categoryTh: 'ตรีโกณมิติ',
     icon: 'triangle',
-    grade: 'เธก.3',
-    latex: '\\sin(\\theta) = \\frac{\\text{เธ•เธฃเธเธเนเธฒเธก}}{\\text{เธเธฒเธ}}',
-    description: 'sin เธเธญเธเธกเธธเธก = เธ”เนเธฒเธเธ•เธฃเธเธเนเธฒเธกเธกเธธเธกเธซเธฒเธฃเธ”เนเธงเธขเธ”เนเธฒเธเธ•เธฃเธเธเนเธฒเธกเธกเธธเธกเธเธฒเธ เนเธเนเธซเธฒเธ”เนเธฒเธเธซเธฃเธทเธญเธกเธธเธกเนเธเธชเธฒเธกเน€เธซเธฅเธตเนเธขเธกเธกเธธเธกเธเธฒเธ',
+    grade: 'ม.3',
+    latex: '\\sin(\\theta) = \\frac{\\text{ตรงข้าม}}{\\text{ฉาก}}',
+    description: 'sin ของมุม = ด้านตรงข้ามมุมหารด้วยด้านตรงข้ามมุมฉาก ใช้หาด้านหรือมุมในสามเหลี่ยมมุมฉาก',
     variables: [
-      { id: 'angle', symbol: '\\theta', name: 'Angle', nameTh: 'เธกเธธเธก ฮธ', unit: 'ยฐ', defaultValue: 30, min: -90, max: 90, step: 0.1 },
-      { id: 'opp', symbol: 'opp', name: 'Opposite', nameTh: 'เธ”เนเธฒเธเธ•เธฃเธเธเนเธฒเธกเธกเธธเธก', unit: 'เธซเธเนเธงเธข', defaultValue: 1, min: -1e9, max: 1e9, step: 0.1 },
-      { id: 'hyp', symbol: 'hyp', name: 'Hypotenuse', nameTh: 'เธ”เนเธฒเธเธ•เธฃเธเธเนเธฒเธกเธกเธธเธกเธเธฒเธ', unit: 'เธซเธเนเธงเธข', defaultValue: 2, min: 0.0001, max: 1e9, step: 0.1 }
+      { id: 'angle', symbol: '\\theta', name: 'Angle', nameTh: 'มุม θ', unit: '°', defaultValue: 30, min: -90, max: 90, step: 0.1 },
+      { id: 'opp', symbol: 'opp', name: 'Opposite', nameTh: 'ด้านตรงข้ามมุม', unit: 'หน่วย', defaultValue: 1, min: -1e9, max: 1e9, step: 0.1 },
+      { id: 'hyp', symbol: 'hyp', name: 'Hypotenuse', nameTh: 'ด้านตรงข้ามมุมฉาก', unit: 'หน่วย', defaultValue: 2, min: 0.0001, max: 1e9, step: 0.1 }
     ],
     solveTargets: ['opp', 'hyp', 'angle'],
     calculate: (inputs, target = 'opp') => {
@@ -29,44 +29,44 @@ export const TRIGONOMETRY_FORMULAS = [
       if (target === 'opp') {
         result = Math.sin(angle * Math.PI / 180) * hyp;
         steps = [
-          { title: 'เธเธฑเธ”เธฃเธนเธเธซเธฒเธ”เนเธฒเธเธ•เธฃเธเธเนเธฒเธก', latex: 'opp = \\sin(\\theta) \\cdot hyp', explanation: 'เธขเนเธฒเธข hyp เนเธเธเธนเธ“' },
-          { title: 'เนเธ—เธเธเนเธฒ', latex: `opp = \\sin(${angle}^\\circ) \\times ${hyp}`, explanation: `ฮธ = ${angle}ยฐ, เธเธฒเธ = ${hyp}` },
-          { title: 'เธเธฅเธฅเธฑเธเธเน', latex: `opp = ${result.toFixed(4)}`, explanation: `เธ”เนเธฒเธเธ•เธฃเธเธเนเธฒเธกเธขเธฒเธง ${result.toFixed(4)} เธซเธเนเธงเธข` }
+          { title: 'จัดรูปหาด้านตรงข้าม', latex: 'opp = \\sin(\\theta) \\cdot hyp', explanation: 'ย้าย hyp ไปคูณ' },
+          { title: 'แทนค่า', latex: `opp = \\sin(${angle}^\\circ) \\times ${hyp}`, explanation: `θ = ${angle}°, ฉาก = ${hyp}` },
+          { title: 'ผลลัพธ์', latex: `opp = ${result.toFixed(4)}`, explanation: `ด้านตรงข้ามยาว ${result.toFixed(4)} หน่วย` }
         ];
       } else if (target === 'hyp') {
-        if (Math.sin(angle * Math.PI / 180) === 0) throw new Error('sin(ฮธ) = 0 เนเธกเนเธชเธฒเธกเธฒเธฃเธ–เนเธเนเนเธ”เน');
+        if (Math.sin(angle * Math.PI / 180) === 0) throw new Error('sin(θ) = 0 ไม่สามารถใช้ได้');
         result = opp / Math.sin(angle * Math.PI / 180);
         steps = [
-          { title: 'เธเธฑเธ”เธฃเธนเธเธซเธฒเธ”เนเธฒเธเธเธฒเธ', latex: 'hyp = \\frac{opp}{\\sin(\\theta)}', explanation: 'เธขเนเธฒเธขเธเนเธฒเธเธชเธกเธเธฒเธฃ' },
-          { title: 'เธเธฅเธฅเธฑเธเธเน', latex: `hyp = ${result.toFixed(4)}`, explanation: `เธ”เนเธฒเธเธเธฒเธเธขเธฒเธง ${result.toFixed(4)} เธซเธเนเธงเธข` }
+          { title: 'จัดรูปหาด้านฉาก', latex: 'hyp = \\frac{opp}{\\sin(\\theta)}', explanation: 'ย้ายข้างสมการ' },
+          { title: 'ผลลัพธ์', latex: `hyp = ${result.toFixed(4)}`, explanation: `ด้านฉากยาว ${result.toFixed(4)} หน่วย` }
         ];
       } else if (target === 'angle') {
-        if (hyp === 0) throw new Error('เธ”เนเธฒเธเธเธฒเธ (hyp) เธ•เนเธญเธเนเธกเนเน€เธเนเธ 0');
+        if (hyp === 0) throw new Error('ด้านฉาก (hyp) ต้องไม่เป็น 0');
         result = Math.asin(Math.max(-1, Math.min(1, opp / hyp))) * 180 / Math.PI;
         steps = [
-          { title: 'เธเธฑเธ”เธฃเธนเธเธซเธฒเธกเธธเธก', latex: '\\theta = \\arcsin\\left(\\frac{opp}{hyp}\\right)', explanation: 'เนเธเนเธเธฑเธเธเนเธเธฑเธเธเธเธเธฑเธ arcsin' },
-          { title: 'เธเธฅเธฅเธฑเธเธเน', latex: `\\theta = ${result.toFixed(4)}^\\circ`, explanation: `เธกเธธเธกเน€เธ—เนเธฒเธเธฑเธ ${result.toFixed(4)} เธญเธเธจเธฒ` }
+          { title: 'จัดรูปหามุม', latex: '\\theta = \\arcsin\\left(\\frac{opp}{hyp}\\right)', explanation: 'ใช้ฟังก์ชันผกผัน arcsin' },
+          { title: 'ผลลัพธ์', latex: `\\theta = ${result.toFixed(4)}^\\circ`, explanation: `มุมเท่ากับ ${result.toFixed(4)} องศา` }
         ];
       }
 
-      return { result, unit: target === 'angle' ? 'ยฐ' : '', steps };
+      return { result, unit: target === 'angle' ? '°' : '', steps };
     }
   },
 
   {
     id: 'cosine_ratio',
     name: 'Cosine Ratio',
-    nameTh: 'เธญเธฑเธ•เธฃเธฒเธชเนเธงเธ cos (เธเธฃเธฐเธเธดเธ”/เธเธฒเธ)',
+    nameTh: 'อัตราส่วน cos (ประชิด/ฉาก)',
     category: 'trigonometry',
-    categoryTh: 'เธ•เธฃเธตเนเธเธ“เธกเธดเธ•เธด',
+    categoryTh: 'ตรีโกณมิติ',
     icon: 'triangle',
-    grade: 'เธก.3',
-    latex: '\\cos(\\theta) = \\frac{\\text{เธเธฃเธฐเธเธดเธ”}}{\\text{เธเธฒเธ}}',
-    description: 'cos เธเธญเธเธกเธธเธก = เธ”เนเธฒเธเธเธฃเธฐเธเธดเธ”เธกเธธเธกเธซเธฒเธฃเธ”เนเธงเธขเธ”เนเธฒเธเธ•เธฃเธเธเนเธฒเธกเธกเธธเธกเธเธฒเธ เนเธเนเธซเธฒเธ”เนเธฒเธเธเธฃเธฐเธเธดเธ”เธซเธฃเธทเธญเธกเธธเธก',
+    grade: 'ม.3',
+    latex: '\\cos(\\theta) = \\frac{\\text{ประชิด}}{\\text{ฉาก}}',
+    description: 'cos ของมุม = ด้านประชิดมุมหารด้วยด้านตรงข้ามมุมฉาก ใช้หาด้านประชิดหรือมุม',
     variables: [
-      { id: 'angle', symbol: '\\theta', name: 'Angle', nameTh: 'เธกเธธเธก ฮธ', unit: 'ยฐ', defaultValue: 60, min: 0, max: 180, step: 0.1 },
-      { id: 'adj', symbol: 'adj', name: 'Adjacent', nameTh: 'เธ”เนเธฒเธเธเธฃเธฐเธเธดเธ”เธกเธธเธก', unit: 'เธซเธเนเธงเธข', defaultValue: 1, min: -1e9, max: 1e9, step: 0.1 },
-      { id: 'hyp', symbol: 'hyp', name: 'Hypotenuse', nameTh: 'เธ”เนเธฒเธเธ•เธฃเธเธเนเธฒเธกเธกเธธเธกเธเธฒเธ', unit: 'เธซเธเนเธงเธข', defaultValue: 2, min: 0.0001, max: 1e9, step: 0.1 }
+      { id: 'angle', symbol: '\\theta', name: 'Angle', nameTh: 'มุม θ', unit: '°', defaultValue: 60, min: 0, max: 180, step: 0.1 },
+      { id: 'adj', symbol: 'adj', name: 'Adjacent', nameTh: 'ด้านประชิดมุม', unit: 'หน่วย', defaultValue: 1, min: -1e9, max: 1e9, step: 0.1 },
+      { id: 'hyp', symbol: 'hyp', name: 'Hypotenuse', nameTh: 'ด้านตรงข้ามมุมฉาก', unit: 'หน่วย', defaultValue: 2, min: 0.0001, max: 1e9, step: 0.1 }
     ],
     solveTargets: ['adj', 'hyp', 'angle'],
     calculate: (inputs, target = 'adj') => {
@@ -77,43 +77,43 @@ export const TRIGONOMETRY_FORMULAS = [
       if (target === 'adj') {
         result = Math.cos(angle * Math.PI / 180) * hyp;
         steps = [
-          { title: 'เธเธฑเธ”เธฃเธนเธเธซเธฒเธ”เนเธฒเธเธเธฃเธฐเธเธดเธ”', latex: 'adj = \\cos(\\theta) \\cdot hyp', explanation: 'เธขเนเธฒเธข hyp เนเธเธเธนเธ“' },
-          { title: 'เธเธฅเธฅเธฑเธเธเน', latex: `adj = ${result.toFixed(4)}`, explanation: `เธ”เนเธฒเธเธเธฃเธฐเธเธดเธ”เธขเธฒเธง ${result.toFixed(4)} เธซเธเนเธงเธข` }
+          { title: 'จัดรูปหาด้านประชิด', latex: 'adj = \\cos(\\theta) \\cdot hyp', explanation: 'ย้าย hyp ไปคูณ' },
+          { title: 'ผลลัพธ์', latex: `adj = ${result.toFixed(4)}`, explanation: `ด้านประชิดยาว ${result.toFixed(4)} หน่วย` }
         ];
       } else if (target === 'hyp') {
-        if (Math.cos(angle * Math.PI / 180) === 0) throw new Error('cos(ฮธ) = 0 เนเธกเนเธชเธฒเธกเธฒเธฃเธ–เนเธเนเนเธ”เน');
+        if (Math.cos(angle * Math.PI / 180) === 0) throw new Error('cos(θ) = 0 ไม่สามารถใช้ได้');
         result = adj / Math.cos(angle * Math.PI / 180);
         steps = [
-          { title: 'เธเธฑเธ”เธฃเธนเธเธซเธฒเธ”เนเธฒเธเธเธฒเธ', latex: 'hyp = \\frac{adj}{\\cos(\\theta)}', explanation: 'เธขเนเธฒเธขเธเนเธฒเธเธชเธกเธเธฒเธฃ' },
-          { title: 'เธเธฅเธฅเธฑเธเธเน', latex: `hyp = ${result.toFixed(4)}`, explanation: `เธ”เนเธฒเธเธเธฒเธเธขเธฒเธง ${result.toFixed(4)} เธซเธเนเธงเธข` }
+          { title: 'จัดรูปหาด้านฉาก', latex: 'hyp = \\frac{adj}{\\cos(\\theta)}', explanation: 'ย้ายข้างสมการ' },
+          { title: 'ผลลัพธ์', latex: `hyp = ${result.toFixed(4)}`, explanation: `ด้านฉากยาว ${result.toFixed(4)} หน่วย` }
         ];
       } else if (target === 'angle') {
-        if (hyp === 0) throw new Error('เธ”เนเธฒเธเธเธฒเธ (hyp) เธ•เนเธญเธเนเธกเนเน€เธเนเธ 0');
+        if (hyp === 0) throw new Error('ด้านฉาก (hyp) ต้องไม่เป็น 0');
         result = Math.acos(Math.max(-1, Math.min(1, adj / hyp))) * 180 / Math.PI;
         steps = [
-          { title: 'เธเธฑเธ”เธฃเธนเธเธซเธฒเธกเธธเธก', latex: '\\theta = \\arccos\\left(\\frac{adj}{hyp}\\right)', explanation: 'เนเธเนเธเธฑเธเธเนเธเธฑเธเธเธเธเธฑเธ' },
-          { title: 'เธเธฅเธฅเธฑเธเธเน', latex: `\\theta = ${result.toFixed(4)}^\\circ`, explanation: `เธกเธธเธกเน€เธ—เนเธฒเธเธฑเธ ${result.toFixed(4)} เธญเธเธจเธฒ` }
+          { title: 'จัดรูปหามุม', latex: '\\theta = \\arccos\\left(\\frac{adj}{hyp}\\right)', explanation: 'ใช้ฟังก์ชันผกผัน' },
+          { title: 'ผลลัพธ์', latex: `\\theta = ${result.toFixed(4)}^\\circ`, explanation: `มุมเท่ากับ ${result.toFixed(4)} องศา` }
         ];
       }
 
-      return { result, unit: target === 'angle' ? 'ยฐ' : '', steps };
+      return { result, unit: target === 'angle' ? '°' : '', steps };
     }
   },
 
   {
     id: 'tangent_ratio',
     name: 'Tangent Ratio',
-    nameTh: 'เธญเธฑเธ•เธฃเธฒเธชเนเธงเธ tan (เธ•เธฃเธเธเนเธฒเธก/เธเธฃเธฐเธเธดเธ”)',
+    nameTh: 'อัตราส่วน tan (ตรงข้าม/ประชิด)',
     category: 'trigonometry',
-    categoryTh: 'เธ•เธฃเธตเนเธเธ“เธกเธดเธ•เธด',
+    categoryTh: 'ตรีโกณมิติ',
     icon: 'triangle',
-    grade: 'เธก.3',
-    latex: '\\tan(\\theta) = \\frac{\\text{เธ•เธฃเธเธเนเธฒเธก}}{\\text{เธเธฃเธฐเธเธดเธ”}}',
-    description: 'tan เธเธญเธเธกเธธเธก = เธ”เนเธฒเธเธ•เธฃเธเธเนเธฒเธกเธกเธธเธกเธซเธฒเธฃเธ”เนเธงเธขเธ”เนเธฒเธเธเธฃเธฐเธเธดเธ”เธกเธธเธก เนเธเนเธซเธฒเธเธงเธฒเธกเธเธฑเธเธซเธฃเธทเธญเธฃเธฐเธขเธฐเธ—เธฒเธเน€เธเนเธ เธกเธธเธกเน€เธเธข-เธกเธธเธกเธเนเธก',
+    grade: 'ม.3',
+    latex: '\\tan(\\theta) = \\frac{\\text{ตรงข้าม}}{\\text{ประชิด}}',
+    description: 'tan ของมุม = ด้านตรงข้ามมุมหารด้วยด้านประชิดมุม ใช้หาความชันหรือระยะทางเช่น มุมเงย-มุมก้ม',
     variables: [
-      { id: 'angle', symbol: '\\theta', name: 'Angle', nameTh: 'เธกเธธเธก ฮธ', unit: 'ยฐ', defaultValue: 45, min: -90, max: 90, step: 0.1 },
-      { id: 'opp', symbol: 'opp', name: 'Opposite', nameTh: 'เธ”เนเธฒเธเธ•เธฃเธเธเนเธฒเธกเธกเธธเธก', unit: 'เธซเธเนเธงเธข', defaultValue: 10, min: -1e9, max: 1e9, step: 0.1 },
-      { id: 'adj', symbol: 'adj', name: 'Adjacent', nameTh: 'เธ”เนเธฒเธเธเธฃเธฐเธเธดเธ”เธกเธธเธก', unit: 'เธซเธเนเธงเธข', defaultValue: 10, min: 0.0001, max: 1e9, step: 0.1 }
+      { id: 'angle', symbol: '\\theta', name: 'Angle', nameTh: 'มุม θ', unit: '°', defaultValue: 45, min: -90, max: 90, step: 0.1 },
+      { id: 'opp', symbol: 'opp', name: 'Opposite', nameTh: 'ด้านตรงข้ามมุม', unit: 'หน่วย', defaultValue: 10, min: -1e9, max: 1e9, step: 0.1 },
+      { id: 'adj', symbol: 'adj', name: 'Adjacent', nameTh: 'ด้านประชิดมุม', unit: 'หน่วย', defaultValue: 10, min: 0.0001, max: 1e9, step: 0.1 }
     ],
     solveTargets: ['opp', 'adj', 'angle'],
     calculate: (inputs, target = 'opp') => {
@@ -124,44 +124,44 @@ export const TRIGONOMETRY_FORMULAS = [
       if (target === 'opp') {
         result = Math.tan(angle * Math.PI / 180) * adj;
         steps = [
-          { title: 'เธเธฑเธ”เธฃเธนเธเธซเธฒเธ”เนเธฒเธเธ•เธฃเธเธเนเธฒเธก', latex: 'opp = \\tan(\\theta) \\cdot adj', explanation: 'เธขเนเธฒเธข adj เนเธเธเธนเธ“' },
-          { title: 'เธเธฅเธฅเธฑเธเธเน', latex: `opp = ${result.toFixed(4)}`, explanation: `เธ”เนเธฒเธเธ•เธฃเธเธเนเธฒเธกเธขเธฒเธง ${result.toFixed(4)} เธซเธเนเธงเธข` }
+          { title: 'จัดรูปหาด้านตรงข้าม', latex: 'opp = \\tan(\\theta) \\cdot adj', explanation: 'ย้าย adj ไปคูณ' },
+          { title: 'ผลลัพธ์', latex: `opp = ${result.toFixed(4)}`, explanation: `ด้านตรงข้ามยาว ${result.toFixed(4)} หน่วย` }
         ];
       } else if (target === 'adj') {
-        if (Math.tan(angle * Math.PI / 180) === 0) throw new Error('tan(ฮธ) = 0 เนเธกเนเธชเธฒเธกเธฒเธฃเธ–เนเธเนเนเธ”เน');
+        if (Math.tan(angle * Math.PI / 180) === 0) throw new Error('tan(θ) = 0 ไม่สามารถใช้ได้');
         result = opp / Math.tan(angle * Math.PI / 180);
         steps = [
-          { title: 'เธเธฑเธ”เธฃเธนเธเธซเธฒเธ”เนเธฒเธเธเธฃเธฐเธเธดเธ”', latex: 'adj = \\frac{opp}{\\tan(\\theta)}', explanation: 'เธขเนเธฒเธขเธเนเธฒเธเธชเธกเธเธฒเธฃ' },
-          { title: 'เธเธฅเธฅเธฑเธเธเน', latex: `adj = ${result.toFixed(4)}`, explanation: `เธ”เนเธฒเธเธเธฃเธฐเธเธดเธ”เธขเธฒเธง ${result.toFixed(4)} เธซเธเนเธงเธข` }
+          { title: 'จัดรูปหาด้านประชิด', latex: 'adj = \\frac{opp}{\\tan(\\theta)}', explanation: 'ย้ายข้างสมการ' },
+          { title: 'ผลลัพธ์', latex: `adj = ${result.toFixed(4)}`, explanation: `ด้านประชิดยาว ${result.toFixed(4)} หน่วย` }
         ];
       } else if (target === 'angle') {
-        if (adj === 0) throw new Error('เธ”เนเธฒเธเธเธฃเธฐเธเธดเธ” (adj) เธ•เนเธญเธเนเธกเนเน€เธเนเธ 0');
+        if (adj === 0) throw new Error('ด้านประชิด (adj) ต้องไม่เป็น 0');
         result = Math.atan(opp / adj) * 180 / Math.PI;
         steps = [
-          { title: 'เธเธฑเธ”เธฃเธนเธเธซเธฒเธกเธธเธก', latex: '\\theta = \\arctan\\left(\\frac{opp}{adj}\\right)', explanation: 'เนเธเนเธเธฑเธเธเนเธเธฑเธเธเธเธเธฑเธ arctan' },
-          { title: 'เธเธฅเธฅเธฑเธเธเน', latex: `\\theta = ${result.toFixed(4)}^\\circ`, explanation: `เธกเธธเธกเน€เธ—เนเธฒเธเธฑเธ ${result.toFixed(4)} เธญเธเธจเธฒ` }
+          { title: 'จัดรูปหามุม', latex: '\\theta = \\arctan\\left(\\frac{opp}{adj}\\right)', explanation: 'ใช้ฟังก์ชันผกผัน arctan' },
+          { title: 'ผลลัพธ์', latex: `\\theta = ${result.toFixed(4)}^\\circ`, explanation: `มุมเท่ากับ ${result.toFixed(4)} องศา` }
         ];
       }
 
-      return { result, unit: target === 'angle' ? 'ยฐ' : '', steps };
+      return { result, unit: target === 'angle' ? '°' : '', steps };
     }
   },
 
   {
     id: 'law_of_sines',
     name: 'Law of Sines',
-    nameTh: 'เธเธเธเธญเธเนเธเธเน (a/sinA = b/sinB)',
+    nameTh: 'กฎของไซน์ (a/sinA = b/sinB)',
     category: 'trigonometry',
-    categoryTh: 'เธ•เธฃเธตเนเธเธ“เธกเธดเธ•เธด',
+    categoryTh: 'ตรีโกณมิติ',
     icon: 'triangle',
-    grade: 'เธก.4-5',
+    grade: 'ม.4-5',
     latex: '\\frac{a}{\\sin A} = \\frac{b}{\\sin B}',
-    description: 'เนเธเนเธซเธฒเธ”เนเธฒเธเธซเธฃเธทเธญเธกเธธเธกเธเธญเธเธชเธฒเธกเน€เธซเธฅเธตเนเธขเธกเนเธ”เน เน€เธกเธทเนเธญเธฃเธนเน 2 เธกเธธเธก 1 เธ”เนเธฒเธ เธซเธฃเธทเธญ 2 เธ”เนเธฒเธ 1 เธกเธธเธก (เธเธฃเธ“เธตเธกเธธเธกเนเธกเนเธ•เธฃเธเธเนเธฒเธก)',
+    description: 'ใช้หาด้านหรือมุมของสามเหลี่ยมใดๆ เมื่อรู้ 2 มุม 1 ด้าน หรือ 2 ด้าน 1 มุม (กรณีมุมไม่ตรงข้าม)',
     variables: [
-      { id: 'sideA', symbol: 'a', name: 'Side a', nameTh: 'เธ”เนเธฒเธ a (เธ•เธฃเธเธเนเธฒเธก A)', unit: 'เธซเธเนเธงเธข', defaultValue: 5, min: 0.0001, max: 1e9, step: 0.1 },
-      { id: 'angleA', symbol: 'A', name: 'Angle A', nameTh: 'เธกเธธเธก A (เธ•เธฃเธเธเนเธฒเธก a)', unit: 'ยฐ', defaultValue: 60, min: 0.01, max: 179.99, step: 0.1 },
-      { id: 'sideB', symbol: 'b', name: 'Side b', nameTh: 'เธ”เนเธฒเธ b (เธ•เธฃเธเธเนเธฒเธก B)', unit: 'เธซเธเนเธงเธข', defaultValue: 4.33, min: 0.0001, max: 1e9, step: 0.1 },
-      { id: 'angleB', symbol: 'B', name: 'Angle B', nameTh: 'เธกเธธเธก B (เธ•เธฃเธเธเนเธฒเธก b)', unit: 'ยฐ', defaultValue: 45, min: 0.01, max: 179.99, step: 0.1 }
+      { id: 'sideA', symbol: 'a', name: 'Side a', nameTh: 'ด้าน a (ตรงข้าม A)', unit: 'หน่วย', defaultValue: 5, min: 0.0001, max: 1e9, step: 0.1 },
+      { id: 'angleA', symbol: 'A', name: 'Angle A', nameTh: 'มุม A (ตรงข้าม a)', unit: '°', defaultValue: 60, min: 0.01, max: 179.99, step: 0.1 },
+      { id: 'sideB', symbol: 'b', name: 'Side b', nameTh: 'ด้าน b (ตรงข้าม B)', unit: 'หน่วย', defaultValue: 4.33, min: 0.0001, max: 1e9, step: 0.1 },
+      { id: 'angleB', symbol: 'B', name: 'Angle B', nameTh: 'มุม B (ตรงข้าม b)', unit: '°', defaultValue: 45, min: 0.01, max: 179.99, step: 0.1 }
     ],
     solveTargets: ['sideA', 'sideB', 'angleB'],
     calculate: (inputs, target = 'sideA') => {
@@ -172,50 +172,50 @@ export const TRIGONOMETRY_FORMULAS = [
       const sinB = Math.sin(angleB * Math.PI / 180);
 
       if (target === 'sideA') {
-        if (sinB === 0) throw new Error('sin B เธ•เนเธญเธเนเธกเนเน€เธเนเธ 0');
+        if (sinB === 0) throw new Error('sin B ต้องไม่เป็น 0');
         result = (sideB * sinA) / sinB;
         steps = [
-          { title: 'เธเธฑเธ”เธฃเธนเธเธซเธฒ a', latex: 'a = \\frac{b \\cdot \\sin A}{\\sin B}', explanation: 'เธขเนเธฒเธขเธเนเธฒเธกเนเธเธกเธฒ' },
-          { title: 'เนเธ—เธเธเนเธฒ', latex: `a = \\frac{${sideB} \\times \\sin(${angleA}^\\circ)}{\\sin(${angleB}^\\circ)}`, explanation: 'เธเธณเธเธงเธ“เธเนเธฒ sine' },
-          { title: 'เธเธฅเธฅเธฑเธเธเน', latex: `a = ${result.toFixed(4)}`, explanation: `เธ”เนเธฒเธ a เธขเธฒเธง ${result.toFixed(4)} เธซเธเนเธงเธข` }
+          { title: 'จัดรูปหา a', latex: 'a = \\frac{b \\cdot \\sin A}{\\sin B}', explanation: 'ย้ายข้ามไปมา' },
+          { title: 'แทนค่า', latex: `a = \\frac{${sideB} \\times \\sin(${angleA}^\\circ)}{\\sin(${angleB}^\\circ)}`, explanation: 'คำนวณค่า sine' },
+          { title: 'ผลลัพธ์', latex: `a = ${result.toFixed(4)}`, explanation: `ด้าน a ยาว ${result.toFixed(4)} หน่วย` }
         ];
       } else if (target === 'sideB') {
-        if (sinA === 0) throw new Error('sin A เธ•เนเธญเธเนเธกเนเน€เธเนเธ 0');
+        if (sinA === 0) throw new Error('sin A ต้องไม่เป็น 0');
         result = (sideA * sinB) / sinA;
         steps = [
-          { title: 'เธเธฑเธ”เธฃเธนเธเธซเธฒ b', latex: 'b = \\frac{a \\cdot \\sin B}{\\sin A}', explanation: 'เธขเนเธฒเธขเธเนเธฒเธกเนเธเธกเธฒ' },
-          { title: 'เธเธฅเธฅเธฑเธเธเน', latex: `b = ${result.toFixed(4)}`, explanation: `เธ”เนเธฒเธ b เธขเธฒเธง ${result.toFixed(4)} เธซเธเนเธงเธข` }
+          { title: 'จัดรูปหา b', latex: 'b = \\frac{a \\cdot \\sin B}{\\sin A}', explanation: 'ย้ายข้ามไปมา' },
+          { title: 'ผลลัพธ์', latex: `b = ${result.toFixed(4)}`, explanation: `ด้าน b ยาว ${result.toFixed(4)} หน่วย` }
         ];
       } else if (target === 'angleB') {
-        if (sideA === 0) throw new Error('เธ”เนเธฒเธ a เธ•เนเธญเธเนเธกเนเน€เธเนเธ 0');
+        if (sideA === 0) throw new Error('ด้าน a ต้องไม่เป็น 0');
         const ratio = (sideB * sinA) / sideA;
-        if (Math.abs(ratio) > 1) throw new Error('เธเนเธฒเธ—เธตเนเธเธณเธเธงเธ“เนเธ”เนเน€เธเธดเธเธเนเธงเธเธเธญเธ sine (1) โ€” เธ•เธฃเธงเธเธชเธญเธเธเนเธญเธกเธนเธฅ');
+        if (Math.abs(ratio) > 1) throw new Error('ค่าที่คำนวณได้เกินช่วงของ sine (1) — ตรวจสอบข้อมูล');
         result = Math.asin(ratio) * 180 / Math.PI;
         steps = [
-          { title: 'เธเธฑเธ”เธฃเธนเธเธซเธฒ sin B', latex: '\\sin B = \\frac{b \\cdot \\sin A}{a}', explanation: 'เธขเนเธฒเธขเธเนเธฒเธเธชเธกเธเธฒเธฃ' },
-          { title: 'เธเธฅเธฅเธฑเธเธเน', latex: `B = ${result.toFixed(4)}^\\circ`, explanation: `เธกเธธเธก B เน€เธ—เนเธฒเธเธฑเธ ${result.toFixed(4)} เธญเธเธจเธฒ (เนเธเน arcsin)` }
+          { title: 'จัดรูปหา sin B', latex: '\\sin B = \\frac{b \\cdot \\sin A}{a}', explanation: 'ย้ายข้างสมการ' },
+          { title: 'ผลลัพธ์', latex: `B = ${result.toFixed(4)}^\\circ`, explanation: `มุม B เท่ากับ ${result.toFixed(4)} องศา (ใช้ arcsin)` }
         ];
       }
 
-      return { result, unit: target === 'angleB' ? 'ยฐ' : '', steps };
+      return { result, unit: target === 'angleB' ? '°' : '', steps };
     }
   },
 
   {
     id: 'law_of_cosines',
     name: 'Law of Cosines',
-    nameTh: 'เธเธเธเธญเธเนเธเนเธเธเน (cยฒ = aยฒ + bยฒ - 2ab cos C)',
+    nameTh: 'กฎของโคไซน์ (c² = a² + b² - 2ab cos C)',
     category: 'trigonometry',
-    categoryTh: 'เธ•เธฃเธตเนเธเธ“เธกเธดเธ•เธด',
+    categoryTh: 'ตรีโกณมิติ',
     icon: 'triangle',
-    grade: 'เธก.4-5',
+    grade: 'ม.4-5',
     latex: 'c^2 = a^2 + b^2 - 2ab\\cos(C)',
-    description: 'เนเธเนเธซเธฒเธ”เนเธฒเธเธ—เธตเนเธชเธฒเธกเธเธญเธเธชเธฒเธกเน€เธซเธฅเธตเนเธขเธกเนเธ”เน เน€เธกเธทเนเธญเธฃเธนเน 2 เธ”เนเธฒเธ 1 เธกเธธเธก เธซเธฃเธทเธญเธซเธฒเธกเธธเธกเน€เธกเธทเนเธญเธฃเธนเนเธ”เนเธฒเธเธเธฃเธ 3 เธ”เนเธฒเธ',
+    description: 'ใช้หาด้านที่สามของสามเหลี่ยมใดๆ เมื่อรู้ 2 ด้าน 1 มุม หรือหามุมเมื่อรู้ด้านครบ 3 ด้าน',
     variables: [
-      { id: 'a', symbol: 'a', name: 'Side a', nameTh: 'เธ”เนเธฒเธ a', unit: 'เธซเธเนเธงเธข', defaultValue: 5, min: 0.0001, max: 1e9, step: 0.1 },
-      { id: 'b', symbol: 'b', name: 'Side b', nameTh: 'เธ”เนเธฒเธ b', unit: 'เธซเธเนเธงเธข', defaultValue: 7, min: 0.0001, max: 1e9, step: 0.1 },
-      { id: 'c', symbol: 'c', name: 'Side c', nameTh: 'เธ”เนเธฒเธ c (เธ•เธฃเธเธเนเธฒเธก C)', unit: 'เธซเธเนเธงเธข', defaultValue: 6, min: 0.0001, max: 1e9, step: 0.1 },
-      { id: 'angleC', symbol: 'C', name: 'Angle C', nameTh: 'เธกเธธเธก C (เธ•เธฃเธเธเนเธฒเธก c)', unit: 'ยฐ', defaultValue: 60, min: 0.01, max: 179.99, step: 0.1 }
+      { id: 'a', symbol: 'a', name: 'Side a', nameTh: 'ด้าน a', unit: 'หน่วย', defaultValue: 5, min: 0.0001, max: 1e9, step: 0.1 },
+      { id: 'b', symbol: 'b', name: 'Side b', nameTh: 'ด้าน b', unit: 'หน่วย', defaultValue: 7, min: 0.0001, max: 1e9, step: 0.1 },
+      { id: 'c', symbol: 'c', name: 'Side c', nameTh: 'ด้าน c (ตรงข้าม C)', unit: 'หน่วย', defaultValue: 6, min: 0.0001, max: 1e9, step: 0.1 },
+      { id: 'angleC', symbol: 'C', name: 'Angle C', nameTh: 'มุม C (ตรงข้าม c)', unit: '°', defaultValue: 60, min: 0.01, max: 179.99, step: 0.1 }
     ],
     solveTargets: ['c', 'angleC'],
     calculate: (inputs, target = 'c') => {
@@ -226,48 +226,48 @@ export const TRIGONOMETRY_FORMULAS = [
       if (target === 'c') {
         result = Math.sqrt(a * a + b * b - 2 * a * b * Math.cos(angleC * Math.PI / 180));
         steps = [
-          { title: 'เธชเธนเธ•เธฃเธเธเธเธญเธเนเธเนเธเธเน', latex: 'c^2 = a^2 + b^2 - 2ab\\cos(C)', explanation: 'เธ–เธญเธ”เธฃเธฒเธเธ—เธฑเนเธเธชเธญเธเธเนเธฒเธ' },
-          { title: 'เนเธ—เธเธเนเธฒ', latex: `c = \\sqrt{${a}^2 + ${b}^2 - 2(${a})(${b})\\cos(${angleC}^\\circ)}`, explanation: `a = ${a}, b = ${b}, C = ${angleC}ยฐ` },
-          { title: 'เธเธฅเธฅเธฑเธเธเน', latex: `c = ${result.toFixed(4)}`, explanation: `เธ”เนเธฒเธ c เธขเธฒเธง ${result.toFixed(4)} เธซเธเนเธงเธข` }
+          { title: 'สูตรกฎของโคไซน์', latex: 'c^2 = a^2 + b^2 - 2ab\\cos(C)', explanation: 'ถอดรากทั้งสองข้าง' },
+          { title: 'แทนค่า', latex: `c = \\sqrt{${a}^2 + ${b}^2 - 2(${a})(${b})\\cos(${angleC}^\\circ)}`, explanation: `a = ${a}, b = ${b}, C = ${angleC}°` },
+          { title: 'ผลลัพธ์', latex: `c = ${result.toFixed(4)}`, explanation: `ด้าน c ยาว ${result.toFixed(4)} หน่วย` }
         ];
       } else if (target === 'angleC') {
         const cosC = (a * a + b * b - c * c) / (2 * a * b);
-        if (Math.abs(cosC) > 1) throw new Error('เธเนเธญเธกเธนเธฅเธ”เนเธฒเธเน€เธเนเธเนเธเนเธกเนเนเธ”เน: cos C เน€เธเธดเธ ยฑ1');
+        if (Math.abs(cosC) > 1) throw new Error('ข้อมูลด้านเป็นไปไม่ได้: cos C เกิน ±1');
         result = Math.acos(cosC) * 180 / Math.PI;
         steps = [
-          { title: 'เธเธฑเธ”เธฃเธนเธเธซเธฒเธกเธธเธก C', latex: '\\cos C = \\frac{a^2 + b^2 - c^2}{2ab}', explanation: 'เธขเนเธฒเธขเธเนเธฒเธเธชเธกเธเธฒเธฃ' },
-          { title: 'เธเธฅเธฅเธฑเธเธเน', latex: `C = ${result.toFixed(4)}^\\circ`, explanation: `เธกเธธเธก C เน€เธ—เนเธฒเธเธฑเธ ${result.toFixed(4)} เธญเธเธจเธฒ (เนเธเน arccos)` }
+          { title: 'จัดรูปหามุม C', latex: '\\cos C = \\frac{a^2 + b^2 - c^2}{2ab}', explanation: 'ย้ายข้างสมการ' },
+          { title: 'ผลลัพธ์', latex: `C = ${result.toFixed(4)}^\\circ`, explanation: `มุม C เท่ากับ ${result.toFixed(4)} องศา (ใช้ arccos)` }
         ];
       }
 
-      return { result, unit: target === 'angleC' ? 'ยฐ' : '', steps };
+      return { result, unit: target === 'angleC' ? '°' : '', steps };
     }
   },
 
   {
     id: 'triangle_area_sinc',
-    name: 'Triangle Area (ยฝab sin C)',
-    nameTh: 'เธเธทเนเธเธ—เธตเนเธชเธฒเธกเน€เธซเธฅเธตเนเธขเธก (ยฝabยทsin C)',
+    name: 'Triangle Area (½ab sin C)',
+    nameTh: 'พื้นที่สามเหลี่ยม (½ab·sin C)',
     category: 'trigonometry',
-    categoryTh: 'เธ•เธฃเธตเนเธเธ“เธกเธดเธ•เธด',
+    categoryTh: 'ตรีโกณมิติ',
     icon: 'triangle',
-    grade: 'เธก.4-5',
+    grade: 'ม.4-5',
     latex: 'A = \\frac{1}{2} ab\\sin(C)',
-    description: 'เธเธทเนเธเธ—เธตเนเธชเธฒเธกเน€เธซเธฅเธตเนเธขเธกเนเธ”เน เธเธณเธเธงเธ“เธเธฒเธเธ”เนเธฒเธเธชเธญเธเธ”เนเธฒเธเนเธฅเธฐเธกเธธเธกเธฃเธฐเธซเธงเนเธฒเธเธ”เนเธฒเธ (เนเธเนเน€เธกเธทเนเธญเนเธกเนเธกเธตเน€เธชเนเธเธชเธนเธ)',
+    description: 'พื้นที่สามเหลี่ยมใดๆ คำนวณจากด้านสองด้านและมุมระหว่างด้าน (ใช้เมื่อไม่มีเส้นสูง)',
     variables: [
-      { id: 'A', symbol: 'A', name: 'Area', nameTh: 'เธเธทเนเธเธ—เธตเน', unit: 'เธ•เธฃ.เธซเธเนเธงเธข', defaultValue: 15.155, min: 0, max: 1e12, step: 0.1 },
-      { id: 'a', symbol: 'a', name: 'Side a', nameTh: 'เธ”เนเธฒเธ a', unit: 'เธซเธเนเธงเธข', defaultValue: 5, min: 0.0001, max: 1e9, step: 0.1 },
-      { id: 'b', symbol: 'b', name: 'Side b', nameTh: 'เธ”เนเธฒเธ b', unit: 'เธซเธเนเธงเธข', defaultValue: 7, min: 0.0001, max: 1e9, step: 0.1 },
-      { id: 'angleC', symbol: 'C', name: 'Included Angle', nameTh: 'เธกเธธเธกเธฃเธฐเธซเธงเนเธฒเธ a เนเธฅเธฐ b', unit: 'ยฐ', defaultValue: 60, min: 0.01, max: 179.99, step: 0.1 }
+      { id: 'A', symbol: 'A', name: 'Area', nameTh: 'พื้นที่', unit: 'ตร.หน่วย', defaultValue: 15.155, min: 0, max: 1e12, step: 0.1 },
+      { id: 'a', symbol: 'a', name: 'Side a', nameTh: 'ด้าน a', unit: 'หน่วย', defaultValue: 5, min: 0.0001, max: 1e9, step: 0.1 },
+      { id: 'b', symbol: 'b', name: 'Side b', nameTh: 'ด้าน b', unit: 'หน่วย', defaultValue: 7, min: 0.0001, max: 1e9, step: 0.1 },
+      { id: 'angleC', symbol: 'C', name: 'Included Angle', nameTh: 'มุมระหว่าง a และ b', unit: '°', defaultValue: 60, min: 0.01, max: 179.99, step: 0.1 }
     ],
     solveTargets: ['A'],
     calculate: (inputs) => {
       let { a, b, angleC } = inputs;
       const result = 0.5 * a * b * Math.sin(angleC * Math.PI / 180);
       const steps = [
-        { title: 'เธชเธนเธ•เธฃเธเธทเนเธเธ—เธตเนเธ”เนเธงเธข sin', latex: 'A = \\frac{1}{2} ab\\sin(C)', explanation: 'เธเธฃเธถเนเธเธซเธเธถเนเธเธเธญเธเธเธฅเธเธนเธ“เธชเธญเธเธ”เนเธฒเธเธเธนเธ“ sin เธเธญเธเธกเธธเธกเธฃเธฐเธซเธงเนเธฒเธเธ”เนเธฒเธ' },
-        { title: 'เนเธ—เธเธเนเธฒ', latex: `A = 0.5 \\times ${a} \\times ${b} \\times \\sin(${angleC}^\\circ)`, explanation: `a = ${a}, b = ${b}, C = ${angleC}ยฐ` },
-        { title: 'เธเธฅเธฅเธฑเธเธเน', latex: `A = ${result.toFixed(4)}`, explanation: `เธเธทเนเธเธ—เธตเนเน€เธ—เนเธฒเธเธฑเธ ${result.toFixed(4)} เธ•เธฃ.เธซเธเนเธงเธข` }
+        { title: 'สูตรพื้นที่ด้วย sin', latex: 'A = \\frac{1}{2} ab\\sin(C)', explanation: 'ครึ่งหนึ่งของผลคูณสองด้านคูณ sin ของมุมระหว่างด้าน' },
+        { title: 'แทนค่า', latex: `A = 0.5 \\times ${a} \\times ${b} \\times \\sin(${angleC}^\\circ)`, explanation: `a = ${a}, b = ${b}, C = ${angleC}°` },
+        { title: 'ผลลัพธ์', latex: `A = ${result.toFixed(4)}`, explanation: `พื้นที่เท่ากับ ${result.toFixed(4)} ตร.หน่วย` }
       ];
       return { result, unit: '', steps };
     }

@@ -1,25 +1,25 @@
 ﻿// @ts-nocheck
 
 /**
- * Algebra Formulas (เธเธตเธเธเธ“เธดเธ•) - เธก.1 - เธก.6
- * เธญเธฑเธ•เธฃเธฒเธชเนเธงเธ เธฃเนเธญเธขเธฅเธฐ เธชเธฑเธ”เธชเนเธงเธ เธชเธกเธเธฒเธฃเน€เธเธดเธเน€เธชเนเธ เธฅเธญเธเธฒเธฃเธดเธ—เธถเธก
+ * Algebra Formulas (พีชคณิต) - ม.1 - ม.6
+ * อัตราส่วน ร้อยละ สัดส่วน สมการเชิงเส้น ลอการิทึม
  */
 
 export const ALGEBRA_FORMULAS = [
   {
     id: 'percent_of',
     name: 'Percent of a Number',
-    nameTh: 'เธซเธฒเน€เธเธญเธฃเนเน€เธเนเธเธ•เนเธเธญเธเธเธณเธเธงเธ',
+    nameTh: 'หาเปอร์เซ็นต์ของจำนวน',
     category: 'algebra',
-    categoryTh: 'เธเธตเธเธเธ“เธดเธ•',
+    categoryTh: 'พีชคณิต',
     icon: 'percent',
-    grade: 'เธก.1-2',
-    latex: '\\text{เธเธฅเธฅเธฑเธเธเน} = \\frac{\\text{เธเธณเธเธงเธ} \\times p}{100}',
-    description: 'เธซเธฒเธฃเนเธญเธขเธฅเธฐ p เธเธญเธเธเธณเธเธงเธเธ—เธตเนเธเธณเธซเธเธ” เน€เธเนเธ 20% เธเธญเธ 500 = 100 (เนเธเนเนเธเน€เธฃเธทเนเธญเธ เธฃเนเธญเธขเธฅเธฐ เธเธณเนเธฃ เธเธฒเธ”เธ—เธธเธ เธ เธฒเธฉเธต)',
+    grade: 'ม.1-2',
+    latex: '\\text{ผลลัพธ์} = \\frac{\\text{จำนวน} \\times p}{100}',
+    description: 'หาร้อยละ p ของจำนวนที่กำหนด เช่น 20% ของ 500 = 100 (ใช้ในเรื่อง ร้อยละ กำไร ขาดทุน ภาษี)',
     variables: [
-      { id: 'result', symbol: 'R', name: 'Result', nameTh: 'เธเธฅเธฅเธฑเธเธเน (เธเนเธฒ p%)', unit: '', defaultValue: 100, min: -1e15, max: 1e15, step: 1 },
-      { id: 'value', symbol: 'A', name: 'Base Value', nameTh: 'เธเธณเธเธงเธเธ—เธฑเนเธเธซเธกเธ”', unit: '', defaultValue: 500, min: -1e15, max: 1e15, step: 1 },
-      { id: 'p', symbol: 'p\\%', name: 'Percent', nameTh: 'เธฃเนเธญเธขเธฅเธฐ (p)', unit: '%', defaultValue: 20, min: -1e6, max: 1e6, step: 0.1 }
+      { id: 'result', symbol: 'R', name: 'Result', nameTh: 'ผลลัพธ์ (ค่า p%)', unit: '', defaultValue: 100, min: -1e15, max: 1e15, step: 1 },
+      { id: 'value', symbol: 'A', name: 'Base Value', nameTh: 'จำนวนทั้งหมด', unit: '', defaultValue: 500, min: -1e15, max: 1e15, step: 1 },
+      { id: 'p', symbol: 'p\\%', name: 'Percent', nameTh: 'ร้อยละ (p)', unit: '%', defaultValue: 20, min: -1e6, max: 1e6, step: 0.1 }
     ],
     solveTargets: ['result', 'p', 'value'],
     calculate: (inputs, target = 'result') => {
@@ -30,23 +30,23 @@ export const ALGEBRA_FORMULAS = [
       if (target === 'result') {
         result = (value * p) / 100;
         steps = [
-          { title: 'เธชเธนเธ•เธฃเธฃเนเธญเธขเธฅเธฐ', latex: 'R = \\frac{A \\cdot p}{100}', explanation: 'เธเธณเธเธงเธเธเธนเธ“เธ”เนเธงเธขเธฃเนเธญเธขเธฅเธฐ เธซเธฒเธฃ 100' },
-          { title: 'เนเธ—เธเธเนเธฒ', latex: `R = \\frac{${value} \\times ${p}}{100}`, explanation: `A = ${value}, p = ${p}%` },
-          { title: 'เธเธฅเธฅเธฑเธเธเน', latex: `R = ${result.toFixed(4)}`, explanation: `${p}% เธเธญเธ ${value} เน€เธ—เนเธฒเธเธฑเธ ${result.toFixed(4)}` }
+          { title: 'สูตรร้อยละ', latex: 'R = \\frac{A \\cdot p}{100}', explanation: 'จำนวนคูณด้วยร้อยละ หาร 100' },
+          { title: 'แทนค่า', latex: `R = \\frac{${value} \\times ${p}}{100}`, explanation: `A = ${value}, p = ${p}%` },
+          { title: 'ผลลัพธ์', latex: `R = ${result.toFixed(4)}`, explanation: `${p}% ของ ${value} เท่ากับ ${result.toFixed(4)}` }
         ];
       } else if (target === 'p') {
-        if (value === 0) throw new Error('เธเธณเธเธงเธเธ—เธฑเนเธเธซเธกเธ” (A) เธ•เนเธญเธเนเธกเนเน€เธเนเธ 0');
+        if (value === 0) throw new Error('จำนวนทั้งหมด (A) ต้องไม่เป็น 0');
         p = (result * 100) / value;
         steps = [
-          { title: 'เธเธฑเธ”เธฃเธนเธเธซเธฒเธเนเธฒเธฃเนเธญเธขเธฅเธฐ', latex: 'p = \\frac{R \\cdot 100}{A}', explanation: 'เธเธฅเธฑเธเธเนเธฒเธเธชเธกเธเธฒเธฃ' },
-          { title: 'เธเธฅเธฅเธฑเธเธเน', latex: `p = ${p.toFixed(4)}\\%`, explanation: `เธเธดเธ”เน€เธเนเธ ${p.toFixed(4)} เน€เธเธญเธฃเนเน€เธเนเธเธ•เน` }
+          { title: 'จัดรูปหาค่าร้อยละ', latex: 'p = \\frac{R \\cdot 100}{A}', explanation: 'กลับข้างสมการ' },
+          { title: 'ผลลัพธ์', latex: `p = ${p.toFixed(4)}\\%`, explanation: `คิดเป็น ${p.toFixed(4)} เปอร์เซ็นต์` }
         ];
       } else if (target === 'value') {
-        if (p === 0) throw new Error('เธฃเนเธญเธขเธฅเธฐ (p) เธ•เนเธญเธเนเธกเนเน€เธเนเธ 0');
+        if (p === 0) throw new Error('ร้อยละ (p) ต้องไม่เป็น 0');
         value = (result * 100) / p;
         steps = [
-          { title: 'เธเธฑเธ”เธฃเธนเธเธซเธฒเธเธณเธเธงเธเธ—เธฑเนเธเธซเธกเธ”', latex: 'A = \\frac{R \\cdot 100}{p}', explanation: 'เธเธฅเธฑเธเธเนเธฒเธเธชเธกเธเธฒเธฃ' },
-          { title: 'เธเธฅเธฅเธฑเธเธเน', latex: `A = ${value.toFixed(4)}`, explanation: `เธเธณเธเธงเธเธ—เธฑเนเธเธซเธกเธ”เน€เธ—เนเธฒเธเธฑเธ ${value.toFixed(4)}` }
+          { title: 'จัดรูปหาจำนวนทั้งหมด', latex: 'A = \\frac{R \\cdot 100}{p}', explanation: 'กลับข้างสมการ' },
+          { title: 'ผลลัพธ์', latex: `A = ${value.toFixed(4)}`, explanation: `จำนวนทั้งหมดเท่ากับ ${value.toFixed(4)}` }
         ];
       }
 
@@ -57,17 +57,17 @@ export const ALGEBRA_FORMULAS = [
   {
     id: 'percent_change',
     name: 'Percent Change',
-    nameTh: 'เน€เธเธญเธฃเนเน€เธเนเธเธ•เนเธเธฒเธฃเน€เธเธฅเธตเนเธขเธเนเธเธฅเธ',
+    nameTh: 'เปอร์เซ็นต์การเปลี่ยนแปลง',
     category: 'algebra',
-    categoryTh: 'เธเธตเธเธเธ“เธดเธ•',
+    categoryTh: 'พีชคณิต',
     icon: 'trending-up',
-    grade: 'เธก.2-3',
+    grade: 'ม.2-3',
     latex: '\\frac{New - Old}{Old} \\times 100\\%',
-    description: 'เธเธฒเธฃเน€เธเธฅเธตเนเธขเธเนเธเธฅเธเธเธดเธ”เน€เธเนเธเธฃเนเธญเธขเธฅเธฐ เน€เธเนเธ เธฃเธฒเธเธฒเธเธฒเธ 80 เน€เธเธดเนเธกเน€เธเนเธ 100 เน€เธเธดเนเธกเธเธถเนเธ 25% เนเธเนเนเธเธเธฒเธฃเธงเธดเน€เธเธฃเธฒเธฐเธซเนเธเธณเนเธฃ-เธเธฒเธ”เธ—เธธเธ เธเธฒเธฃเน€เธ•เธดเธเนเธ•',
+    description: 'การเปลี่ยนแปลงคิดเป็นร้อยละ เช่น ราคาจาก 80 เพิ่มเป็น 100 เพิ่มขึ้น 25% ใช้ในการวิเคราะห์กำไร-ขาดทุน การเติบโต',
     variables: [
-      { id: 'pct', symbol: '\\Delta\\%', name: 'Percent Change', nameTh: 'เน€เธเธญเธฃเนเน€เธเนเธเธ•เนเธเธฒเธฃเน€เธเธฅเธตเนเธขเธเนเธเธฅเธ', unit: '%', defaultValue: 25, min: -1e6, max: 1e6, step: 0.1 },
-      { id: 'newVal', symbol: 'N', name: 'New Value', nameTh: 'เธเนเธฒเนเธซเธกเน', unit: '', defaultValue: 100, min: -1e15, max: 1e15, step: 1 },
-      { id: 'oldVal', symbol: 'O', name: 'Old Value', nameTh: 'เธเนเธฒเน€เธ”เธดเธก', unit: '', defaultValue: 80, min: -1e15, max: 1e15, step: 1 }
+      { id: 'pct', symbol: '\\Delta\\%', name: 'Percent Change', nameTh: 'เปอร์เซ็นต์การเปลี่ยนแปลง', unit: '%', defaultValue: 25, min: -1e6, max: 1e6, step: 0.1 },
+      { id: 'newVal', symbol: 'N', name: 'New Value', nameTh: 'ค่าใหม่', unit: '', defaultValue: 100, min: -1e15, max: 1e15, step: 1 },
+      { id: 'oldVal', symbol: 'O', name: 'Old Value', nameTh: 'ค่าเดิม', unit: '', defaultValue: 80, min: -1e15, max: 1e15, step: 1 }
     ],
     solveTargets: ['pct', 'newVal', 'oldVal'],
     calculate: (inputs, target = 'pct') => {
@@ -75,25 +75,25 @@ export const ALGEBRA_FORMULAS = [
       let steps = [];
 
       if (target === 'pct') {
-        if (oldVal === 0) throw new Error('เธเนเธฒเน€เธ”เธดเธก (O) เธ•เนเธญเธเนเธกเนเน€เธเนเธ 0');
+        if (oldVal === 0) throw new Error('ค่าเดิม (O) ต้องไม่เป็น 0');
         pct = ((newVal - oldVal) / oldVal) * 100;
         steps = [
-          { title: 'เธชเธนเธ•เธฃเน€เธเธญเธฃเนเน€เธเนเธเธ•เนเธเธฒเธฃเน€เธเธฅเธตเนเธขเธเนเธเธฅเธ', latex: '\\Delta\\% = \\frac{N - O}{O} \\times 100', explanation: 'เธเธฅเธ•เนเธฒเธเธซเธฒเธฃเธ”เนเธงเธขเธเนเธฒเน€เธ”เธดเธก เธเธนเธ“ 100' },
-          { title: 'เนเธ—เธเธเนเธฒ', latex: `\\Delta\\% = \\frac{${newVal} - ${oldVal}}{${oldVal}} \\times 100`, explanation: 'เธเธณเธเธงเธ“เธเธฅเธ•เนเธฒเธเธเนเธญเธ' },
-          { title: 'เธเธฅเธฅเธฑเธเธเน', latex: `\\Delta\\% = ${pct.toFixed(4)}\\%`, explanation: pct >= 0 ? `เน€เธเธดเนเธกเธเธถเนเธ ${pct.toFixed(2)}%` : `เธฅเธ”เธฅเธ ${Math.abs(pct).toFixed(2)}%` }
+          { title: 'สูตรเปอร์เซ็นต์การเปลี่ยนแปลง', latex: '\\Delta\\% = \\frac{N - O}{O} \\times 100', explanation: 'ผลต่างหารด้วยค่าเดิม คูณ 100' },
+          { title: 'แทนค่า', latex: `\\Delta\\% = \\frac{${newVal} - ${oldVal}}{${oldVal}} \\times 100`, explanation: 'คำนวณผลต่างก่อน' },
+          { title: 'ผลลัพธ์', latex: `\\Delta\\% = ${pct.toFixed(4)}\\%`, explanation: pct >= 0 ? `เพิ่มขึ้น ${pct.toFixed(2)}%` : `ลดลง ${Math.abs(pct).toFixed(2)}%` }
         ];
       } else if (target === 'newVal') {
         newVal = oldVal * (1 + pct / 100);
         steps = [
-          { title: 'เธเธฑเธ”เธฃเธนเธเธซเธฒเธเนเธฒเนเธซเธกเน', latex: 'N = O \\left(1 + \\frac{p}{100}\\right)', explanation: 'เธเนเธฒเน€เธ”เธดเธกเธเธนเธ“เธ”เนเธงเธขเธ•เธฑเธงเธเธฃเธฐเธเธญเธเธเธฒเธฃเน€เธเธฅเธตเนเธขเธเนเธเธฅเธ' },
-          { title: 'เธเธฅเธฅเธฑเธเธเน', latex: `N = ${newVal.toFixed(4)}`, explanation: `เธเนเธฒเนเธซเธกเนเน€เธ—เนเธฒเธเธฑเธ ${newVal.toFixed(4)}` }
+          { title: 'จัดรูปหาค่าใหม่', latex: 'N = O \\left(1 + \\frac{p}{100}\\right)', explanation: 'ค่าเดิมคูณด้วยตัวประกอบการเปลี่ยนแปลง' },
+          { title: 'ผลลัพธ์', latex: `N = ${newVal.toFixed(4)}`, explanation: `ค่าใหม่เท่ากับ ${newVal.toFixed(4)}` }
         ];
       } else if (target === 'oldVal') {
-        if (pct === -100) throw new Error('เน€เธเธญเธฃเนเน€เธเนเธเธ•เนเธเธฒเธฃเน€เธเธฅเธตเนเธขเธเนเธเธฅเธเธ•เนเธญเธเนเธกเนเน€เธเนเธ -100%');
+        if (pct === -100) throw new Error('เปอร์เซ็นต์การเปลี่ยนแปลงต้องไม่เป็น -100%');
         oldVal = newVal / (1 + pct / 100);
         steps = [
-          { title: 'เธเธฑเธ”เธฃเธนเธเธซเธฒเธเนเธฒเน€เธ”เธดเธก', latex: 'O = \\frac{N}{1 + \\frac{p}{100}}', explanation: 'เธเธฅเธฑเธเธเนเธฒเธเธชเธกเธเธฒเธฃ' },
-          { title: 'เธเธฅเธฅเธฑเธเธเน', latex: `O = ${oldVal.toFixed(4)}`, explanation: `เธเนเธฒเน€เธ”เธดเธกเน€เธ—เนเธฒเธเธฑเธ ${oldVal.toFixed(4)}` }
+          { title: 'จัดรูปหาค่าเดิม', latex: 'O = \\frac{N}{1 + \\frac{p}{100}}', explanation: 'กลับข้างสมการ' },
+          { title: 'ผลลัพธ์', latex: `O = ${oldVal.toFixed(4)}`, explanation: `ค่าเดิมเท่ากับ ${oldVal.toFixed(4)}` }
         ];
       }
 
@@ -104,38 +104,38 @@ export const ALGEBRA_FORMULAS = [
   {
     id: 'proportion',
     name: 'Proportion (Cross Multiplication)',
-    nameTh: 'เธชเธฑเธ”เธชเนเธงเธ (เนเธเธงเนเธเธนเธ“)',
+    nameTh: 'สัดส่วน (ไขว้คูณ)',
     category: 'algebra',
-    categoryTh: 'เธเธตเธเธเธ“เธดเธ•',
+    categoryTh: 'พีชคณิต',
     icon: 'divide',
-    grade: 'เธก.1-2',
+    grade: 'ม.1-2',
     latex: '\\frac{a}{b} = \\frac{c}{d} \\quad \\Rightarrow \\quad a \\cdot d = b \\cdot c',
-    description: 'เน€เธกเธทเนเธญเธญเธฑเธ•เธฃเธฒเธชเนเธงเธเน€เธ—เนเธฒเธเธฑเธ เธเธฅเธเธนเธ“เนเธเธงเนเน€เธ—เนเธฒเธเธฑเธ เนเธเนเนเธเนเธชเธฑเธ”เธชเนเธงเธ เน€เธเนเธ เธญเธฑเธ•เธฃเธฒเธชเนเธงเธเธเธฒเธฃเธเธชเธก เธเธฒเธฃเธขเนเธญ-เธเธขเธฒเธข',
+    description: 'เมื่ออัตราส่วนเท่ากัน ผลคูณไขว้เท่ากัน ใช้แก้สัดส่วน เช่น อัตราส่วนการผสม การย่อ-ขยาย',
     variables: [
-      { id: 'a', symbol: 'a', name: 'Numerator 1', nameTh: 'เธ•เธฑเธงเน€เธจเธฉ 1 (a)', unit: '', defaultValue: 2, min: -1e9, max: 1e9, step: 0.1 },
-      { id: 'b', symbol: 'b', name: 'Denominator 1', nameTh: 'เธ•เธฑเธงเธชเนเธงเธ 1 (b)', unit: '', defaultValue: 3, min: -1e9, max: 1e9, step: 0.1 },
-      { id: 'c', symbol: 'c', name: 'Numerator 2', nameTh: 'เธ•เธฑเธงเน€เธจเธฉ 2 (c)', unit: '', defaultValue: 8, min: -1e9, max: 1e9, step: 0.1 },
-      { id: 'd', symbol: 'd', name: 'Denominator 2', nameTh: 'เธ•เธฑเธงเธชเนเธงเธ 2 (d)', unit: '', defaultValue: 12, min: -1e9, max: 1e9, step: 0.1 }
+      { id: 'a', symbol: 'a', name: 'Numerator 1', nameTh: 'ตัวเศษ 1 (a)', unit: '', defaultValue: 2, min: -1e9, max: 1e9, step: 0.1 },
+      { id: 'b', symbol: 'b', name: 'Denominator 1', nameTh: 'ตัวส่วน 1 (b)', unit: '', defaultValue: 3, min: -1e9, max: 1e9, step: 0.1 },
+      { id: 'c', symbol: 'c', name: 'Numerator 2', nameTh: 'ตัวเศษ 2 (c)', unit: '', defaultValue: 8, min: -1e9, max: 1e9, step: 0.1 },
+      { id: 'd', symbol: 'd', name: 'Denominator 2', nameTh: 'ตัวส่วน 2 (d)', unit: '', defaultValue: 12, min: -1e9, max: 1e9, step: 0.1 }
     ],
     solveTargets: ['a', 'b', 'c', 'd'],
     calculate: (inputs, target = 'a') => {
       let { a, b, c, d } = inputs;
       let steps = [];
       const cross = [
-        { t: 'a', expr: (b * c) / d, need: ['b', 'c', 'd'], guard: () => d === 0 ? 'เธ•เธฑเธงเธชเนเธงเธ d เธ•เนเธญเธเนเธกเนเน€เธเนเธ 0' : null },
-        { t: 'b', expr: (a * d) / c, need: ['a', 'c', 'd'], guard: () => c === 0 ? 'เธ•เธฑเธงเธชเนเธงเธ c เธ•เนเธญเธเนเธกเนเน€เธเนเธ 0' : null },
-        { t: 'c', expr: (a * d) / b, need: ['a', 'b', 'd'], guard: () => b === 0 ? 'เธ•เธฑเธงเธชเนเธงเธ b เธ•เนเธญเธเนเธกเนเน€เธเนเธ 0' : null },
-        { t: 'd', expr: (b * c) / a, need: ['a', 'b', 'c'], guard: () => a === 0 ? 'เธ•เธฑเธงเน€เธจเธฉ a เธ•เนเธญเธเนเธกเนเน€เธเนเธ 0' : null }
+        { t: 'a', expr: (b * c) / d, need: ['b', 'c', 'd'], guard: () => d === 0 ? 'ตัวส่วน d ต้องไม่เป็น 0' : null },
+        { t: 'b', expr: (a * d) / c, need: ['a', 'c', 'd'], guard: () => c === 0 ? 'ตัวส่วน c ต้องไม่เป็น 0' : null },
+        { t: 'c', expr: (a * d) / b, need: ['a', 'b', 'd'], guard: () => b === 0 ? 'ตัวส่วน b ต้องไม่เป็น 0' : null },
+        { t: 'd', expr: (b * c) / a, need: ['a', 'b', 'c'], guard: () => a === 0 ? 'ตัวเศษ a ต้องไม่เป็น 0' : null }
       ];
       const row = cross.find(r => r.t === target);
-      if (!row) throw new Error('เธ•เธฑเธงเนเธเธฃเน€เธเนเธฒเธซเธกเธฒเธขเนเธกเนเธ–เธนเธเธ•เนเธญเธ');
+      if (!row) throw new Error('ตัวแปรเป้าหมายไม่ถูกต้อง');
       const err = row.guard();
       if (err) throw new Error(err);
       const result = row.expr;
       steps = [
-        { title: 'เธซเธฅเธฑเธเธเธฒเธฃเนเธเธงเนเธเธนเธ“', latex: 'a \\cdot d = b \\cdot c', explanation: 'เธเธฅเธเธนเธ“เนเธเธงเนเธเธญเธเธชเธฑเธ”เธชเนเธงเธเน€เธ—เนเธฒเธเธฑเธเน€เธชเธกเธญ' },
-        { title: 'เธเธฑเธ”เธฃเธนเธเธซเธฒเธเนเธฒ ' + target, latex: `${target} = ${cross.filter(r => r.t !== target).map(r => r.t).join(' , ')}`, explanation: 'เธขเนเธฒเธขเธ•เธฑเธงเธเธฃเธฐเธเธญเธเธ—เธตเนเน€เธซเธฅเธทเธญเนเธเธญเธตเธเธเนเธฒเธเธซเธเธถเนเธ' },
-        { title: 'เนเธ—เธเธเนเธฒเนเธฅเธฐเธเธณเธเธงเธ“', latex: `${target} = ${result.toFixed(4)}`, explanation: `เธเนเธฒเธเธญเธ ${target} เน€เธ—เนเธฒเธเธฑเธ ${result.toFixed(4)}` }
+        { title: 'หลักการไขว้คูณ', latex: 'a \\cdot d = b \\cdot c', explanation: 'ผลคูณไขว้ของสัดส่วนเท่ากันเสมอ' },
+        { title: 'จัดรูปหาค่า ' + target, latex: `${target} = ${cross.filter(r => r.t !== target).map(r => r.t).join(' , ')}`, explanation: 'ย้ายตัวประกอบที่เหลือไปอีกข้างหนึ่ง' },
+        { title: 'แทนค่าและคำนวณ', latex: `${target} = ${result.toFixed(4)}`, explanation: `ค่าของ ${target} เท่ากับ ${result.toFixed(4)}` }
       ];
       return { result, unit: '', steps };
     }
@@ -144,18 +144,18 @@ export const ALGEBRA_FORMULAS = [
   {
     id: 'linear_equation',
     name: 'Linear Equation (ax + b = c)',
-    nameTh: 'เธชเธกเธเธฒเธฃเน€เธเธดเธเน€เธชเนเธเธ•เธฑเธงเนเธเธฃเน€เธ”เธตเธขเธง',
+    nameTh: 'สมการเชิงเส้นตัวแปรเดียว',
     category: 'algebra',
-    categoryTh: 'เธเธตเธเธเธ“เธดเธ•',
+    categoryTh: 'พีชคณิต',
     icon: 'minus',
-    grade: 'เธก.1-2',
+    grade: 'ม.1-2',
     latex: 'a x + b = c \\quad \\Rightarrow \\quad x = \\frac{c - b}{a}',
-    description: 'เธเธฒเธฃเนเธเนเธชเธกเธเธฒเธฃเน€เธเธดเธเน€เธชเนเธเธ•เธฑเธงเนเธเธฃเน€เธ”เธตเธขเธง เนเธเนเธขเนเธฒเธขเธเนเธฒเธเธชเธกเธเธฒเธฃเน€เธเธทเนเธญเธซเธฒเธเนเธฒ x เน€เธเนเธ 2x + 3 = 15 เนเธฅเนเธง x = 6',
+    description: 'การแก้สมการเชิงเส้นตัวแปรเดียว ใช้ย้ายข้างสมการเพื่อหาค่า x เช่น 2x + 3 = 15 แล้ว x = 6',
     variables: [
-      { id: 'x', symbol: 'x', name: 'Solution x', nameTh: 'เธเธณเธ•เธญเธ (x)', unit: '', defaultValue: 6, min: -1e9, max: 1e9, step: 0.01 },
-      { id: 'a', symbol: 'a', name: 'Coefficient a', nameTh: 'เธชเธฑเธกเธเธฃเธฐเธชเธดเธ—เธเธดเน (a)', unit: '', defaultValue: 2, min: -1e6, max: 1e6, step: 0.1 },
-      { id: 'b', symbol: 'b', name: 'Constant b', nameTh: 'เธเนเธฒเธเธเธ—เธตเน (b)', unit: '', defaultValue: 3, min: -1e9, max: 1e9, step: 0.1 },
-      { id: 'c', symbol: 'c', name: 'Right Side c', nameTh: 'เธเธฑเนเธเธเธงเธฒ (c)', unit: '', defaultValue: 15, min: -1e9, max: 1e9, step: 0.1 }
+      { id: 'x', symbol: 'x', name: 'Solution x', nameTh: 'คำตอบ (x)', unit: '', defaultValue: 6, min: -1e9, max: 1e9, step: 0.01 },
+      { id: 'a', symbol: 'a', name: 'Coefficient a', nameTh: 'สัมประสิทธิ์ (a)', unit: '', defaultValue: 2, min: -1e6, max: 1e6, step: 0.1 },
+      { id: 'b', symbol: 'b', name: 'Constant b', nameTh: 'ค่าคงที่ (b)', unit: '', defaultValue: 3, min: -1e9, max: 1e9, step: 0.1 },
+      { id: 'c', symbol: 'c', name: 'Right Side c', nameTh: 'ฝั่งขวา (c)', unit: '', defaultValue: 15, min: -1e9, max: 1e9, step: 0.1 }
     ],
     solveTargets: ['x', 'a', 'b'],
     calculate: (inputs, target = 'x') => {
@@ -164,25 +164,25 @@ export const ALGEBRA_FORMULAS = [
       let result = 0;
 
       if (target === 'x') {
-        if (a === 0) throw new Error('เธชเธฑเธกเธเธฃเธฐเธชเธดเธ—เธเธดเน (a) เธ•เนเธญเธเนเธกเนเน€เธเนเธ 0');
+        if (a === 0) throw new Error('สัมประสิทธิ์ (a) ต้องไม่เป็น 0');
         result = (c - b) / a;
         steps = [
-          { title: 'เธขเนเธฒเธข b เนเธเธเธฑเนเธเธเธงเธฒ', latex: `a x = ${c} - (${b}) = ${(c - b).toFixed(4)}`, explanation: 'เธเนเธฒเธเธเธ—เธตเนเธขเนเธฒเธขเธเนเธฒเธเน€เธเธฅเธตเนเธขเธเน€เธเธฃเธทเนเธญเธเธซเธกเธฒเธข' },
-          { title: 'เธซเธฒเธฃเธ”เนเธงเธข a', latex: `x = \\frac{${(c - b).toFixed(4)}}{${a}}`, explanation: 'เธเธณเธชเธฑเธกเธเธฃเธฐเธชเธดเธ—เธเธดเน a เนเธเธซเธฒเธฃ' },
-          { title: 'เธเธฅเธฅเธฑเธเธเน', latex: `x = ${result.toFixed(4)}`, explanation: `เธเธณเธ•เธญเธเธเธญเธเธชเธกเธเธฒเธฃเธเธทเธญ ${result.toFixed(4)}` }
+          { title: 'ย้าย b ไปฝั่งขวา', latex: `a x = ${c} - (${b}) = ${(c - b).toFixed(4)}`, explanation: 'ค่าคงที่ย้ายข้างเปลี่ยนเครื่องหมาย' },
+          { title: 'หารด้วย a', latex: `x = \\frac{${(c - b).toFixed(4)}}{${a}}`, explanation: 'นำสัมประสิทธิ์ a ไปหาร' },
+          { title: 'ผลลัพธ์', latex: `x = ${result.toFixed(4)}`, explanation: `คำตอบของสมการคือ ${result.toFixed(4)}` }
         ];
       } else if (target === 'a') {
-        if (x === 0) throw new Error('เธเนเธฒ x เธ•เนเธญเธเนเธกเนเน€เธเนเธ 0');
+        if (x === 0) throw new Error('ค่า x ต้องไม่เป็น 0');
         result = (c - b) / x;
         steps = [
-          { title: 'เธเธฑเธ”เธฃเธนเธเธซเธฒเธเนเธฒ a', latex: 'a = \\frac{c - b}{x}', explanation: 'เธขเนเธฒเธขเธเนเธฒเธเธชเธกเธเธฒเธฃ' },
-          { title: 'เธเธฅเธฅเธฑเธเธเน', latex: `a = ${result.toFixed(4)}`, explanation: `เธชเธฑเธกเธเธฃเธฐเธชเธดเธ—เธเธดเน a เน€เธ—เนเธฒเธเธฑเธ ${result.toFixed(4)}` }
+          { title: 'จัดรูปหาค่า a', latex: 'a = \\frac{c - b}{x}', explanation: 'ย้ายข้างสมการ' },
+          { title: 'ผลลัพธ์', latex: `a = ${result.toFixed(4)}`, explanation: `สัมประสิทธิ์ a เท่ากับ ${result.toFixed(4)}` }
         ];
       } else if (target === 'b') {
         result = c - a * x;
         steps = [
-          { title: 'เธเธฑเธ”เธฃเธนเธเธซเธฒเธเนเธฒ b', latex: 'b = c - a \\cdot x', explanation: 'เธขเนเธฒเธขเธเนเธฒเธเธชเธกเธเธฒเธฃ' },
-          { title: 'เธเธฅเธฅเธฑเธเธเน', latex: `b = ${result.toFixed(4)}`, explanation: `เธเนเธฒเธเธเธ—เธตเน b เน€เธ—เนเธฒเธเธฑเธ ${result.toFixed(4)}` }
+          { title: 'จัดรูปหาค่า b', latex: 'b = c - a \\cdot x', explanation: 'ย้ายข้างสมการ' },
+          { title: 'ผลลัพธ์', latex: `b = ${result.toFixed(4)}`, explanation: `ค่าคงที่ b เท่ากับ ${result.toFixed(4)}` }
         ];
       }
 
@@ -193,17 +193,17 @@ export const ALGEBRA_FORMULAS = [
   {
     id: 'logarithm',
     name: 'Logarithm (log_b x = y)',
-    nameTh: 'เธฅเธญเธเธฒเธฃเธดเธ—เธถเธก (log_b x = y)',
+    nameTh: 'ลอการิทึม (log_b x = y)',
     category: 'algebra',
-    categoryTh: 'เธเธตเธเธเธ“เธดเธ•',
+    categoryTh: 'พีชคณิต',
     icon: 'log-in',
-    grade: 'เธก.4-5',
+    grade: 'ม.4-5',
     latex: '\\log_b(x) = y \\quad \\Leftrightarrow \\quad b^y = x',
-    description: 'เธฅเธญเธเธฒเธฃเธดเธ—เธถเธกเธเธทเธญเน€เธฅเธเธเธตเนเธเธณเธฅเธฑเธ เน€เธเนเธ logโ8 = 3 เน€เธเธฃเธฒเธฐ 2ยณ = 8 เน€เธเธตเธขเธ log เธเธฒเธ 10 = log(x) เนเธฅเธฐเธเธฒเธ e = ln(x)',
+    description: 'ลอการิทึมคือเลขชี้กำลัง เช่น log₂8 = 3 เพราะ 2³ = 8 เขียน log ฐาน 10 = log(x) และฐาน e = ln(x)',
     variables: [
-      { id: 'y', symbol: 'y', name: 'Logarithm Value', nameTh: 'เธเนเธฒเธฅเธญเธเธฒเธฃเธดเธ—เธถเธก (y)', unit: '', defaultValue: 3, min: -1e6, max: 1e6, step: 0.01 },
-      { id: 'b', symbol: 'b', name: 'Base', nameTh: 'เธเธฒเธ (b)', unit: '', defaultValue: 2, min: 0.0000001, max: 1e6, step: 0.1 },
-      { id: 'x', symbol: 'x', name: 'Argument', nameTh: 'เธเธณเธเธงเธ (x)', unit: '', defaultValue: 8, min: 1e-15, max: 1e15, step: 0.1 }
+      { id: 'y', symbol: 'y', name: 'Logarithm Value', nameTh: 'ค่าลอการิทึม (y)', unit: '', defaultValue: 3, min: -1e6, max: 1e6, step: 0.01 },
+      { id: 'b', symbol: 'b', name: 'Base', nameTh: 'ฐาน (b)', unit: '', defaultValue: 2, min: 0.0000001, max: 1e6, step: 0.1 },
+      { id: 'x', symbol: 'x', name: 'Argument', nameTh: 'จำนวน (x)', unit: '', defaultValue: 8, min: 1e-15, max: 1e15, step: 0.1 }
     ],
     solveTargets: ['y', 'x', 'b'],
     calculate: (inputs, target = 'y') => {
@@ -212,24 +212,24 @@ export const ALGEBRA_FORMULAS = [
       let result = 0;
 
       if (target === 'y') {
-        if (x <= 0 || b <= 0 || b === 1) throw new Error('เธ•เนเธญเธเธกเธต x > 0, b > 0 เนเธฅเธฐ b โ  1');
+        if (x <= 0 || b <= 0 || b === 1) throw new Error('ต้องมี x > 0, b > 0 และ b ≠ 1');
         result = Math.log(x) / Math.log(b);
         steps = [
-          { title: 'เธชเธนเธ•เธฃเธฅเธญเธเธฒเธฃเธดเธ—เธถเธก', latex: 'y = \\log_b(x)', explanation: `log เธเธฒเธ ${b} เธเธญเธ ${x}` },
-          { title: 'เนเธ—เธเธเนเธฒเนเธฅเธฐเธเธณเธเธงเธ“', latex: `y = \\frac{\\ln(${x})}{\\ln(${b})} = ${result.toFixed(4)}`, explanation: 'เนเธเนเธเธฒเธฃเน€เธเธฅเธตเนเธขเธเธเธฒเธเธฅเธญเธเธฒเธฃเธดเธ—เธถเธก (เธซเธฃเธทเธญเธเธณเธฅเธญเธเน€เธเนเธ log เธเธฒเธเธชเธดเธ/เธเธฒเธเธเธฃเธฃเธกเธเธฒเธ•เธด)' }
+          { title: 'สูตรลอการิทึม', latex: 'y = \\log_b(x)', explanation: `log ฐาน ${b} ของ ${x}` },
+          { title: 'แทนค่าและคำนวณ', latex: `y = \\frac{\\ln(${x})}{\\ln(${b})} = ${result.toFixed(4)}`, explanation: 'ใช้การเปลี่ยนฐานลอการิทึม (หรือจำลองเป็น log ฐานสิบ/ฐานธรรมชาติ)' }
         ];
       } else if (target === 'x') {
         result = Math.pow(b, y);
         steps = [
-          { title: 'เนเธเธฅเธเน€เธเนเธเน€เธฅเธเธขเธเธเธณเธฅเธฑเธ', latex: `x = b^y = ${b}^{${y}}`, explanation: 'เธฅเธญเธเธฒเธฃเธดเธ—เธถเธกเธเธทเธญเน€เธฅเธเธเธตเนเธเธณเธฅเธฑเธ' },
-          { title: 'เธเธฅเธฅเธฑเธเธเน', latex: `x = ${result.toFixed(4)}`, explanation: `เธเธณเธเธงเธ x เน€เธ—เนเธฒเธเธฑเธ ${result.toFixed(4)}` }
+          { title: 'แปลงเป็นเลขยกกำลัง', latex: `x = b^y = ${b}^{${y}}`, explanation: 'ลอการิทึมคือเลขชี้กำลัง' },
+          { title: 'ผลลัพธ์', latex: `x = ${result.toFixed(4)}`, explanation: `จำนวน x เท่ากับ ${result.toFixed(4)}` }
         ];
       } else if (target === 'b') {
-        if (y === 0) throw new Error('เธเนเธฒ y เธ•เนเธญเธเนเธกเนเน€เธเนเธ 0');
+        if (y === 0) throw new Error('ค่า y ต้องไม่เป็น 0');
         result = Math.pow(x, 1 / y);
         steps = [
-          { title: 'เธเธฑเธ”เธฃเธนเธเธซเธฒเธเธฒเธ', latex: `b = x^{1/y}`, explanation: 'เธ–เธญเธ”เธฃเธฒเธเธญเธฑเธเธ”เธฑเธ y' },
-          { title: 'เธเธฅเธฅเธฑเธเธเน', latex: `b = ${result.toFixed(4)}`, explanation: `เธเธฒเธ b เน€เธ—เนเธฒเธเธฑเธ ${result.toFixed(4)}` }
+          { title: 'จัดรูปหาฐาน', latex: `b = x^{1/y}`, explanation: 'ถอดรากอันดับ y' },
+          { title: 'ผลลัพธ์', latex: `b = ${result.toFixed(4)}`, explanation: `ฐาน b เท่ากับ ${result.toFixed(4)}` }
         ];
       }
 
@@ -240,22 +240,22 @@ export const ALGEBRA_FORMULAS = [
   {
     id: 'quadratic_formula',
     name: 'Quadratic Formula',
-    nameTh: 'เธชเธนเธ•เธฃเธชเธกเธเธฒเธฃเธเธณเธฅเธฑเธเธชเธญเธ',
+    nameTh: 'สูตรสมการกำลังสอง',
     category: 'algebra',
-    categoryTh: 'เธเธตเธเธเธ“เธดเธ•',
+    categoryTh: 'พีชคณิต',
     icon: 'function',
-    grade: 'เธก.4',
+    grade: 'ม.4',
     latex: 'x = \\frac{-b \\pm \\sqrt{b^2 - 4ac}}{2a}',
-    description: 'เธซเธฒเธฃเธฒเธเธเธญเธเธชเธกเธเธฒเธฃ axยฒ + bx + c = 0 เธเธฃเนเธญเธกเธเนเธฒ discriminant bยฒ โ’ 4ac เธเธญเธเธเธณเธเธงเธเธฃเธฒเธเนเธ—เนเธเธฃเธดเธ',
+    description: 'หารากของสมการ ax² + bx + c = 0 พร้อมค่า discriminant b² − 4ac บอกจำนวนรากแท้จริง',
     variables: [
-      { id: 'a', symbol: 'a', name: 'Coefficient a', nameTh: 'เธชเธฑเธกเธเธฃเธฐเธชเธดเธ—เธเธดเน a', unit: '', defaultValue: 2, min: -1e6, max: 1e6, step: 0.1 },
-      { id: 'b', symbol: 'b', name: 'Coefficient b', nameTh: 'เธชเธฑเธกเธเธฃเธฐเธชเธดเธ—เธเธดเน b', unit: '', defaultValue: 5, min: -1e6, max: 1e6, step: 0.1 },
-      { id: 'c', symbol: 'c', name: 'Constant c', nameTh: 'เธเนเธฒเธเธเธ—เธตเน c', unit: '', defaultValue: -3, min: -1e6, max: 1e6, step: 0.1 }
+      { id: 'a', symbol: 'a', name: 'Coefficient a', nameTh: 'สัมประสิทธิ์ a', unit: '', defaultValue: 2, min: -1e6, max: 1e6, step: 0.1 },
+      { id: 'b', symbol: 'b', name: 'Coefficient b', nameTh: 'สัมประสิทธิ์ b', unit: '', defaultValue: 5, min: -1e6, max: 1e6, step: 0.1 },
+      { id: 'c', symbol: 'c', name: 'Constant c', nameTh: 'ค่าคงที่ c', unit: '', defaultValue: -3, min: -1e6, max: 1e6, step: 0.1 }
     ],
     solveTargets: ['x', 'D'],
     calculate: (inputs, target = 'x') => {
       const { a, b, c } = inputs;
-      if (a === 0) throw new Error('a เธ•เนเธญเธเนเธกเนเน€เธเนเธ 0 (เนเธกเนเนเธเนเธชเธกเธเธฒเธฃเธเธณเธฅเธฑเธเธชเธญเธ)');
+      if (a === 0) throw new Error('a ต้องไม่เป็น 0 (ไม่ใช่สมการกำลังสอง)');
       const Dv = b * b - 4 * a * c;
 
       if (target === 'D') {
@@ -263,13 +263,13 @@ export const ALGEBRA_FORMULAS = [
           result: Dv,
           unit: '',
           steps: [
-            { title: 'เธเธณเธเธงเธ“ discriminant', latex: `\\Delta = b^2 - 4ac = ${b}^2 - 4 \\times ${a} \\times ${c}`, explanation: `เนเธ—เธเธเนเธฒ a = ${a}, b = ${b}, c = ${c}` },
-            { title: 'เธเธฅเธฅเธฑเธเธเน', latex: `\\Delta = ${Dv}`, explanation: Dv > 0 ? 'เธฃเธฒเธเนเธ—เนเธเธฃเธดเธ 2 เธเนเธฒเธ•เนเธฒเธเธเธฑเธ' : Dv === 0 ? 'เธฃเธฒเธเธเธฃเธดเธเธเนเธณ 1 เธเนเธฒ' : 'เนเธกเนเธกเธตเธฃเธฒเธเนเธ—เนเธเธฃเธดเธ' }
+            { title: 'คำนวณ discriminant', latex: `\\Delta = b^2 - 4ac = ${b}^2 - 4 \\times ${a} \\times ${c}`, explanation: `แทนค่า a = ${a}, b = ${b}, c = ${c}` },
+            { title: 'ผลลัพธ์', latex: `\\Delta = ${Dv}`, explanation: Dv > 0 ? 'รากแท้จริง 2 ค่าต่างกัน' : Dv === 0 ? 'รากจริงซ้ำ 1 ค่า' : 'ไม่มีรากแท้จริง' }
           ]
         };
       }
 
-      if (Dv < 0) throw new Error('discriminant เธ•เธดเธ”เธฅเธ โ’ เธชเธกเธเธฒเธฃเธเธตเนเนเธกเนเธกเธตเธฃเธฒเธเนเธ—เนเธเธฃเธดเธ');
+      if (Dv < 0) throw new Error('discriminant ติดลบ → สมการนี้ไม่มีรากแท้จริง');
       const sq = Math.sqrt(Dv);
       const r1 = (-b + sq) / (2 * a);
       const r2 = (-b - sq) / (2 * a);
@@ -277,10 +277,10 @@ export const ALGEBRA_FORMULAS = [
         result: r1,
         unit: '',
         steps: [
-          { title: 'เธชเธนเธ•เธฃเธฃเธฒเธ', latex: 'x = \\frac{-b \\pm \\sqrt{b^2 - 4ac}}{2a}', explanation: `a = ${a}, b = ${b}, c = ${c}` },
-          { title: 'เธเธณเธเธงเธ“ discriminant', latex: `\\Delta = b^2 - 4ac = ${b}^2 - 4 \\times ${a} \\times ${c} = ${Dv}`, explanation: Dv > 0 ? 'เธฃเธฒเธเนเธ—เนเธเธฃเธดเธ 2 เธเนเธฒ' : 'เธฃเธฒเธเธเนเธณ 1 เธเนเธฒ' },
-          { title: 'เนเธ—เธเธเนเธฒ', latex: `x = \\frac{-(${b}) \\pm \\sqrt{${Dv}}}{2 \\times ${a}}`, explanation: 'เนเธ—เธเธเนเธฒเธฅเธเนเธเธชเธนเธ•เธฃ' },
-          { title: 'เธเธฅเธฅเธฑเธเธเน', latex: `x = ${r1.toFixed(4)} \\ \\text{เธซเธฃเธทเธญ} \\ x = ${r2.toFixed(4)}`, explanation: `เธฃเธฒเธเธ—เธฑเนเธเธชเธญเธเธเธทเธญ ${r1.toFixed(4)} เนเธฅเธฐ ${r2.toFixed(4)}` }
+          { title: 'สูตรราก', latex: 'x = \\frac{-b \\pm \\sqrt{b^2 - 4ac}}{2a}', explanation: `a = ${a}, b = ${b}, c = ${c}` },
+          { title: 'คำนวณ discriminant', latex: `\\Delta = b^2 - 4ac = ${b}^2 - 4 \\times ${a} \\times ${c} = ${Dv}`, explanation: Dv > 0 ? 'รากแท้จริง 2 ค่า' : 'รากซ้ำ 1 ค่า' },
+          { title: 'แทนค่า', latex: `x = \\frac{-(${b}) \\pm \\sqrt{${Dv}}}{2 \\times ${a}}`, explanation: 'แทนค่าลงในสูตร' },
+          { title: 'ผลลัพธ์', latex: `x = ${r1.toFixed(4)} \\ \\text{หรือ} \\ x = ${r2.toFixed(4)}`, explanation: `รากทั้งสองคือ ${r1.toFixed(4)} และ ${r2.toFixed(4)}` }
         ]
       };
     }
@@ -289,33 +289,33 @@ export const ALGEBRA_FORMULAS = [
   {
     id: 'exponent_value',
     name: 'Exponent Value',
-    nameTh: 'เธซเธฒเธเนเธฒเน€เธฅเธเธเธตเนเธเธณเธฅเธฑเธ',
+    nameTh: 'หาค่าเลขชี้กำลัง',
     category: 'algebra',
-    categoryTh: 'เธเธตเธเธเธ“เธดเธ•',
+    categoryTh: 'พีชคณิต',
     icon: 'power',
-    grade: 'เธก.3',
+    grade: 'ม.3',
     latex: 'b^n = v',
-    description: 'เธซเธฒเธเนเธฒ n เธ—เธตเนเธ—เธณเนเธซเน bโฟ = v เน€เธเนเธ 3โฟ = 27 เนเธ”เน n = 3 (เธชเธณเธซเธฃเธฑเธเธเนเธฒเธฅเธเธ•เธฑเธงเธเธญเธ”เธตเน€เธ—เนเธฒเธเธฑเนเธ)',
+    description: 'หาค่า n ที่ทำให้ bⁿ = v เช่น 3ⁿ = 27 ได้ n = 3 (สำหรับค่าลงตัวพอดีเท่านั้น)',
     variables: [
-      { id: 'b', symbol: 'b', name: 'Base', nameTh: 'เธเธฒเธ', unit: '', defaultValue: 3, min: 1.0000001, max: 1e6, step: 0.1 },
-      { id: 'v', symbol: 'v', name: 'Value', nameTh: 'เธเนเธฒ v', unit: '', defaultValue: 27, min: 1e-12, max: 1e24, step: 1 }
+      { id: 'b', symbol: 'b', name: 'Base', nameTh: 'ฐาน', unit: '', defaultValue: 3, min: 1.0000001, max: 1e6, step: 0.1 },
+      { id: 'v', symbol: 'v', name: 'Value', nameTh: 'ค่า v', unit: '', defaultValue: 27, min: 1e-12, max: 1e24, step: 1 }
     ],
     solveTargets: ['n'],
     calculate: (inputs) => {
       const { b, v } = inputs;
-      if (b <= 0) throw new Error('เธเธฒเธ b เธ•เนเธญเธเธกเธฒเธเธเธงเนเธฒ 0');
-      if (v <= 0) throw new Error('เธเนเธฒ v เธ•เนเธญเธเธกเธฒเธเธเธงเนเธฒ 0');
+      if (b <= 0) throw new Error('ฐาน b ต้องมากกว่า 0');
+      if (v <= 0) throw new Error('ค่า v ต้องมากกว่า 0');
       const exact = Math.log(v) / Math.log(b);
       const n = Math.round(exact);
-      if (Math.abs(n - exact) > 1e-9) throw new Error('เธเนเธฒ v เนเธกเนเนเธเนเน€เธฅเธเธขเธเธเธณเธฅเธฑเธเธเธญเธ”เธตเธเธญเธเธเธฒเธเธเธตเน (เธเธฅเธฅเธฑเธเธเนเนเธกเนเธฅเธเธ•เธฑเธง)');
+      if (Math.abs(n - exact) > 1e-9) throw new Error('ค่า v ไม่ใช่เลขยกกำลังพอดีของฐานนี้ (ผลลัพธ์ไม่ลงตัว)');
       const result = n;
       return {
         result,
         unit: '',
         steps: [
-          { title: 'เธชเธกเธเธฒเธฃ', latex: `${b}^{n} = ${v}`, explanation: 'เธ•เนเธญเธเธเธฒเธฃเธซเธฒเน€เธฅเธเธเธตเนเธเธณเธฅเธฑเธ n' },
-          { title: 'เนเธเน log เนเธเนเธชเธกเธเธฒเธฃ', latex: `n = \\frac{\\log ${v}}{\\log ${b}} = ${exact.toFixed(6)}`, explanation: 'เน€เธเธฅเธตเนเธขเธเน€เธเนเธ log เน€เธเธทเนเธญเนเธขเธ n เธญเธญเธเธกเธฒ' },
-          { title: 'เธเธฅเธฅเธฑเธเธเน', latex: `${b}^{${n}} = ${Math.pow(b, n).toFixed(4)}`, explanation: `เน€เธฅเธเธเธตเนเธเธณเธฅเธฑเธ n เน€เธ—เนเธฒเธเธฑเธ ${n}` }
+          { title: 'สมการ', latex: `${b}^{n} = ${v}`, explanation: 'ต้องการหาเลขชี้กำลัง n' },
+          { title: 'ใช้ log แก้สมการ', latex: `n = \\frac{\\log ${v}}{\\log ${b}} = ${exact.toFixed(6)}`, explanation: 'เปลี่ยนเป็น log เพื่อแยก n ออกมา' },
+          { title: 'ผลลัพธ์', latex: `${b}^{${n}} = ${Math.pow(b, n).toFixed(4)}`, explanation: `เลขชี้กำลัง n เท่ากับ ${n}` }
         ]
       };
     }

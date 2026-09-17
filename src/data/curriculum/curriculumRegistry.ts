@@ -3,7 +3,7 @@
 /**
  * SciCode Nexus - Curriculum Registry & Query Service
  * Aggregates all subjects (Math, Science, Tech/IS, Social, History, Economics)
- * and provides smart filtering by grade level (เธก.1 - เธก.6) and search keywords.
+ * and provides smart filtering by grade level (ม.1 - ม.6) and search keywords.
  */
 
 import { MATH_CURRICULUM } from './mathCurriculum';
@@ -20,29 +20,29 @@ import { ARTS_MUSIC_CURRICULUM } from './artsMusicCurriculum';
 import { CAREER_CURRICULUM } from './careerCurriculum';
 
 export const CURRICULUM_GRADES = [
-  { id: 'all', label: 'เธ—เธธเธเธฃเธฐเธ”เธฑเธเธเธฑเนเธ (เธก.1 - เธก.6)' },
-  { id: 'm1', label: 'เธก.1' },
-  { id: 'm2', label: 'เธก.2' },
-  { id: 'm3', label: 'เธก.3' },
-  { id: 'm4', label: 'เธก.4' },
-  { id: 'm5', label: 'เธก.5' },
-  { id: 'm6', label: 'เธก.6' }
+  { id: 'all', label: 'ทุกระดับชั้น (ม.1 - ม.6)' },
+  { id: 'm1', label: 'ม.1' },
+  { id: 'm2', label: 'ม.2' },
+  { id: 'm3', label: 'ม.3' },
+  { id: 'm4', label: 'ม.4' },
+  { id: 'm5', label: 'ม.5' },
+  { id: 'm6', label: 'ม.6' }
 ];
 
 export const CURRICULUM_SUBJECTS = [
-  { id: 'all', name: 'เธ—เธธเธเธเธฅเธธเนเธกเธชเธฒเธฃเธฐเธงเธดเธเธฒ', icon: 'layers', color: 'indigo' },
-  { id: 'thai', name: 'เธ เธฒเธฉเธฒเนเธ—เธข', icon: 'book', color: 'red' },
-  { id: 'english', name: 'เธ เธฒเธฉเธฒเธญเธฑเธเธเธคเธฉ', icon: 'globe', color: 'blue' },
-  { id: 'math', name: 'เธเธ“เธดเธ•เธจเธฒเธชเธ•เธฃเน', icon: 'plus-circle', color: 'cyan' },
-  { id: 'science', name: 'เธงเธดเธ—เธขเธฒเธจเธฒเธชเธ•เธฃเน (เธเธดเธชเธดเธเธชเน เน€เธเธกเธต เธเธตเธงเธฐ)', icon: 'flask', color: 'emerald' },
-  { id: 'earth', name: 'เนเธฅเธเนเธฅเธฐเธ”เธฒเธฃเธฒเธจเธฒเธชเธ•เธฃเน', icon: 'compass', color: 'teal' },
-  { id: 'tech', name: 'เธงเธดเธ—เธขเธฒเธเธฒเธฃเธเธณเธเธงเธ“ & IS', icon: 'code', color: 'purple' },
-  { id: 'social', name: 'เธชเธฑเธเธเธกเธจเธถเธเธฉเธฒ & เธ เธนเธกเธดเธจเธฒเธชเธ•เธฃเน', icon: 'map', color: 'sky' },
-  { id: 'history', name: 'เธเธฃเธฐเธงเธฑเธ•เธดเธจเธฒเธชเธ•เธฃเนเนเธ—เธข-เธชเธฒเธเธฅ', icon: 'bookmark', color: 'amber' },
-  { id: 'economics', name: 'เน€เธจเธฃเธฉเธเธจเธฒเธชเธ•เธฃเน', icon: 'dollar-sign', color: 'rose' },
-  { id: 'health', name: 'เธชเธธเธเธจเธถเธเธฉเธฒ & เธเธฅเธจเธถเธเธฉเธฒ', icon: 'activity', color: 'orange' },
-  { id: 'arts', name: 'เธจเธดเธฅเธเธฐ & เธ”เธเธ•เธฃเธต', icon: 'feather', color: 'fuchsia' },
-  { id: 'career', name: 'เธเธฒเธฃเธเธฒเธเธญเธฒเธเธตเธ & เธเธธเธฃเธเธดเธ', icon: 'briefcase', color: 'lime' }
+  { id: 'all', name: 'ทุกกลุ่มสาระวิชา', icon: 'layers', color: 'indigo' },
+  { id: 'thai', name: 'ภาษาไทย', icon: 'book', color: 'red' },
+  { id: 'english', name: 'ภาษาอังกฤษ', icon: 'globe', color: 'blue' },
+  { id: 'math', name: 'คณิตศาสตร์', icon: 'plus-circle', color: 'cyan' },
+  { id: 'science', name: 'วิทยาศาสตร์ (ฟิสิกส์ เคมี ชีวะ)', icon: 'flask', color: 'emerald' },
+  { id: 'earth', name: 'โลกและดาราศาสตร์', icon: 'compass', color: 'teal' },
+  { id: 'tech', name: 'วิทยาการคำนวณ & IS', icon: 'code', color: 'purple' },
+  { id: 'social', name: 'สังคมศึกษา & ภูมิศาสตร์', icon: 'map', color: 'sky' },
+  { id: 'history', name: 'ประวัติศาสตร์ไทย-สากล', icon: 'bookmark', color: 'amber' },
+  { id: 'economics', name: 'เศรษฐศาสตร์', icon: 'dollar-sign', color: 'rose' },
+  { id: 'health', name: 'สุขศึกษา & พลศึกษา', icon: 'activity', color: 'orange' },
+  { id: 'arts', name: 'ศิลปะ & ดนตรี', icon: 'feather', color: 'fuchsia' },
+  { id: 'career', name: 'การงานอาชีพ & ธุรกิจ', icon: 'briefcase', color: 'lime' }
 ];
 
 export const ALL_CURRICULUM_DATA = [
@@ -71,7 +71,7 @@ export function queryCurriculum(grade = 'all', subject = 'all', searchQuery = ''
       if (item.grade === grade) return true;
       if (item.grade === 'm1' && (grade === 'm1' || grade === 'm2' || grade === 'm3')) return true; // shared lower secondary
       if (item.grade === 'm4' && (grade === 'm4' || grade === 'm5' || grade === 'm6')) return true; // shared upper secondary
-      if (item.gradeLabel && item.gradeLabel.includes(grade.toUpperCase().replace('M', 'เธก.'))) return true;
+      if (item.gradeLabel && item.gradeLabel.includes(grade.toUpperCase().replace('M', 'ม.'))) return true;
       return false;
     });
   }

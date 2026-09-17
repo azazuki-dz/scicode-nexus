@@ -1,24 +1,24 @@
 ﻿// @ts-nocheck
 
 /**
- * Statistics & Probability Formulas (เธชเธ–เธดเธ•เธดเนเธฅเธฐเธเธงเธฒเธกเธเนเธฒเธเธฐเน€เธเนเธ) - เธก.3 - เธก.6
+ * Statistics & Probability Formulas (สถิติและความน่าจะเป็น) - ม.3 - ม.6
  */
 
 export const STATISTICS_FORMULAS = [
   {
     id: 'mean',
     name: 'Mean (Average)',
-    nameTh: 'เธเนเธฒเน€เธเธฅเธตเนเธขเน€เธฅเธเธเธ“เธดเธ•',
+    nameTh: 'ค่าเฉลี่ยเลขคณิต',
     category: 'statistics',
-    categoryTh: 'เธชเธ–เธดเธ•เธดเนเธฅเธฐเธเธงเธฒเธกเธเนเธฒเธเธฐเน€เธเนเธ',
+    categoryTh: 'สถิติและความน่าจะเป็น',
     icon: 'hash',
-    grade: 'เธก.3-5',
+    grade: 'ม.3-5',
     latex: '\\bar{x} = \\frac{\\sum x_i}{n}',
-    description: 'เธเนเธฒเน€เธเธฅเธตเนเธข = เธเธฅเธฃเธงเธกเธเธญเธเธเนเธญเธกเธนเธฅเธซเธฒเธฃเธ”เนเธงเธขเธเธณเธเธงเธเธเนเธญเธกเธนเธฅ เนเธเนเธเธฑเธเธเนเธญเธกเธนเธฅเธ—เธฑเนเธเธซเธกเธ”เนเธเธเน€เธเธดเธเธเธฃเธดเธกเธฒเธ“',
+    description: 'ค่าเฉลี่ย = ผลรวมของข้อมูลหารด้วยจำนวนข้อมูล ใช้กับข้อมูลทั้งหมดแบบเชิงปริมาณ',
     variables: [
-      { id: 'mean', symbol: '\\bar{x}', name: 'Mean', nameTh: 'เธเนเธฒเน€เธเธฅเธตเนเธข', unit: '', defaultValue: 12, min: -1e15, max: 1e15, step: 0.1 },
-      { id: 'sum', symbol: '\\sum x_i', name: 'Sum of Data', nameTh: 'เธเธฅเธฃเธงเธกเธเนเธญเธกเธนเธฅ', unit: '', defaultValue: 120, min: -1e18, max: 1e18, step: 1 },
-      { id: 'n', symbol: 'n', name: 'Count', nameTh: 'เธเธณเธเธงเธเธเนเธญเธกเธนเธฅ', unit: 'เธเธดเนเธ', defaultValue: 10, min: 1, max: 10000000, step: 1 }
+      { id: 'mean', symbol: '\\bar{x}', name: 'Mean', nameTh: 'ค่าเฉลี่ย', unit: '', defaultValue: 12, min: -1e15, max: 1e15, step: 0.1 },
+      { id: 'sum', symbol: '\\sum x_i', name: 'Sum of Data', nameTh: 'ผลรวมข้อมูล', unit: '', defaultValue: 120, min: -1e18, max: 1e18, step: 1 },
+      { id: 'n', symbol: 'n', name: 'Count', nameTh: 'จำนวนข้อมูล', unit: 'ชิ้น', defaultValue: 10, min: 1, max: 10000000, step: 1 }
     ],
     solveTargets: ['mean', 'sum', 'n'],
     calculate: (inputs, target = 'mean') => {
@@ -29,22 +29,22 @@ export const STATISTICS_FORMULAS = [
       if (target === 'mean') {
         result = sum / n;
         steps = [
-          { title: 'เธชเธนเธ•เธฃเธเนเธฒเน€เธเธฅเธตเนเธข', latex: '\\bar{x} = \\frac{\\sum x_i}{n}', explanation: 'เธเธฅเธฃเธงเธกเธซเธฒเธฃเธเธณเธเธงเธเธเนเธญเธกเธนเธฅ' },
-          { title: 'เนเธ—เธเธเนเธฒ', latex: `\\bar{x} = \\frac{${sum}}{${n}}`, explanation: `เธเธฅเธฃเธงเธก = ${sum}, เธเธณเธเธงเธ = ${n}` },
-          { title: 'เธเธฅเธฅเธฑเธเธเน', latex: `\\bar{x} = ${result.toFixed(4)}`, explanation: `เธเนเธฒเน€เธเธฅเธตเนเธขเน€เธ—เนเธฒเธเธฑเธ ${result.toFixed(4)}` }
+          { title: 'สูตรค่าเฉลี่ย', latex: '\\bar{x} = \\frac{\\sum x_i}{n}', explanation: 'ผลรวมหารจำนวนข้อมูล' },
+          { title: 'แทนค่า', latex: `\\bar{x} = \\frac{${sum}}{${n}}`, explanation: `ผลรวม = ${sum}, จำนวน = ${n}` },
+          { title: 'ผลลัพธ์', latex: `\\bar{x} = ${result.toFixed(4)}`, explanation: `ค่าเฉลี่ยเท่ากับ ${result.toFixed(4)}` }
         ];
       } else if (target === 'sum') {
         result = mean * n;
         steps = [
-          { title: 'เธเธฑเธ”เธฃเธนเธเธซเธฒเธเธฅเธฃเธงเธก', latex: '\\sum x_i = \\bar{x} \\cdot n', explanation: 'เธเนเธฒเน€เธเธฅเธตเนเธขเธเธนเธ“เธเธณเธเธงเธเธเนเธญเธกเธนเธฅ' },
-          { title: 'เธเธฅเธฅเธฑเธเธเน', latex: `\\sum x_i = ${result.toFixed(4)}`, explanation: `เธเธฅเธฃเธงเธกเธเนเธญเธกเธนเธฅเน€เธ—เนเธฒเธเธฑเธ ${result.toFixed(4)}` }
+          { title: 'จัดรูปหาผลรวม', latex: '\\sum x_i = \\bar{x} \\cdot n', explanation: 'ค่าเฉลี่ยคูณจำนวนข้อมูล' },
+          { title: 'ผลลัพธ์', latex: `\\sum x_i = ${result.toFixed(4)}`, explanation: `ผลรวมข้อมูลเท่ากับ ${result.toFixed(4)}` }
         ];
       } else if (target === 'n') {
-        if (mean === 0) throw new Error('เธเนเธฒเน€เธเธฅเธตเนเธข (mean) เธ•เนเธญเธเนเธกเนเน€เธเนเธ 0');
+        if (mean === 0) throw new Error('ค่าเฉลี่ย (mean) ต้องไม่เป็น 0');
         result = sum / mean;
         steps = [
-          { title: 'เธเธฑเธ”เธฃเธนเธเธซเธฒเธเธณเธเธงเธเธเนเธญเธกเธนเธฅ', latex: 'n = \\frac{\\sum x_i}{\\bar{x}}', explanation: 'เธเธฅเธฃเธงเธกเธซเธฒเธฃเธเนเธฒเน€เธเธฅเธตเนเธข' },
-          { title: 'เธเธฅเธฅเธฑเธเธเน', latex: `n = ${result.toFixed(4)}`, explanation: `เธเธณเธเธงเธเธเนเธญเธกเธนเธฅเน€เธ—เนเธฒเธเธฑเธ ${result.toFixed(4)}` }
+          { title: 'จัดรูปหาจำนวนข้อมูล', latex: 'n = \\frac{\\sum x_i}{\\bar{x}}', explanation: 'ผลรวมหารค่าเฉลี่ย' },
+          { title: 'ผลลัพธ์', latex: `n = ${result.toFixed(4)}`, explanation: `จำนวนข้อมูลเท่ากับ ${result.toFixed(4)}` }
         ];
       }
 
@@ -55,17 +55,17 @@ export const STATISTICS_FORMULAS = [
   {
     id: 'standard_deviation',
     name: 'Standard Deviation',
-    nameTh: 'เธชเนเธงเธเน€เธเธตเนเธขเธเน€เธเธเธกเธฒเธ•เธฃเธเธฒเธ',
+    nameTh: 'ส่วนเบี่ยงเบนมาตรฐาน',
     category: 'statistics',
-    categoryTh: 'เธชเธ–เธดเธ•เธดเนเธฅเธฐเธเธงเธฒเธกเธเนเธฒเธเธฐเน€เธเนเธ',
+    categoryTh: 'สถิติและความน่าจะเป็น',
     icon: 'activity',
-    grade: 'เธก.4-6',
+    grade: 'ม.4-6',
     latex: '\\sigma = \\sqrt{\\frac{\\sum (x_i - \\bar{x})^2}{n}}',
-    description: 'เธงเธฑเธ”เธเธฒเธฃเธเธฃเธฐเธเธฒเธขเธเธญเธเธเนเธญเธกเธนเธฅเธฃเธญเธเธเนเธฒเน€เธเธฅเธตเนเธข เธซเธฒเธฃเธฒเธเธ—เธตเนเธชเธญเธเธเธญเธเธเธงเธฒเธกเนเธเธฃเธเธฃเธงเธ เธ–เนเธฒเธเนเธญเธกเธนเธฅเธเธฃเธฐเธเธฒเธขเธกเธฒเธ ฯ เธเธฐเธกเธฒเธ',
+    description: 'วัดการกระจายของข้อมูลรอบค่าเฉลี่ย หารากที่สองของความแปรปรวน ถ้าข้อมูลกระจายมาก σ จะมาก',
     variables: [
-      { id: 'sd', symbol: '\\sigma', name: 'Standard Deviation', nameTh: 'เธชเนเธงเธเน€เธเธตเนเธขเธเน€เธเธเธกเธฒเธ•เธฃเธเธฒเธ', unit: '', defaultValue: 2.915, min: 0, max: 1e15, step: 0.01 },
-      { id: 'sumSqDev', symbol: '\\sum (x_i-\\bar{x})^2', name: 'Sum of Squared Deviations', nameTh: 'เธเธฅเธฃเธงเธกเธเธณเธฅเธฑเธเธชเธญเธเธเธญเธเธเธงเธฒเธกเน€เธเธตเนเธขเธเน€เธเธ', unit: '', defaultValue: 85, min: 0, max: 1e18, step: 1 },
-      { id: 'n', symbol: 'n', name: 'Count', nameTh: 'เธเธณเธเธงเธเธเนเธญเธกเธนเธฅ', unit: 'เธเธดเนเธ', defaultValue: 10, min: 1, max: 10000000, step: 1 }
+      { id: 'sd', symbol: '\\sigma', name: 'Standard Deviation', nameTh: 'ส่วนเบี่ยงเบนมาตรฐาน', unit: '', defaultValue: 2.915, min: 0, max: 1e15, step: 0.01 },
+      { id: 'sumSqDev', symbol: '\\sum (x_i-\\bar{x})^2', name: 'Sum of Squared Deviations', nameTh: 'ผลรวมกำลังสองของความเบี่ยงเบน', unit: '', defaultValue: 85, min: 0, max: 1e18, step: 1 },
+      { id: 'n', symbol: 'n', name: 'Count', nameTh: 'จำนวนข้อมูล', unit: 'ชิ้น', defaultValue: 10, min: 1, max: 10000000, step: 1 }
     ],
     solveTargets: ['sd', 'sumSqDev', 'n'],
     calculate: (inputs, target = 'sd') => {
@@ -74,25 +74,25 @@ export const STATISTICS_FORMULAS = [
       let result = 0;
 
       if (target === 'sd') {
-        if (n === 0) throw new Error('เธเธณเธเธงเธเธเนเธญเธกเธนเธฅเธ•เนเธญเธเธกเธฒเธเธเธงเนเธฒ 0');
+        if (n === 0) throw new Error('จำนวนข้อมูลต้องมากกว่า 0');
         result = Math.sqrt(sumSqDev / n);
         steps = [
-          { title: 'เธชเธนเธ•เธฃเธชเนเธงเธเน€เธเธตเนเธขเธเน€เธเธเธกเธฒเธ•เธฃเธเธฒเธ', latex: '\\sigma = \\sqrt{\\frac{\\sum (x_i - \\bar{x})^2}{n}}', explanation: 'เธฃเธฒเธเธ—เธตเนเธชเธญเธเธเธญเธเธเธงเธฒเธกเนเธเธฃเธเธฃเธงเธ' },
-          { title: 'เนเธ—เธเธเนเธฒ', latex: `\\sigma = \\sqrt{\\frac{${sumSqDev}}{${n}}}`, explanation: `เธเธฅเธฃเธงเธกเธเธณเธฅเธฑเธเธชเธญเธเธเธงเธฒเธกเน€เธเธตเนเธขเธเน€เธเธ = ${sumSqDev}, n = ${n}` },
-          { title: 'เธเธฅเธฅเธฑเธเธเน', latex: `\\sigma = ${result.toFixed(4)}`, explanation: `เธชเนเธงเธเน€เธเธตเนเธขเธเน€เธเธเธกเธฒเธ•เธฃเธเธฒเธเน€เธ—เนเธฒเธเธฑเธ ${result.toFixed(4)}` }
+          { title: 'สูตรส่วนเบี่ยงเบนมาตรฐาน', latex: '\\sigma = \\sqrt{\\frac{\\sum (x_i - \\bar{x})^2}{n}}', explanation: 'รากที่สองของความแปรปรวน' },
+          { title: 'แทนค่า', latex: `\\sigma = \\sqrt{\\frac{${sumSqDev}}{${n}}}`, explanation: `ผลรวมกำลังสองความเบี่ยงเบน = ${sumSqDev}, n = ${n}` },
+          { title: 'ผลลัพธ์', latex: `\\sigma = ${result.toFixed(4)}`, explanation: `ส่วนเบี่ยงเบนมาตรฐานเท่ากับ ${result.toFixed(4)}` }
         ];
       } else if (target === 'sumSqDev') {
         result = sd * sd * n;
         steps = [
-          { title: 'เธเธฑเธ”เธฃเธนเธเธซเธฒเธเธฅเธฃเธงเธกเธเธณเธฅเธฑเธเธชเธญเธ', latex: '\\sum (x_i - \\bar{x})^2 = \\sigma^2 \\cdot n', explanation: 'ฯยฒ (เธเธงเธฒเธกเนเธเธฃเธเธฃเธงเธ) เธเธนเธ“เธเธณเธเธงเธเธเนเธญเธกเธนเธฅ' },
-          { title: 'เธเธฅเธฅเธฑเธเธเน', latex: `\\sum (x_i - \\bar{x})^2 = ${result.toFixed(4)}`, explanation: `เธเธฅเธฃเธงเธกเน€เธ—เนเธฒเธเธฑเธ ${result.toFixed(4)}` }
+          { title: 'จัดรูปหาผลรวมกำลังสอง', latex: '\\sum (x_i - \\bar{x})^2 = \\sigma^2 \\cdot n', explanation: 'σ² (ความแปรปรวน) คูณจำนวนข้อมูล' },
+          { title: 'ผลลัพธ์', latex: `\\sum (x_i - \\bar{x})^2 = ${result.toFixed(4)}`, explanation: `ผลรวมเท่ากับ ${result.toFixed(4)}` }
         ];
       } else if (target === 'n') {
-        if (sd === 0) throw new Error('เธเนเธฒ ฯ เธ•เนเธญเธเนเธกเนเน€เธเนเธ 0');
+        if (sd === 0) throw new Error('ค่า σ ต้องไม่เป็น 0');
         result = sumSqDev / (sd * sd);
         steps = [
-          { title: 'เธเธฑเธ”เธฃเธนเธเธซเธฒเธเธณเธเธงเธเธเนเธญเธกเธนเธฅ', latex: 'n = \\frac{\\sum (x_i - \\bar{x})^2}{\\sigma^2}', explanation: 'เธขเนเธฒเธขเธเนเธฒเธเธชเธกเธเธฒเธฃ' },
-          { title: 'เธเธฅเธฅเธฑเธเธเน', latex: `n = ${result.toFixed(4)}`, explanation: `เธเธณเธเธงเธเธเนเธญเธกเธนเธฅเน€เธ—เนเธฒเธเธฑเธ ${result.toFixed(4)}` }
+          { title: 'จัดรูปหาจำนวนข้อมูล', latex: 'n = \\frac{\\sum (x_i - \\bar{x})^2}{\\sigma^2}', explanation: 'ย้ายข้างสมการ' },
+          { title: 'ผลลัพธ์', latex: `n = ${result.toFixed(4)}`, explanation: `จำนวนข้อมูลเท่ากับ ${result.toFixed(4)}` }
         ];
       }
 
@@ -103,18 +103,18 @@ export const STATISTICS_FORMULAS = [
   {
     id: 'z_score',
     name: 'Z-Score (Standard Score)',
-    nameTh: 'เธเธฐเนเธเธเธกเธฒเธ•เธฃเธเธฒเธ Z (Z-Score)',
+    nameTh: 'คะแนนมาตรฐาน Z (Z-Score)',
     category: 'statistics',
-    categoryTh: 'เธชเธ–เธดเธ•เธดเนเธฅเธฐเธเธงเธฒเธกเธเนเธฒเธเธฐเน€เธเนเธ',
+    categoryTh: 'สถิติและความน่าจะเป็น',
     icon: 'target',
-    grade: 'เธก.5-6',
+    grade: 'ม.5-6',
     latex: 'z = \\frac{x - \\bar{x}}{\\sigma}',
-    description: 'เธเธญเธเธงเนเธฒเธเนเธญเธกเธนเธฅเธญเธขเธนเนเธซเนเธฒเธเธเธฒเธเธเนเธฒเน€เธเธฅเธตเนเธขเธเธตเนเน€เธ—เนเธฒเธเธญเธเธชเนเธงเธเน€เธเธตเนเธขเธเน€เธเธเธกเธฒเธ•เธฃเธเธฒเธ เน€เธเนเธเธฅเธเน€เธกเธทเนเธญเธ•เนเธณเธเธงเนเธฒเธเนเธฒเน€เธเธฅเธตเนเธข',
+    description: 'บอกว่าข้อมูลอยู่ห่างจากค่าเฉลี่ยกี่เท่าของส่วนเบี่ยงเบนมาตรฐาน เป็นลบเมื่อต่ำกว่าค่าเฉลี่ย',
     variables: [
-      { id: 'z', symbol: 'z', name: 'Z-Score', nameTh: 'เธเนเธฒ Z', unit: '', defaultValue: 1.372, min: -10, max: 10, step: 0.01 },
-      { id: 'x', symbol: 'x', name: 'Raw Score', nameTh: 'เธเธฐเนเธเธเธ”เธดเธ (x)', unit: '', defaultValue: 85, min: -1e15, max: 1e15, step: 1 },
-      { id: 'mu', symbol: '\\bar{x}', name: 'Mean', nameTh: 'เธเนเธฒเน€เธเธฅเธตเนเธข', unit: '', defaultValue: 70, min: -1e15, max: 1e15, step: 0.1 },
-      { id: 'sigma', symbol: '\\sigma', name: 'Std Deviation', nameTh: 'เธชเนเธงเธเน€เธเธตเนเธขเธเน€เธเธเธกเธฒเธ•เธฃเธเธฒเธ', unit: '', defaultValue: 5, min: 0.0001, max: 1e15, step: 0.1 }
+      { id: 'z', symbol: 'z', name: 'Z-Score', nameTh: 'ค่า Z', unit: '', defaultValue: 1.372, min: -10, max: 10, step: 0.01 },
+      { id: 'x', symbol: 'x', name: 'Raw Score', nameTh: 'คะแนนดิบ (x)', unit: '', defaultValue: 85, min: -1e15, max: 1e15, step: 1 },
+      { id: 'mu', symbol: '\\bar{x}', name: 'Mean', nameTh: 'ค่าเฉลี่ย', unit: '', defaultValue: 70, min: -1e15, max: 1e15, step: 0.1 },
+      { id: 'sigma', symbol: '\\sigma', name: 'Std Deviation', nameTh: 'ส่วนเบี่ยงเบนมาตรฐาน', unit: '', defaultValue: 5, min: 0.0001, max: 1e15, step: 0.1 }
     ],
     solveTargets: ['z', 'x', 'sigma'],
     calculate: (inputs, target = 'z') => {
@@ -125,22 +125,22 @@ export const STATISTICS_FORMULAS = [
       if (target === 'z') {
         result = (x - mu) / sigma;
         steps = [
-          { title: 'เธชเธนเธ•เธฃ Z-Score', latex: 'z = \\frac{x - \\bar{x}}{\\sigma}', explanation: 'เธเธฅเธ•เนเธฒเธเธเธฐเนเธเธเธเธฒเธเธเนเธฒเน€เธเธฅเธตเนเธขเธซเธฒเธฃ ฯ' },
-          { title: 'เนเธ—เธเธเนเธฒ', latex: `z = \\frac{${x} - ${mu}}{${sigma}}`, explanation: `x = ${x}, เธเนเธฒเน€เธเธฅเธตเนเธข = ${mu}, ฯ = ${sigma}` },
-          { title: 'เธเธฅเธฅเธฑเธเธเน', latex: `z = ${result.toFixed(4)}`, explanation: result >= 0 ? `เธชเธนเธเธเธงเนเธฒเธเนเธฒเน€เธเธฅเธตเนเธข ${result.toFixed(2)} เน€เธ—เนเธฒเธเธญเธ ฯ` : `เธ•เนเธณเธเธงเนเธฒเธเนเธฒเน€เธเธฅเธตเนเธข ${Math.abs(result).toFixed(2)} เน€เธ—เนเธฒเธเธญเธ ฯ` }
+          { title: 'สูตร Z-Score', latex: 'z = \\frac{x - \\bar{x}}{\\sigma}', explanation: 'ผลต่างคะแนนจากค่าเฉลี่ยหาร σ' },
+          { title: 'แทนค่า', latex: `z = \\frac{${x} - ${mu}}{${sigma}}`, explanation: `x = ${x}, ค่าเฉลี่ย = ${mu}, σ = ${sigma}` },
+          { title: 'ผลลัพธ์', latex: `z = ${result.toFixed(4)}`, explanation: result >= 0 ? `สูงกว่าค่าเฉลี่ย ${result.toFixed(2)} เท่าของ σ` : `ต่ำกว่าค่าเฉลี่ย ${Math.abs(result).toFixed(2)} เท่าของ σ` }
         ];
       } else if (target === 'x') {
         result = mu + z * sigma;
         steps = [
-          { title: 'เธเธฑเธ”เธฃเธนเธเธซเธฒเธเธฐเนเธเธเธ”เธดเธ', latex: 'x = \\bar{x} + z \\cdot \\sigma', explanation: 'เธขเนเธฒเธขเธเนเธฒเธเธชเธกเธเธฒเธฃ' },
-          { title: 'เธเธฅเธฅเธฑเธเธเน', latex: `x = ${result.toFixed(4)}`, explanation: `เธเธฐเนเธเธเธ”เธดเธเน€เธ—เนเธฒเธเธฑเธ ${result.toFixed(4)}` }
+          { title: 'จัดรูปหาคะแนนดิบ', latex: 'x = \\bar{x} + z \\cdot \\sigma', explanation: 'ย้ายข้างสมการ' },
+          { title: 'ผลลัพธ์', latex: `x = ${result.toFixed(4)}`, explanation: `คะแนนดิบเท่ากับ ${result.toFixed(4)}` }
         ];
       } else if (target === 'sigma') {
-        if (z === 0) throw new Error('เธเนเธฒ z เธ•เนเธญเธเนเธกเนเน€เธเนเธ 0');
+        if (z === 0) throw new Error('ค่า z ต้องไม่เป็น 0');
         result = (x - mu) / z;
         steps = [
-          { title: 'เธเธฑเธ”เธฃเธนเธเธซเธฒเธชเนเธงเธเน€เธเธตเนเธขเธเน€เธเธ', latex: '\\sigma = \\frac{x - \\bar{x}}{z}', explanation: 'เธขเนเธฒเธขเธเนเธฒเธเธชเธกเธเธฒเธฃ' },
-          { title: 'เธเธฅเธฅเธฑเธเธเน', latex: `\\sigma = ${result.toFixed(4)}`, explanation: `เธชเนเธงเธเน€เธเธตเนเธขเธเน€เธเธเธกเธฒเธ•เธฃเธเธฒเธเน€เธ—เนเธฒเธเธฑเธ ${result.toFixed(4)}` }
+          { title: 'จัดรูปหาส่วนเบี่ยงเบน', latex: '\\sigma = \\frac{x - \\bar{x}}{z}', explanation: 'ย้ายข้างสมการ' },
+          { title: 'ผลลัพธ์', latex: `\\sigma = ${result.toFixed(4)}`, explanation: `ส่วนเบี่ยงเบนมาตรฐานเท่ากับ ${result.toFixed(4)}` }
         ];
       }
 
@@ -151,83 +151,83 @@ export const STATISTICS_FORMULAS = [
   {
     id: 'permutation',
     name: 'Permutation (nPr)',
-    nameTh: 'เธเธฒเธฃเน€เธฃเธตเธขเธเธชเธฑเธเน€เธเธฅเธตเนเธขเธ (nPr)',
+    nameTh: 'การเรียงสับเปลี่ยน (nPr)',
     category: 'statistics',
-    categoryTh: 'เธชเธ–เธดเธ•เธดเนเธฅเธฐเธเธงเธฒเธกเธเนเธฒเธเธฐเน€เธเนเธ',
+    categoryTh: 'สถิติและความน่าจะเป็น',
     icon: 'list-ordered',
-    grade: 'เธก.5',
+    grade: 'ม.5',
     latex: '{}_n P_r = \\frac{n!}{(n-r)!}',
-    description: 'เธเธณเธเธงเธเธงเธดเธเธตเน€เธฃเธตเธขเธเธชเธดเนเธเธเธญเธ r เธชเธดเนเธเธเธฒเธเธ—เธฑเนเธเธซเธกเธ” n เธชเธดเนเธ เนเธ”เธขเธเธณเธเธถเธเธ–เธถเธเธฅเธณเธ”เธฑเธ เน€เธเนเธ nPr เนเธเนเนเธเน€เธฃเธทเนเธญเธเธเธณเธเธงเธเธงเธดเธเธตเธเธฑเธ”เน€เธฃเธตเธขเธ',
+    description: 'จำนวนวิธีเรียงสิ่งของ r สิ่งจากทั้งหมด n สิ่ง โดยคำนึงถึงลำดับ เช่น nPr ใช้ในเรื่องจำนวนวิธีจัดเรียง',
     variables: [
-      { id: 'n', symbol: 'n', name: 'Total Items', nameTh: 'เธเธญเธเธ—เธฑเนเธเธซเธกเธ” (n)', unit: 'เธเธดเนเธ', defaultValue: 10, min: 1, max: 170, step: 1 },
-      { id: 'r', symbol: 'r', name: 'Arranged Items', nameTh: 'เน€เธฅเธทเธญเธเธกเธฒเน€เธฃเธตเธขเธ (r)', unit: 'เธเธดเนเธ', defaultValue: 3, min: 0, max: 170, step: 1 },
-      { id: 'result', symbol: '{}_n P_r', name: 'Permutations', nameTh: 'เธเธณเธเธงเธเธงเธดเธเธต', unit: 'เธงเธดเธเธต', defaultValue: 720, min: 1, max: 1e308, step: 1 }
+      { id: 'n', symbol: 'n', name: 'Total Items', nameTh: 'ของทั้งหมด (n)', unit: 'ชิ้น', defaultValue: 10, min: 1, max: 170, step: 1 },
+      { id: 'r', symbol: 'r', name: 'Arranged Items', nameTh: 'เลือกมาเรียง (r)', unit: 'ชิ้น', defaultValue: 3, min: 0, max: 170, step: 1 },
+      { id: 'result', symbol: '{}_n P_r', name: 'Permutations', nameTh: 'จำนวนวิธี', unit: 'วิธี', defaultValue: 720, min: 1, max: 1e308, step: 1 }
     ],
     solveTargets: ['result'],
     calculate: (inputs) => {
       let { n, r } = inputs;
-      if (!Number.isInteger(n) || !Number.isInteger(r)) throw new Error('n เนเธฅเธฐ r เธ•เนเธญเธเน€เธเนเธเธเธณเธเธงเธเน€เธ•เนเธก');
-      if (r > n) throw new Error('r เธ•เนเธญเธเนเธกเนเน€เธเธดเธ n');
-      if (n > 170) throw new Error('n เธกเธฒเธเน€เธเธดเธเนเธ (เธชเธนเธเธชเธธเธ” 170)');
+      if (!Number.isInteger(n) || !Number.isInteger(r)) throw new Error('n และ r ต้องเป็นจำนวนเต็ม');
+      if (r > n) throw new Error('r ต้องไม่เกิน n');
+      if (n > 170) throw new Error('n มากเกินไป (สูงสุด 170)');
 
       const fact = (k) => { let f = 1; for (let i = 2; i <= k; i++) f *= i; return f; };
       const result = fact(n) / fact(n - r);
       const steps = [
-        { title: 'เธชเธนเธ•เธฃเธเธฒเธฃเน€เธฃเธตเธขเธเธชเธฑเธเน€เธเธฅเธตเนเธขเธ', latex: '{}_n P_r = \\frac{n!}{(n-r)!}', explanation: `n = ${n}, r = ${r}` },
-        { title: 'เนเธ—เธเธเนเธฒ', latex: `{}_n P_r = \\frac{${n}!}{(${n} - ${r})!} = \\frac{${fact(n)}}{${fact(n - r)}}`, explanation: 'เธเธณเธเธงเธ“เนเธเธเธ—เธญเน€เธฃเธตเธขเธฅ' },
-        { title: 'เธเธฅเธฅเธฑเธเธเน', latex: `{}_n P_r = ${result}`, explanation: `เธกเธตเธ—เธฑเนเธเธซเธกเธ” ${result} เธงเธดเธเธต` }
+        { title: 'สูตรการเรียงสับเปลี่ยน', latex: '{}_n P_r = \\frac{n!}{(n-r)!}', explanation: `n = ${n}, r = ${r}` },
+        { title: 'แทนค่า', latex: `{}_n P_r = \\frac{${n}!}{(${n} - ${r})!} = \\frac{${fact(n)}}{${fact(n - r)}}`, explanation: 'คำนวณแฟกทอเรียล' },
+        { title: 'ผลลัพธ์', latex: `{}_n P_r = ${result}`, explanation: `มีทั้งหมด ${result} วิธี` }
       ];
-      return { result, unit: 'เธงเธดเธเธต', steps };
+      return { result, unit: 'วิธี', steps };
     }
   },
 
   {
     id: 'combination',
     name: 'Combination (nCr)',
-    nameTh: 'เธเธฒเธฃเธเธฑเธ”เธซเธกเธนเน (nCr)',
+    nameTh: 'การจัดหมู่ (nCr)',
     category: 'statistics',
-    categoryTh: 'เธชเธ–เธดเธ•เธดเนเธฅเธฐเธเธงเธฒเธกเธเนเธฒเธเธฐเน€เธเนเธ',
+    categoryTh: 'สถิติและความน่าจะเป็น',
     icon: 'list-ordered',
-    grade: 'เธก.5',
+    grade: 'ม.5',
     latex: '{}_n C_r = \\binom{n}{r} = \\frac{n!}{r!(n-r)!}',
-    description: 'เธเธณเธเธงเธเธงเธดเธเธตเน€เธฅเธทเธญเธเธเธญเธ r เธชเธดเนเธเธเธฒเธเธ—เธฑเนเธเธซเธกเธ” n เธชเธดเนเธ เนเธ”เธขเนเธกเนเธเธณเธเธถเธเธ–เธถเธเธฅเธณเธ”เธฑเธ เน€เธเนเธ เน€เธฅเธทเธญเธเธเธฃเธฃเธกเธเธฒเธฃ เน€เธฅเธทเธญเธเน€เธชเธทเนเธญ',
+    description: 'จำนวนวิธีเลือกของ r สิ่งจากทั้งหมด n สิ่ง โดยไม่คำนึงถึงลำดับ เช่น เลือกกรรมการ เลือกเสื้อ',
     variables: [
-      { id: 'n', symbol: 'n', name: 'Total Items', nameTh: 'เธเธญเธเธ—เธฑเนเธเธซเธกเธ” (n)', unit: 'เธเธดเนเธ', defaultValue: 10, min: 1, max: 170, step: 1 },
-      { id: 'r', symbol: 'r', name: 'Chosen Items', nameTh: 'เน€เธฅเธทเธญเธเธกเธฒ (r)', unit: 'เธเธดเนเธ', defaultValue: 3, min: 0, max: 170, step: 1 },
-      { id: 'result', symbol: '{}_n C_r', name: 'Combinations', nameTh: 'เธเธณเธเธงเธเธงเธดเธเธต', unit: 'เธงเธดเธเธต', defaultValue: 120, min: 1, max: 1e308, step: 1 }
+      { id: 'n', symbol: 'n', name: 'Total Items', nameTh: 'ของทั้งหมด (n)', unit: 'ชิ้น', defaultValue: 10, min: 1, max: 170, step: 1 },
+      { id: 'r', symbol: 'r', name: 'Chosen Items', nameTh: 'เลือกมา (r)', unit: 'ชิ้น', defaultValue: 3, min: 0, max: 170, step: 1 },
+      { id: 'result', symbol: '{}_n C_r', name: 'Combinations', nameTh: 'จำนวนวิธี', unit: 'วิธี', defaultValue: 120, min: 1, max: 1e308, step: 1 }
     ],
     solveTargets: ['result'],
     calculate: (inputs) => {
       let { n, r } = inputs;
-      if (!Number.isInteger(n) || !Number.isInteger(r)) throw new Error('n เนเธฅเธฐ r เธ•เนเธญเธเน€เธเนเธเธเธณเธเธงเธเน€เธ•เนเธก');
-      if (r > n) throw new Error('r เธ•เนเธญเธเนเธกเนเน€เธเธดเธ n');
-      if (n > 170) throw new Error('n เธกเธฒเธเน€เธเธดเธเนเธ (เธชเธนเธเธชเธธเธ” 170)');
+      if (!Number.isInteger(n) || !Number.isInteger(r)) throw new Error('n และ r ต้องเป็นจำนวนเต็ม');
+      if (r > n) throw new Error('r ต้องไม่เกิน n');
+      if (n > 170) throw new Error('n มากเกินไป (สูงสุด 170)');
 
       const fact = (k) => { let f = 1; for (let i = 2; i <= k; i++) f *= i; return f; };
       const result = fact(n) / (fact(r) * fact(n - r));
       const steps = [
-        { title: 'เธชเธนเธ•เธฃเธเธฒเธฃเธเธฑเธ”เธซเธกเธนเน', latex: '{}_n C_r = \\frac{n!}{r!(n-r)!}', explanation: `n = ${n}, r = ${r}` },
-        { title: 'เนเธ—เธเธเนเธฒ', latex: `{}_n C_r = \\frac{${n}!}{${r}!(${n} - ${r})!}`, explanation: 'เธเธณเธเธงเธ“เนเธเธเธ—เธญเน€เธฃเธตเธขเธฅ' },
-        { title: 'เธเธฅเธฅเธฑเธเธเน', latex: `{}_n C_r = ${result}`, explanation: `เธกเธตเธ—เธฑเนเธเธซเธกเธ” ${result} เธงเธดเธเธต` }
+        { title: 'สูตรการจัดหมู่', latex: '{}_n C_r = \\frac{n!}{r!(n-r)!}', explanation: `n = ${n}, r = ${r}` },
+        { title: 'แทนค่า', latex: `{}_n C_r = \\frac{${n}!}{${r}!(${n} - ${r})!}`, explanation: 'คำนวณแฟกทอเรียล' },
+        { title: 'ผลลัพธ์', latex: `{}_n C_r = ${result}`, explanation: `มีทั้งหมด ${result} วิธี` }
       ];
-      return { result, unit: 'เธงเธดเธเธต', steps };
+      return { result, unit: 'วิธี', steps };
     }
   },
 
   {
     id: 'probability',
     name: 'Simple Probability',
-    nameTh: 'เธเธงเธฒเธกเธเนเธฒเธเธฐเน€เธเนเธ (P = เธเธฅเธ—เธตเนเธชเธเนเธ/เธเธฅเธ—เธฑเนเธเธซเธกเธ”)',
+    nameTh: 'ความน่าจะเป็น (P = ผลที่สนใจ/ผลทั้งหมด)',
     category: 'statistics',
-    categoryTh: 'เธชเธ–เธดเธ•เธดเนเธฅเธฐเธเธงเธฒเธกเธเนเธฒเธเธฐเน€เธเนเธ',
+    categoryTh: 'สถิติและความน่าจะเป็น',
     icon: 'percent',
-    grade: 'เธก.3-5',
+    grade: 'ม.3-5',
     latex: 'P(E) = \\frac{n(E)}{n(S)}',
-    description: 'เธเธงเธฒเธกเธเนเธฒเธเธฐเน€เธเนเธเธเธญเธเน€เธซเธ•เธธเธเธฒเธฃเธ“เน = เธเธณเธเธงเธเธเธฅเธฅเธฑเธเธเนเธ—เธตเนเธ•เนเธญเธเธเธฒเธฃเธซเธฒเธฃเธ”เนเธงเธขเธเธณเธเธงเธเธเธฅเธฅเธฑเธเธเนเธ—เธฑเนเธเธซเธกเธ” (เธเนเธฒเธญเธขเธนเนเธฃเธฐเธซเธงเนเธฒเธ 0 เธ–เธถเธ 1)',
+    description: 'ความน่าจะเป็นของเหตุการณ์ = จำนวนผลลัพธ์ที่ต้องการหารด้วยจำนวนผลลัพธ์ทั้งหมด (ค่าอยู่ระหว่าง 0 ถึง 1)',
     variables: [
-      { id: 'P', symbol: 'P(E)', name: 'Probability', nameTh: 'เธเธงเธฒเธกเธเนเธฒเธเธฐเน€เธเนเธ', unit: '', defaultValue: 0.5, min: 0, max: 1, step: 0.01 },
-      { id: 'favor', symbol: 'n(E)', name: 'Favorable Outcomes', nameTh: 'เธเธฅเธฅเธฑเธเธเนเธ—เธตเนเธ•เนเธญเธเธเธฒเธฃ', unit: 'เธเธฃเธ“เธต', defaultValue: 3, min: 0, max: 1e15, step: 1 },
-      { id: 'total', symbol: 'n(S)', name: 'Total Outcomes', nameTh: 'เธเธฅเธฅเธฑเธเธเนเธ—เธฑเนเธเธซเธกเธ”', unit: 'เธเธฃเธ“เธต', defaultValue: 6, min: 1, max: 1e15, step: 1 }
+      { id: 'P', symbol: 'P(E)', name: 'Probability', nameTh: 'ความน่าจะเป็น', unit: '', defaultValue: 0.5, min: 0, max: 1, step: 0.01 },
+      { id: 'favor', symbol: 'n(E)', name: 'Favorable Outcomes', nameTh: 'ผลลัพธ์ที่ต้องการ', unit: 'กรณี', defaultValue: 3, min: 0, max: 1e15, step: 1 },
+      { id: 'total', symbol: 'n(S)', name: 'Total Outcomes', nameTh: 'ผลลัพธ์ทั้งหมด', unit: 'กรณี', defaultValue: 6, min: 1, max: 1e15, step: 1 }
     ],
     solveTargets: ['P', 'favor', 'total'],
     calculate: (inputs, target = 'P') => {
@@ -238,22 +238,22 @@ export const STATISTICS_FORMULAS = [
       if (target === 'P') {
         result = favor / total;
         steps = [
-          { title: 'เธชเธนเธ•เธฃเธเธงเธฒเธกเธเนเธฒเธเธฐเน€เธเนเธ', latex: 'P(E) = \\frac{n(E)}{n(S)}', explanation: 'เธเธฅเธฅเธฑเธเธเนเธ—เธตเนเธ•เนเธญเธเธเธฒเธฃเธซเธฒเธฃเธเธฅเธฅเธฑเธเธเนเธ—เธฑเนเธเธซเธกเธ”' },
-          { title: 'เนเธ—เธเธเนเธฒ', latex: `P(E) = \\frac{${favor}}{${total}}`, explanation: `n(E) = ${favor}, n(S) = ${total}` },
-          { title: 'เธเธฅเธฅเธฑเธเธเน', latex: `P(E) = ${result.toFixed(4)} \\; (${(result * 100).toFixed(2)}\\% )`, explanation: `เธเธงเธฒเธกเธเนเธฒเธเธฐเน€เธเนเธเน€เธ—เนเธฒเธเธฑเธ ${(result * 100).toFixed(2)}%` }
+          { title: 'สูตรความน่าจะเป็น', latex: 'P(E) = \\frac{n(E)}{n(S)}', explanation: 'ผลลัพธ์ที่ต้องการหารผลลัพธ์ทั้งหมด' },
+          { title: 'แทนค่า', latex: `P(E) = \\frac{${favor}}{${total}}`, explanation: `n(E) = ${favor}, n(S) = ${total}` },
+          { title: 'ผลลัพธ์', latex: `P(E) = ${result.toFixed(4)} \\; (${(result * 100).toFixed(2)}\\% )`, explanation: `ความน่าจะเป็นเท่ากับ ${(result * 100).toFixed(2)}%` }
         ];
       } else if (target === 'favor') {
         result = P * total;
         steps = [
-          { title: 'เธเธฑเธ”เธฃเธนเธเธซเธฒเธเธฅเธฅเธฑเธเธเนเธ—เธตเนเธ•เนเธญเธเธเธฒเธฃ', latex: 'n(E) = P \\cdot n(S)', explanation: 'เธเธงเธฒเธกเธเนเธฒเธเธฐเน€เธเนเธเธเธนเธ“เธเธฅเธฅเธฑเธเธเนเธ—เธฑเนเธเธซเธกเธ”' },
-          { title: 'เธเธฅเธฅเธฑเธเธเน', latex: `n(E) = ${result.toFixed(4)}`, explanation: `เธกเธต ${result.toFixed(4)} เธเธฃเธ“เธตเธ—เธตเนเธ•เธฃเธเน€เธเธทเนเธญเธเนเธ` }
+          { title: 'จัดรูปหาผลลัพธ์ที่ต้องการ', latex: 'n(E) = P \\cdot n(S)', explanation: 'ความน่าจะเป็นคูณผลลัพธ์ทั้งหมด' },
+          { title: 'ผลลัพธ์', latex: `n(E) = ${result.toFixed(4)}`, explanation: `มี ${result.toFixed(4)} กรณีที่ตรงเงื่อนไข` }
         ];
       } else if (target === 'total') {
-        if (P === 0) throw new Error('เธเธงเธฒเธกเธเนเธฒเธเธฐเน€เธเนเธเธ•เนเธญเธเนเธกเนเน€เธเนเธ 0');
+        if (P === 0) throw new Error('ความน่าจะเป็นต้องไม่เป็น 0');
         result = favor / P;
         steps = [
-          { title: 'เธเธฑเธ”เธฃเธนเธเธซเธฒเธเธฅเธฅเธฑเธเธเนเธ—เธฑเนเธเธซเธกเธ”', latex: 'n(S) = \\frac{n(E)}{P}', explanation: 'เธขเนเธฒเธขเธเนเธฒเธเธชเธกเธเธฒเธฃ' },
-          { title: 'เธเธฅเธฅเธฑเธเธเน', latex: `n(S) = ${result.toFixed(4)}`, explanation: `เธกเธตเธ—เธฑเนเธเธซเธกเธ” ${result.toFixed(4)} เธเธฃเธ“เธต` }
+          { title: 'จัดรูปหาผลลัพธ์ทั้งหมด', latex: 'n(S) = \\frac{n(E)}{P}', explanation: 'ย้ายข้างสมการ' },
+          { title: 'ผลลัพธ์', latex: `n(S) = ${result.toFixed(4)}`, explanation: `มีทั้งหมด ${result.toFixed(4)} กรณี` }
         ];
       }
 
@@ -264,17 +264,17 @@ export const STATISTICS_FORMULAS = [
   {
     id: 'chi_square',
     name: 'Chi-Square (single cell)',
-    nameTh: 'เนเธเธชเนเธเธงเธฃเน (ฯยฒ = ฮฃ(Oโ’E)ยฒ/E)',
+    nameTh: 'ไคสแควร์ (χ² = Σ(O−E)²/E)',
     category: 'statistics',
-    categoryTh: 'เธชเธ–เธดเธ•เธดเนเธฅเธฐเธเธงเธฒเธกเธเนเธฒเธเธฐเน€เธเนเธ',
+    categoryTh: 'สถิติและความน่าจะเป็น',
     icon: 'sigma',
-    grade: 'เธก.6',
+    grade: 'ม.6',
     latex: '\\chi^2 = \\sum \\frac{(O - E)^2}{E}',
-    description: 'เธ•เธฃเธงเธเธชเธญเธเธเธงเธฒเธกเนเธ•เธเธ•เนเธฒเธเธฃเธฐเธซเธงเนเธฒเธเธเนเธฒเธ—เธตเนเธชเธฑเธเน€เธเธ• (O) เนเธฅเธฐเธเนเธฒเธเธฒเธ”เธซเธงเธฑเธ (E) เนเธเนเนเธเธเธตเธงเธงเธดเธ—เธขเธฒ (เธ—เธ”เธชเธญเธเธเธฅเธ—เธฒเธเธเธฑเธเธเธธเธเธฃเธฃเธก) เนเธฅเธฐเธชเธ–เธดเธ•เธด',
+    description: 'ตรวจสอบความแตกต่างระหว่างค่าที่สังเกต (O) และค่าคาดหวัง (E) ใช้ในชีววิทยา (ทดสอบผลทางพันธุกรรม) และสถิติ',
     variables: [
-      { id: 'chi2', symbol: '\\chi^2', name: 'Chi-Square', nameTh: 'เธเนเธฒเนเธเธชเนเธเธงเธฃเน', unit: '', defaultValue: 0.5, min: 0, max: 1e9, step: 0.01 },
-      { id: 'observed', symbol: 'O', name: 'Observed Value', nameTh: 'เธเนเธฒเธ—เธตเนเธชเธฑเธเน€เธเธ• (O)', unit: '', defaultValue: 60, min: 0, max: 1e15, step: 1 },
-      { id: 'expected', symbol: 'E', name: 'Expected Value', nameTh: 'เธเนเธฒเธเธฒเธ”เธซเธงเธฑเธ (E)', unit: '', defaultValue: 55, min: 0.0000001, max: 1e15, step: 1 }
+      { id: 'chi2', symbol: '\\chi^2', name: 'Chi-Square', nameTh: 'ค่าไคสแควร์', unit: '', defaultValue: 0.5, min: 0, max: 1e9, step: 0.01 },
+      { id: 'observed', symbol: 'O', name: 'Observed Value', nameTh: 'ค่าที่สังเกต (O)', unit: '', defaultValue: 60, min: 0, max: 1e15, step: 1 },
+      { id: 'expected', symbol: 'E', name: 'Expected Value', nameTh: 'ค่าคาดหวัง (E)', unit: '', defaultValue: 55, min: 0.0000001, max: 1e15, step: 1 }
     ],
     solveTargets: ['chi2', 'observed', 'expected'],
     calculate: (inputs, target = 'chi2') => {
@@ -285,28 +285,28 @@ export const STATISTICS_FORMULAS = [
       if (target === 'chi2') {
         result = Math.pow(observed - expected, 2) / expected;
         steps = [
-          { title: 'เธชเธนเธ•เธฃเนเธเธชเนเธเธงเธฃเน', latex: '\\chi^2 = \\frac{(O - E)^2}{E}', explanation: 'เธเธฅเธ•เนเธฒเธเธเธณเธฅเธฑเธเธชเธญเธเธซเธฒเธฃเธเนเธฒเธเธฒเธ”เธซเธงเธฑเธ (เธฃเธงเธกเธ—เธธเธเธเธฅเธฒเธชเธเนเธญเธกเธนเธฅ)' },
-          { title: 'เนเธ—เธเธเนเธฒ', latex: `\\chi^2 = \\frac{(${observed} - ${expected})^2}{${expected}}`, explanation: `O = ${observed}, E = ${expected}` },
-          { title: 'เธเธฅเธฅเธฑเธเธเน', latex: `\\chi^2 = ${result.toFixed(4)}`, explanation: `เธเนเธฒเนเธเธชเนเธเธงเธฃเนเธเธญเธเธเนเธญเธกเธนเธฅเธเธตเนเน€เธ—เนเธฒเธเธฑเธ ${result.toFixed(4)}` }
+          { title: 'สูตรไคสแควร์', latex: '\\chi^2 = \\frac{(O - E)^2}{E}', explanation: 'ผลต่างกำลังสองหารค่าคาดหวัง (รวมทุกคลาสข้อมูล)' },
+          { title: 'แทนค่า', latex: `\\chi^2 = \\frac{(${observed} - ${expected})^2}{${expected}}`, explanation: `O = ${observed}, E = ${expected}` },
+          { title: 'ผลลัพธ์', latex: `\\chi^2 = ${result.toFixed(4)}`, explanation: `ค่าไคสแควร์ของข้อมูลนี้เท่ากับ ${result.toFixed(4)}` }
         ];
       } else if (target === 'observed') {
         result = expected + Math.sqrt(chi2 * expected);
         steps = [
-          { title: 'เธเธฑเธ”เธฃเธนเธเธซเธฒเธเนเธฒ O', latex: 'O = E \\pm \\sqrt{\\chi^2 \\cdot E}', explanation: 'เธ–เธญเธ”เธฃเธฒเธเธ—เธฑเนเธเธชเธญเธเธเนเธฒเธ (เน€เธฅเธทเธญเธเน€เธเธฃเธทเนเธญเธเธซเธกเธฒเธขเธ•เธฒเธกเธเนเธญเธกเธนเธฅ)' },
-          { title: 'เธเธฅเธฅเธฑเธเธเน', latex: `O = ${result.toFixed(4)}`, explanation: `เธเนเธฒเธ—เธตเนเธชเธฑเธเน€เธเธ•เน€เธ—เนเธฒเธเธฑเธ ${result.toFixed(4)}` }
+          { title: 'จัดรูปหาค่า O', latex: 'O = E \\pm \\sqrt{\\chi^2 \\cdot E}', explanation: 'ถอดรากทั้งสองข้าง (เลือกเครื่องหมายตามข้อมูล)' },
+          { title: 'ผลลัพธ์', latex: `O = ${result.toFixed(4)}`, explanation: `ค่าที่สังเกตเท่ากับ ${result.toFixed(4)}` }
         ];
       } else if (target === 'expected') {
-        if (chi2 === 1) throw new Error('ฯยฒ = 1 เธ—เธณเนเธซเนเธชเธกเธเธฒเธฃเธกเธตเธเธฅเน€เธเธฅเธขเธเธดเน€เธจเธฉ เนเธกเนเธชเธฒเธกเธฒเธฃเธ–เธซเธฒ E เนเธ”เนเธ•เธฃเธเน');
+        if (chi2 === 1) throw new Error('χ² = 1 ทำให้สมการมีผลเฉลยพิเศษ ไม่สามารถหา E ได้ตรงๆ');
         const a = chi2;
         const b = -2 * observed - chi2;
         const c = observed * observed;
         const nom1 = (-b + Math.sqrt(b * b - 4 * a * c)) / (2 * a);
         const nom2 = (-b - Math.sqrt(b * b - 4 * a * c)) / (2 * a);
         result = nom2 > 0 ? nom2 : nom1;
-        if (result <= 0) throw new Error('เนเธกเนเธเธเธเนเธฒ E เธ—เธตเนเน€เธเนเธเธเธงเธ');
+        if (result <= 0) throw new Error('ไม่พบค่า E ที่เป็นบวก');
         steps = [
-          { title: 'เนเธเนเธชเธกเธเธฒเธฃเธซเธฒเธเนเธฒ E', latex: '\\chi^2 E = (O - E)^2', explanation: 'เธเธฃเธฐเธเธฒเธขเนเธฅเธฐเธเธฑเธ”เธฃเธนเธเน€เธเนเธเธชเธกเธเธฒเธฃเธเธณเธฅเธฑเธเธชเธญเธเธเธญเธ E' },
-          { title: 'เธเธฅเธฅเธฑเธเธเน', latex: `E = ${result.toFixed(4)}`, explanation: `เธเนเธฒเธเธฒเธ”เธซเธงเธฑเธเน€เธ—เนเธฒเธเธฑเธ ${result.toFixed(4)}` }
+          { title: 'แก้สมการหาค่า E', latex: '\\chi^2 E = (O - E)^2', explanation: 'กระจายและจัดรูปเป็นสมการกำลังสองของ E' },
+          { title: 'ผลลัพธ์', latex: `E = ${result.toFixed(4)}`, explanation: `ค่าคาดหวังเท่ากับ ${result.toFixed(4)}` }
         ];
       }
 
@@ -317,34 +317,34 @@ export const STATISTICS_FORMULAS = [
   {
     id: 'binomial_probability',
     name: 'Binomial Probability',
-    nameTh: 'เธเธงเธฒเธกเธเนเธฒเธเธฐเน€เธเนเธเนเธเธเธ—เธงเธดเธเธฒเธก',
+    nameTh: 'ความน่าจะเป็นแบบทวินาม',
     category: 'statistics',
-    categoryTh: 'เธชเธ–เธดเธ•เธดเนเธฅเธฐเธเธงเธฒเธกเธเนเธฒเธเธฐเน€เธเนเธ',
+    categoryTh: 'สถิติและความน่าจะเป็น',
     icon: 'percent',
-    grade: 'เธก.5-6',
+    grade: 'ม.5-6',
     latex: 'P(X=k) = \\binom{n}{k} p^k (1-p)^{n-k}',
-    description: 'เธเธงเธฒเธกเธเนเธฒเธเธฐเน€เธเนเธเธ—เธตเนเธเธฐเน€เธเธดเธ”เธเธงเธฒเธกเธชเธณเน€เธฃเนเธ k เธเธฃเธฑเนเธเธเธฒเธเธเธฒเธฃเธ—เธ”เธฅเธญเธ n เธเธฃเธฑเนเธ เนเธ•เนเธฅเธฐเธเธฃเธฑเนเธเธกเธตเนเธญเธเธฒเธชเธชเธณเน€เธฃเนเธ p (เน€เธเนเธ เธ—เธญเธขเน€เธซเธฃเธตเธขเธ)',
+    description: 'ความน่าจะเป็นที่จะเกิดความสำเร็จ k ครั้งจากการทดลอง n ครั้ง แต่ละครั้งมีโอกาสสำเร็จ p (เช่น ทอยเหรียญ)',
     variables: [
-      { id: 'n', symbol: 'n', name: 'Number of Trials', nameTh: 'เธเธณเธเธงเธเธเธฒเธฃเธ—เธ”เธฅเธญเธ (n)', unit: 'เธเธฃเธฑเนเธ', defaultValue: 10, min: 1, max: 170, step: 1 },
-      { id: 'k', symbol: 'k', name: 'Successes', nameTh: 'เธเธณเธเธงเธเธเธฃเธฑเนเธเธ—เธตเนเธชเธณเน€เธฃเนเธ (k)', unit: 'เธเธฃเธฑเนเธ', defaultValue: 6, min: 0, max: 170, step: 1 },
-      { id: 'p', symbol: 'p', name: 'Success Probability', nameTh: 'เนเธญเธเธฒเธชเธชเธณเน€เธฃเนเธเธ•เนเธญเธเธฃเธฑเนเธ (p)', unit: '', defaultValue: 0.5, min: 0.0000001, max: 0.9999999, step: 0.01 },
-      { id: 'result', symbol: 'P', name: 'Probability', nameTh: 'เธเธงเธฒเธกเธเนเธฒเธเธฐเน€เธเนเธ', unit: '', defaultValue: 0.2051, min: 0, max: 1, step: 0.0001 }
+      { id: 'n', symbol: 'n', name: 'Number of Trials', nameTh: 'จำนวนการทดลอง (n)', unit: 'ครั้ง', defaultValue: 10, min: 1, max: 170, step: 1 },
+      { id: 'k', symbol: 'k', name: 'Successes', nameTh: 'จำนวนครั้งที่สำเร็จ (k)', unit: 'ครั้ง', defaultValue: 6, min: 0, max: 170, step: 1 },
+      { id: 'p', symbol: 'p', name: 'Success Probability', nameTh: 'โอกาสสำเร็จต่อครั้ง (p)', unit: '', defaultValue: 0.5, min: 0.0000001, max: 0.9999999, step: 0.01 },
+      { id: 'result', symbol: 'P', name: 'Probability', nameTh: 'ความน่าจะเป็น', unit: '', defaultValue: 0.2051, min: 0, max: 1, step: 0.0001 }
     ],
     solveTargets: ['result'],
     calculate: (inputs) => {
       let { n, k, p } = inputs;
-      if (!Number.isInteger(n) || !Number.isInteger(k)) throw new Error('n เนเธฅเธฐ k เธ•เนเธญเธเน€เธเนเธเธเธณเธเธงเธเน€เธ•เนเธก');
-      if (k > n) throw new Error('k เธ•เนเธญเธเนเธกเนเน€เธเธดเธ n');
-      if (n > 170) throw new Error('n เธกเธฒเธเน€เธเธดเธเนเธ (เธชเธนเธเธชเธธเธ” 170)');
+      if (!Number.isInteger(n) || !Number.isInteger(k)) throw new Error('n และ k ต้องเป็นจำนวนเต็ม');
+      if (k > n) throw new Error('k ต้องไม่เกิน n');
+      if (n > 170) throw new Error('n มากเกินไป (สูงสุด 170)');
 
       const fact = (v) => { let f = 1; for (let i = 2; i <= v; i++) f *= i; return f; };
       const comb = fact(n) / (fact(k) * fact(n - k));
       const result = comb * Math.pow(p, k) * Math.pow(1 - p, n - k);
       const steps = [
-        { title: 'เธชเธนเธ•เธฃเธ—เธงเธดเธเธฒเธก', latex: 'P(X=k) = \\binom{n}{k} p^k (1-p)^{n-k}', explanation: `n = ${n}, k = ${k}, p = ${p}` },
-        { title: 'เธเธณเธเธงเธ“เธเนเธฒเธเธฑเธ”เธซเธกเธนเน', latex: `\\binom{${n}}{${k}} = ${comb}`, explanation: 'เธเธณเธเธงเธเธงเธดเธเธตเน€เธฅเธทเธญเธ k เธเธฃเธฑเนเธเธเธฒเธ n เธเธฃเธฑเนเธ' },
-        { title: 'เนเธ—เธเธเนเธฒ', latex: `P = ${comb} \\times ${p}^${k} \\times (1 - ${p})^{${n - k}}`, explanation: 'เธเธนเธ“เนเธญเธเธฒเธชเธชเธณเน€เธฃเนเธเนเธฅเธฐเธฅเนเธกเน€เธซเธฅเธง' },
-        { title: 'เธเธฅเธฅเธฑเธเธเน', latex: `P = ${result.toFixed(6)} \\; (${(result * 100).toFixed(2)}\\% )`, explanation: `เธเธงเธฒเธกเธเนเธฒเธเธฐเน€เธเนเธเน€เธ—เนเธฒเธเธฑเธ ${(result * 100).toFixed(2)}%` }
+        { title: 'สูตรทวินาม', latex: 'P(X=k) = \\binom{n}{k} p^k (1-p)^{n-k}', explanation: `n = ${n}, k = ${k}, p = ${p}` },
+        { title: 'คำนวณค่าจัดหมู่', latex: `\\binom{${n}}{${k}} = ${comb}`, explanation: 'จำนวนวิธีเลือก k ครั้งจาก n ครั้ง' },
+        { title: 'แทนค่า', latex: `P = ${comb} \\times ${p}^${k} \\times (1 - ${p})^{${n - k}}`, explanation: 'คูณโอกาสสำเร็จและล้มเหลว' },
+        { title: 'ผลลัพธ์', latex: `P = ${result.toFixed(6)} \\; (${(result * 100).toFixed(2)}\\% )`, explanation: `ความน่าจะเป็นเท่ากับ ${(result * 100).toFixed(2)}%` }
       ];
       return { result, resultDisplay: `${(result * 100).toFixed(2)}%`, unit: '', steps };
     }
