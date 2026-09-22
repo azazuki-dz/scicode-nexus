@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import { WireframeHuman } from '@/components/dreamframe/WireframeHuman'
+import { WireframeHuman } from '../../components/dreamframe/WireframeHuman'
 import './dreamframe.css'
 
 export const metadata: Metadata = {
